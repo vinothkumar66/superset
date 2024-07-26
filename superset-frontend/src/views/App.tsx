@@ -92,14 +92,16 @@ const App = () => (
         ))}
       </Switch>
       <ToastContainer />
-      <Footer className="footer">
+    </RootContextProviders>
+    <div className="footer">
+      <Footer>
         <strong>
           Copyright &copy; 2024{' '}
           <a href="http://Supracontrols.com">Supra Controls Pvt Ltd</a>.
         </strong>{' '}
         All rights reserved.
       </Footer>
-    </RootContextProviders>
+    </div>
   </Router>
 );
 
