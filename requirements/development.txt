@@ -64,7 +64,7 @@ freezegun==1.5.1
     # via apache-superset
 future==0.18.3
     # via pyhive
-gevent==24.2.1
+# gevent==24.2.1
     # via apache-superset
 google-api-core[grpc]==2.11.0
     # via

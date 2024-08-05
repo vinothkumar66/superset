@@ -13,8 +13,11 @@ SUPERSET_WEBSERVER_PORT = 8088
 # You MUST set this for production environments or the server will refuse
 # to start and you will see an error in the logs accordingly.
 
-
-SECRET_KEY='dahm4pFDIe9yREpJLSmagZmiMpT9yOXl3GwNvp3zJaBcfP+SvHnK5yQm'
+SECRET_KEY = os.getenv('SECRET_KEY', 'dahm4pFDIe9yREpJLSmagZmiMpT9yOXl3GwNvp3zJaBcfP+SvHnK5yQm')
+# SECRET_KEY='dahm4pFDIe9yREpJLSmagZmiMpT9yOXl3GwNvp3zJaBcfP+SvHnK5yQm'
+# Database and Redis configurations
+# SQLALCHEMY_DATABASE_URI = os.getenv('SUPERSET_DATABASE_URI', 'sqlite:////app/superset.db')
+REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
 # The SQLAlchemy connection string to your database backend
 # This connection defines the path to the database that stores your
 # superset metadata (slices, connections, tables, dashboards, ...).
@@ -22,7 +25,13 @@ SECRET_KEY='dahm4pFDIe9yREpJLSmagZmiMpT9yOXl3GwNvp3zJaBcfP+SvHnK5yQm'
 # you want to explore are managed directly in the web UI
 # The check_same_thread=false property ensures the sqlite client does not attempt
 # to enforce single-threaded access, which may be problematic in some edge cases
-#SQLALCHEMY_DATABASE_URI = 'sqlite:////home/reports/project/apachesuperset/superset/superset.db?charset=utf8'
+# SQLALCHEMY_DATABASE_URI = 'postgresql://superset:superset@db:5432/superset'
+# SQLALCHEMY_DATABASE_URI = 'postgresql://Jeni:Supra123@192.168.29.77:5432/TestDB'
+SQLALCHEMY_DATABASE_URI = 'sqlite:////app/superset_home/superset.db'
+
+
+# SQLALCHEMY_TRACK_MODIFICATIONS = True
+# SQLALCHEMY_DATABASE_URI = 'sqlite:////home/reports/project/superset/superset.db?charset=utf8'
 # Flask-WTF flag for CSRF
 WTF_CSRF_ENABLED = False
 # Add endpoints that need to be exempt from CSRF protection
