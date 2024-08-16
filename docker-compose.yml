@@ -1,5 +1,20 @@
 version: '3.8'
+x-superset-user: &superset-user root
+x-superset-depends-on: &superset-depends-on
+  - postgres
+  - redis
+x-superset-volumes: &superset-volumes
+  # /app/pythonpath_docker will be appended to the PYTHONPATH in the final container
+  - ./docker:/app/docker
+  - ./superset:/app/superset
+  - ./superset-frontend:/app/superset-frontend
+  - superset_data:/app/superset_home
+  - ./tests:/app/tests
 
+x-common-build: &common-build
+  context: .
+  cache_from:
+    - apache/superset-cache:3.10-slim-bookworm
 services:
   redis:
     image: redis:latest
@@ -9,6 +24,8 @@ services:
       - "6379:6379"
     volumes:
       - redis:/data
+    networks:
+      - superset-network
 
   postgres:
     image: postgres:13
@@ -20,7 +37,9 @@ services:
       POSTGRES_DB: superset
     volumes:
       - db_home:/var/lib/postgresql/data
-
+    networks:
+      - superset-network
+  
   superset:
     build:
       context: .
@@ -32,18 +51,86 @@ services:
       - ./superset:/app/superset
       - ./superset-frontend:/app/superset-frontend
       - ./docker:/app/docker
+      - superset_data:/app/superset_home
+    
     environment:
       SUPERSET_ENV: production
       SUPERSET_CONFIG_PATH: /app/superset_config.py
       SQLALCHEMY_DATABASE_URI: postgresql+psycopg2://superset:superset@postgres:5432/superset
+      # SQLALCHEMY_DATABASE_URI: postgresql+psycopg2://sama:sama123!@#@192.168.29.111:5432/SupraDataset
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
      
     depends_on:
       - postgres
       - redis
     command: ["/app/setup_superset.sh"]
+    networks:
+      - superset-network
+ 
+  superset-worker:
+    build:
+      <<: *common-build
+    container_name: superset_worker
+    command: ["/app/docker/docker-bootstrap.sh", "worker"]
+    environment:
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+    restart: unless-stopped
+    depends_on: *superset-depends-on
+    user: *superset-user
+    volumes: *superset-volumes
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: ["CMD-SHELL", "celery -A superset.tasks.celery_app:app inspect ping -d celery@$$HOSTNAME"]
+    networks:
+      - superset-network
+  superset-worker-beat:
+    build:
+      <<: *common-build
+    container_name: superset_worker_beat
+    command: ["/app/docker/docker-bootstrap.sh", "beat"]
+    environment:
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+    restart: unless-stopped
+    depends_on: *superset-depends-on
+    user: *superset-user
+    volumes: *superset-volumes
+    healthcheck:
+      disable: true
+    networks:
+      - superset-network
+  # superset-tests-worker:
+  #   build:
+  #     <<: *common-build
+  #   container_name: superset_tests_worker
+  #   command: ["/app/docker/docker-bootstrap.sh", "worker"]
+  #   environment:
+  #     DATABASE_HOST: postgresql+psycopg2://superset:superset@postgres:5432/superset
+  #     DATABASE_DB: test
+  #     REDIS_CELERY_DB: 2
+  #     REDIS_RESULTS_DB: 3
+  #     REDIS_HOST: redis://redis:6379/0
+  #     CELERYD_CONCURRENCY: 8
+  #   network_mode: host
+  #   depends_on: *superset-depends-on
+  #   user: *superset-user
+  #   volumes: *superset-volumes
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "celery inspect ping -A superset.tasks.celery_app:app -d celery@$$HOSTNAME"]
+
 
 volumes:
   db_home:
+    driver: local
   redis:
+    driver: local
+  superset_data:
+    driver: local
+networks:
+  superset-network:
+    driver: bridge
 
 

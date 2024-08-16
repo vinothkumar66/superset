@@ -9,6 +9,9 @@ superset db upgrade
 
 # Create default roles and permissions
 superset init
+# Start the Celery worker and beat
+celery -A superset.tasks.celery_app worker --loglevel=info &
+celery -A superset.tasks.celery_app beat --loglevel=info &
 
 # Create an admin user
 flask fab create-admin \

@@ -250,6 +250,7 @@ parsedatetime==2.6
     # via apache-superset
 pgsanity==0.2.9
     # via apache-superset
+Pillow==10.0.0
 platformdirs==3.8.1
     # via requests-cache
 polyline==2.0.2
@@ -268,6 +269,8 @@ pyasn1-modules==0.4.0
     # via google-auth
 pycparser==2.22
     # via cffi
+psycopg2>=2.9.3
+
 pygments==2.18.0
     # via rich
 pyjwt==2.8.0
