@@ -80,6 +80,7 @@ const App = () => (
         data={bootstrapData.common.menu_data}
         isFrontendRoute={isFrontendRoute}
       />
+      <div className = "content">
       <Switch>
         {routes.map(({ path, Component, props = {}, Fallback = Loading }) => (
           <Route path={path} key={path}>
@@ -91,6 +92,8 @@ const App = () => (
           </Route>
         ))}
       </Switch>
+      </div>
+    
       <ToastContainer />
     </RootContextProviders>
     <div className="footer">

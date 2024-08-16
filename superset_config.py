@@ -133,7 +133,20 @@ SMTP_MAIL_FROM = "jenisha@supracontrols.com"
 EMAIL_REPORTS_SUBJECT_PREFIX = "[Superset] " # optional - overwrites default value in config.py of "[Report] "
 
 # WebDriver configuration
-CHROMEDRIVER_PATH = "/usr/lib/chromedriver"
+# CHROMEDRIVER_PATH = "/usr/lib/chromedriver"
+
+# Ensure scheduler is enabled and configured properly
+SCHEDULER_API_ENABLED = True
+SCHEDULER_RUN_INTERVAL = 60  # Adjust as needed
+
+# Retry settings
+REPORTS_RETRY = 3  # Number of retries before failing
+# Path to the Chrome executable
+CHROME_BIN = '/opt/google/chrome/google-chrome'
+
+# Path to the ChromeDriver executable
+CHROMEDRIVER_PATH = '/usr/local/bin/chromedriver'
+
 # SCREENSHOT_LOCATE_WAIT = 100
 # SCREENSHOT_LOAD_WAIT = 300
 
