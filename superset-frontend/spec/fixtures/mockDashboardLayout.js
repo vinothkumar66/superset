@@ -19,6 +19,7 @@
 import {
   DASHBOARD_GRID_TYPE,
   DASHBOARD_HEADER_TYPE,
+  DASHBOARD_FOOTER_TYPE,
   DASHBOARD_ROOT_TYPE,
   TABS_TYPE,
   TAB_TYPE,
@@ -31,6 +32,7 @@ import {
 import {
   DASHBOARD_ROOT_ID,
   DASHBOARD_HEADER_ID,
+  DASHBOARD_FOOTER_ID,
   DASHBOARD_GRID_ID,
 } from 'src/dashboard/util/constants';
 
@@ -61,6 +63,14 @@ export const dashboardLayout = {
       type: DASHBOARD_HEADER_TYPE,
       id: DASHBOARD_HEADER_ID,
       meta: {
+        text: 'New dashboard',
+      },
+    },
+     
+    [DASHBOARD_FOOTER_ID]: {
+      type: DASHBOARD_FOOTER_TYPE,
+      id: DASHBOARD_FOOTER_ID,
+      meta:{
         text: 'New dashboard',
       },
     },
@@ -187,6 +197,13 @@ export const dashboardLayoutWithTabs = {
         text: 'New dashboard',
       },
     },
+    [DASHBOARD_FOOTER_ID]: {
+      type: DASHBOARD_FOOTER_TYPE,
+      id: DASHBOARD_FOOTER_ID,
+      meta: {
+        text: 'New dashboard',
+      },
+    },
   },
   future: [],
 };
@@ -270,6 +287,13 @@ export const dashboardWithFilter = {
   [DASHBOARD_HEADER_ID]: {
     type: DASHBOARD_HEADER_TYPE,
     id: DASHBOARD_HEADER_ID,
+    meta: {
+      text: 'New dashboard',
+    },
+  },
+  [DASHBOARD_FOOTER_ID]: {
+    type: DASHBOARD_FOOTER_TYPE,
+    id: DASHBOARD_FOOTER_ID,
     meta: {
       text: 'New dashboard',
     },

@@ -34,12 +34,14 @@ import {
 } from 'src/dashboard/util/crossFilters';
 import {
   DASHBOARD_HEADER_ID,
+  DASHBOARD_FOOTER_ID,
   GRID_DEFAULT_CHART_WIDTH,
   GRID_COLUMN_COUNT,
   DASHBOARD_ROOT_ID,
 } from 'src/dashboard/util/constants';
 import {
   DASHBOARD_HEADER_TYPE,
+  DASHBOARD_FOOTER_TYPE,
   CHART_TYPE,
   ROW_TYPE,
 } from 'src/dashboard/util/componentTypes';
@@ -205,7 +207,13 @@ export const hydrateDashboard =
         text: dashboard.dashboard_title,
       },
     };
-
+    layout[DASHBOARD_FOOTER_ID] = {
+      id: DASHBOARD_FOOTER_ID,
+      type: DASHBOARD_FOOTER_TYPE,
+      meta: {
+        text: dashboard.dashboard_title,
+      },
+    };
     const dashboardLayout = {
       past: [],
       present: layout,

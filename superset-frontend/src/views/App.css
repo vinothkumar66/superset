@@ -1,71 +1,71 @@
 footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background-color: #333;
-    color: white;
-    text-align: center;
-    /* padding: 10px 0; */
-    font-size: 14px;
-    animation: slideIn 1s ease-out;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #333;
+  color: white;
+  text-align: center;
+  /* padding: 10px 0; */
+  font-size: 14px;
+  animation: slideIn 1s ease-out;
 }
 
 footer a {
-    color: #4caf50;
-    text-decoration: none;
+  color: #4caf50;
+  text-decoration: none;
 }
-content{
-    padding-bottom: 75px; 
+content {
+  padding-bottom: 75px;
 }
 footer a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 @keyframes slideIn {
-    from {
-        transform: translateY(100%);
-        opacity: 0;
-    }
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
 
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .ant-layout-footer {
-    padding: 9px 50px !important;
+  padding: 9px 50px !important;
 }
 
 .css-2lgjur {
-    position: unset !important;
+  position: unset !important;
 }
 
 /* .css-1mwjtue {
     height: 100px !important;
 } */
 .css-auk1s1 .pagination-container {
-    margin-bottom: 76px !important;
+  margin-bottom: 76px !important;
 }
 
 .css-m6sjd1 {
-    background-color: #fff !important;
+  background-color: #fff !important;
 }
 
 .css-d1jf93 {
-    margin-bottom: 76px !important;
+  margin-bottom: 76px !important;
 }
 
 /* 9/8/2024 footer overlap changes */
 .css-1y58vgi {
-    margin-bottom: 76px !important;
+  margin-bottom: 76px !important;
 }
 
 .css-3imep1-ControlPanelsContainer {
-    position: static !important;
-    margin-bottom: 10px;
+  position: static !important;
+  margin-bottom: 10px;
 }
 
 .col-sm-3 explore-column controls-column {
-    height: 87% !important;
+  height: 87% !important;
 }

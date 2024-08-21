@@ -24,6 +24,7 @@ import {
   COLUMN_TYPE,
   DIVIDER_TYPE,
   HEADER_TYPE,
+  FOOTER_TYPE,
   MARKDOWN_TYPE,
   ROW_TYPE,
   TABS_TYPE,
@@ -36,6 +37,7 @@ import {
   BACKGROUND_TRANSPARENT,
   GRID_DEFAULT_CHART_WIDTH,
   GRID_COLUMN_COUNT,
+  SMALL_HEADER,
 } from './constants';
 
 const typeToDefaultMetaData = {
@@ -48,6 +50,11 @@ const typeToDefaultMetaData = {
   [HEADER_TYPE]: {
     text: t('New header'),
     headerSize: MEDIUM_HEADER,
+    background: BACKGROUND_TRANSPARENT,
+  },
+  [FOOTER_TYPE]: {
+    text: t('New footer'),
+    headerSize: SMALL_HEADER,
     background: BACKGROUND_TRANSPARENT,
   },
   [MARKDOWN_TYPE]: { width: GRID_DEFAULT_CHART_WIDTH, height: 50 },

@@ -16,18 +16,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { SupersetPluginChartContourPlot } from '../src';
+import { t } from '@superset-ui/core';
 
-/**
- * The example tests in this file act as a starting point, and
- * we encourage you to build more. These tests check that the
- * plugin loads properly, and focus on `transformProps`
- * to ake sure that data, controls, and props are all
- * treated correctly (e.g. formData from plugin controls
- * properly transform the data and/or any resulting props).
- */
-describe('superset-plugin-chart-contour-plot', () => {
-  it('exists', () => {
-    expect(SupersetPluginChartContourPlot).toBeDefined();
-  });
-});
+import { FOOTER_TYPE } from '../../../util/componentTypes';
+import { NEW_FOOTER_ID } from '../../../util/constants';
+import DraggableNewComponent from './DraggableNewComponent';
+
+export default function DraggableNewFooter() {
+  return (
+    <DraggableNewComponent
+      id={NEW_FOOTER_ID}
+      type={FOOTER_TYPE}
+      label={t('Footer')}
+      className="fa-duotone fa-solid fa-f"
+    />
+  );
+}
