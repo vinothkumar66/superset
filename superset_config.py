@@ -27,8 +27,9 @@ REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
 # to enforce single-threaded access, which may be problematic in some edge cases
 # SQLALCHEMY_DATABASE_URI = 'postgresql://superset:superset@db:5432/superset'
 # SQLALCHEMY_DATABASE_URI = 'postgresql://Jeni:Supra123@192.168.29.77:5432/TestDB'
-SQLALCHEMY_DATABASE_URI = 'sqlite:////app/superset_home/superset.db'
-
+# SQLALCHEMY_DATABASE_URI = 'sqlite:///superset_home/superset.db'
+# SQLALCHEMY_DATABASE_URI = 'sqlite:///superset_home/superset.db'
+SQLALCHEMY_DATABASE_URI = 'sqlite:////home/reports/project/superset/superset_home/superset.db'
 
 # SQLALCHEMY_TRACK_MODIFICATIONS = True
 # SQLALCHEMY_DATABASE_URI = 'sqlite:////home/reports/project/superset/superset.db?charset=utf8'

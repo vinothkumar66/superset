@@ -39,6 +39,7 @@ import {
   DASHBOARD_ROOT_TYPE,
   DIVIDER_TYPE,
   HEADER_TYPE,
+  FOOTER_TYPE,
   MARKDOWN_TYPE,
   ROW_TYPE,
   TABS_TYPE,
@@ -68,6 +69,7 @@ const parentMaxDepthLookup = {
     [COLUMN_TYPE]: depthOne,
     [DIVIDER_TYPE]: depthOne,
     [HEADER_TYPE]: depthOne,
+    [FOOTER_TYPE]: depthOne,
     [ROW_TYPE]: depthOne,
     [TABS_TYPE]: depthOne,
   },
@@ -90,6 +92,7 @@ const parentMaxDepthLookup = {
     [COLUMN_TYPE]: depthThree,
     [DIVIDER_TYPE]: depthFive,
     [HEADER_TYPE]: depthFive,
+    [FOOTER_TYPE]: depthFive,
     [ROW_TYPE]: depthThree,
     [TABS_TYPE]: depthThree,
   },
@@ -97,6 +100,7 @@ const parentMaxDepthLookup = {
   [COLUMN_TYPE]: {
     [CHART_TYPE]: depthFive,
     [HEADER_TYPE]: depthFive,
+    [FOOTER_TYPE]: depthFive,
     [MARKDOWN_TYPE]: depthFive,
     [ROW_TYPE]: depthThree,
     [DIVIDER_TYPE]: depthThree,
@@ -108,6 +112,7 @@ const parentMaxDepthLookup = {
   [DYNAMIC_TYPE]: {},
   [DIVIDER_TYPE]: {},
   [HEADER_TYPE]: {},
+  [FOOTER_TYPE]: {},
   [MARKDOWN_TYPE]: {},
 };
 

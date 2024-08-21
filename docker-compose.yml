@@ -44,6 +44,7 @@ services:
     build:
       context: .
     container_name: superset_app
+    image: jenishaatsupra/webreport-superset:newbuild
     restart: unless-stopped
     ports:
       - "8088:8088"
@@ -56,7 +57,7 @@ services:
     environment:
       SUPERSET_ENV: production
       SUPERSET_CONFIG_PATH: /app/superset_config.py
-      SQLALCHEMY_DATABASE_URI: postgresql+psycopg2://superset:superset@postgres:5432/superset
+      # SQLALCHEMY_DATABASE_URI: postgresql+psycopg2://superset:superset@postgres:5432/superset
       # SQLALCHEMY_DATABASE_URI: postgresql+psycopg2://sama:sama123!@#@192.168.29.111:5432/SupraDataset
       CELERY_BROKER_URL: redis://redis:6379/0
       CELERY_RESULT_BACKEND: redis://redis:6379/0
@@ -72,6 +73,7 @@ services:
     build:
       <<: *common-build
     container_name: superset_worker
+    image: jenishaatsupra/webreport-superset:newbuild
     command: ["/app/docker/docker-bootstrap.sh", "worker"]
     environment:
       CELERY_BROKER_URL: redis://redis:6379/0
@@ -90,6 +92,7 @@ services:
     build:
       <<: *common-build
     container_name: superset_worker_beat
+    image: jenishaatsupra/webreport-superset:newbuild
     command: ["/app/docker/docker-bootstrap.sh", "beat"]
     environment:
       CELERY_BROKER_URL: redis://redis:6379/0

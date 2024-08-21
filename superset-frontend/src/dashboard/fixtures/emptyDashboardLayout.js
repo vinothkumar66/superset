@@ -19,12 +19,14 @@
 import {
   DASHBOARD_GRID_TYPE,
   HEADER_TYPE,
+  FOOTER_TYPE,
   DASHBOARD_ROOT_TYPE,
 } from '../util/componentTypes';
 
 import {
   DASHBOARD_ROOT_ID,
   DASHBOARD_HEADER_ID,
+  DASHBOARD_FOOTER_ID,
   DASHBOARD_GRID_ID,
 } from '../util/constants';
 
@@ -46,6 +48,13 @@ export default {
   [DASHBOARD_HEADER_ID]: {
     type: HEADER_TYPE,
     id: DASHBOARD_HEADER_ID,
+    meta: {
+      text: 'New dashboard',
+    },
+  },
+  [DASHBOARD_FOOTER_ID]: {
+    type: FOOTER_TYPE,
+    id: DASHBOARD_FOOTER_ID,
     meta: {
       text: 'New dashboard',
     },

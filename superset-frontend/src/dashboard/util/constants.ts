@@ -19,6 +19,7 @@
 // Ids
 export const DASHBOARD_GRID_ID = 'GRID_ID';
 export const DASHBOARD_HEADER_ID = 'HEADER_ID';
+export const DASHBOARD_FOOTER_ID = 'FOOTER_ID';
 export const DASHBOARD_ROOT_ID = 'ROOT_ID';
 export const DASHBOARD_VERSION_KEY = 'DASHBOARD_VERSION_KEY';
 
@@ -27,6 +28,7 @@ export const NEW_CHART_ID = 'NEW_CHART_ID';
 export const NEW_COLUMN_ID = 'NEW_COLUMN_ID';
 export const NEW_DIVIDER_ID = 'NEW_DIVIDER_ID';
 export const NEW_HEADER_ID = 'NEW_HEADER_ID';
+export const NEW_FOOTER_ID = 'NEW_FOOTER_ID';
 export const NEW_MARKDOWN_ID = 'NEW_MARKDOWN_ID';
 export const NEW_ROW_ID = 'NEW_ROW_ID';
 export const NEW_TAB_ID = 'NEW_TAB_ID';
