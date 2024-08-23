@@ -261,19 +261,7 @@ class BaseReportState:
         :raises: ReportSchedulePdfFailedError
         """
         screenshots = self._get_screenshots()
-        pdf = build_pdf_from_screenshots(screenshots)
-
-
-        output_path=os.path.join(PDF_PATH,'reports')
-        if not os.path.exists(output_path):
-            os.makedirs(output_path)
-        output_path_main=os.path.join(output_path,f'{dtt.now().year}_{dtt.now().month}_{dtt.now().day}_reports')
-        if not os.path.exists(output_path_main):
-            os.makedirs(output_path_main)
-        pdf_out=os.path.join(output_path_main,f'{dtt.now().year}_{dtt.now().month}_{dtt.now().day}_{dtt.now().hour}_{dtt.now().minute}_{dtt.now().second}_report.pdf')    
-        with open(pdf_out, 'wb') as f:
-            f.write(pdf)   
-            
+        pdf = build_pdf_from_screenshots(screenshots)    
         return pdf
 
     def _get_csv_data(self) -> bytes:
@@ -392,10 +380,22 @@ class BaseReportState:
         ):
             if self._report_schedule.report_format == ReportDataFormat.PNG:
                 screenshot_data = self._get_screenshots()
+
                 if not screenshot_data:
                     error_text = "Unexpected missing screenshot"
             elif self._report_schedule.report_format == ReportDataFormat.PDF:
                 pdf_data = self._get_pdf()
+                exe_dir = os.path.dirname(sys.executable)
+                print('file--------------------------------------',pdf_data)
+                new_folder = os.path.join('/app', 'reportsfolder')
+                if not os.path.exists(new_folder):
+                    os.mkdir(new_folder)
+                    print('----------done------------')
+                pdf_file_path=os.path.join(new_folder,f'{dtt.now().minute}_{dtt.now().second}.pdf')
+                with open(pdf_file_path, 'wb') as pdf_file:
+                    pdf_file.write(pdf_data)
+
+                print('path-----------:',new_folder)
                 if not pdf_data:
                     error_text = "Unexpected missing pdf"
             elif (

@@ -180,4 +180,5 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 STATIC_FOLDER = os.path.join(BASE_DIR, 'superset-frontend', 'dist')
 STATIC_URL_PATH = '/static'
 
-PDF_PATH='/home/reports/project/superset/TEST_REPORT'
+PDF_PATH=r"\\wsl.localhost\Ubuntu-22.04\home\supra"
+# '//wsl.localhost/Ubuntu-22.04/home/supra/test/'

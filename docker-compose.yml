@@ -1,4 +1,4 @@
-version: '3.8'
+# version: '3.8'
 x-superset-user: &superset-user root
 x-superset-depends-on: &superset-depends-on
   - postgres
@@ -10,7 +10,7 @@ x-superset-volumes: &superset-volumes
   - ./superset-frontend:/app/superset-frontend
   - superset_data:/app/superset_home
   - ./tests:/app/tests
-
+  - ./report_output:/app/reportsfolder
 x-common-build: &common-build
   context: .
   cache_from:
@@ -52,7 +52,7 @@ services:
       - ./superset-frontend:/app/superset-frontend
       - ./docker:/app/docker
       - superset_data:/app/superset_home
-    
+      # - /c/Users/SAM08/Downloads:/app/venv/bin/my_new_folder
     environment:
       SUPERSET_ENV: production
       SUPERSET_CONFIG_PATH: /app/superset_config.py
@@ -68,7 +68,7 @@ services:
     networks:
       - superset-network
  
-  superset-worker:
+  superset-worker: 
     build:
       <<: *common-build
     container_name: superset_worker
@@ -132,5 +132,3 @@ volumes:
 networks:
   superset-network:
     driver: bridge
-
-
