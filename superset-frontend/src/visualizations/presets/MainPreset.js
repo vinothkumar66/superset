@@ -80,7 +80,6 @@ import {
 import { PivotTableChartPlugin as PivotTableChartPluginV2 } from '@superset-ui/plugin-chart-pivot-table';
 import { HandlebarsChartPlugin } from '@superset-ui/plugin-chart-handlebars';
 import { SupersetPluginChartContourPlot } from 'superset-plugin-chart-contour-plot';
-import { SupersetPluginChartContourPlots } from 'superset-plugin-chart-contour-plots';
 import { FilterPlugins } from 'src/constants';
 import TimeTableChartPlugin from '../TimeTable';
 
@@ -177,9 +176,6 @@ export default class MainPreset extends Preset {
         new EchartsSunburstChartPlugin().configure({ key: 'sunburst_v2' }),
         new HandlebarsChartPlugin().configure({ key: 'handlebars' }),
         new SupersetPluginChartContourPlot().configure({ key: 'contourPlot' }),
-        new SupersetPluginChartContourPlots().configure({
-          key: 'contourPlots',
-        }),
         new EchartsBubbleChartPlugin().configure({ key: 'bubble_v2' }),
         ...experimentalPlugins,
       ],

@@ -1,15 +1,15 @@
 .mapboxgl-ctrl-geocoder--input {
-    color: black !important; /* Change font color to black */
-  }
-.mapbox-logo{
-    display: none  !important;
-} 
-.mapboxgl-ctrl-logo { 
-    display: none !important;
-} 
-.mapbox-improve-map { 
-    display: none  !important; 
+  color: black !important; /* Change font color to black */
 }
-.mapboxgl-ctrl-compass { 
-     display: none !important; 
+.mapbox-logo {
+  display: none !important;
+}
+.mapboxgl-ctrl-logo {
+  display: none !important;
+}
+.mapbox-improve-map {
+  display: none !important;
+}
+.mapboxgl-ctrl-compass {
+  display: none !important;
 }

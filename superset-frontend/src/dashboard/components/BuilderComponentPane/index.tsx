@@ -25,6 +25,7 @@ import dashboardComponents from 'src/visualizations/presets/dashboardComponents'
 import NewColumn from '../gridComponents/new/NewColumn';
 import NewDivider from '../gridComponents/new/NewDivider';
 import NewHeader from '../gridComponents/new/NewHeader';
+import NewFooter from '../gridComponents/new/NewFooter';
 import NewRow from '../gridComponents/new/NewRow';
 import NewTabs from '../gridComponents/new/NewTabs';
 import NewMarkdown from '../gridComponents/new/NewMarkdown';
@@ -82,6 +83,7 @@ const BuilderComponentPane = ({ topOffset = 0 }) => (
           <NewRow />
           <NewColumn />
           <NewHeader />
+          <NewFooter />
           <NewMarkdown />
           <NewDivider />
           {dashboardComponents
