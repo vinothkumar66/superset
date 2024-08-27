@@ -38,7 +38,7 @@ import { Logger, LOG_ACTIONS_SPA_NAVIGATION } from 'src/logger/LogUtils';
 import setupExtensions from 'src/setup/setupExtensions';
 import { logEvent } from 'src/logger/actions';
 import { store } from 'src/views/store';
-import { Footer } from 'antd/lib/layout/layout';
+// import { Footer } from 'antd/lib/layout/layout';
 import { RootContextProviders } from './RootContextProviders';
 import { ScrollToTop } from './ScrollToTop';
 import './App.css';
@@ -80,7 +80,7 @@ const App = () => (
         data={bootstrapData.common.menu_data}
         isFrontendRoute={isFrontendRoute}
       />
-      <div className = "content">
+      {/* <div className="content"> */}
       <Switch>
         {routes.map(({ path, Component, props = {}, Fallback = Loading }) => (
           <Route path={path} key={path}>
@@ -92,11 +92,11 @@ const App = () => (
           </Route>
         ))}
       </Switch>
-      </div>
-    
+      {/* </div> */}
+
       <ToastContainer />
     </RootContextProviders>
-    <div className="footer">
+    {/* <div className="footer">
       <Footer>
         <strong>
           Copyright &copy; 2024{' '}
@@ -104,7 +104,7 @@ const App = () => (
         </strong>{' '}
         All rights reserved.
       </Footer>
-    </div>
+    </div> */}
   </Router>
 );
 
