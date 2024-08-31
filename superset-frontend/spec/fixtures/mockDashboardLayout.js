@@ -66,11 +66,11 @@ export const dashboardLayout = {
         text: 'New dashboard',
       },
     },
-     
+
     [DASHBOARD_FOOTER_ID]: {
       type: DASHBOARD_FOOTER_TYPE,
       id: DASHBOARD_FOOTER_ID,
-      meta:{
+      meta: {
         text: 'New dashboard',
       },
     },

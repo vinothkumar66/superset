@@ -10,6 +10,7 @@ x-superset-volumes: &superset-volumes
   - ./superset-frontend:/app/superset-frontend
   - superset_data:/app/superset_home
   - ./tests:/app/tests
+  - ./report_output:/app/reportsfolder
 
 x-common-build: &common-build
   context: .

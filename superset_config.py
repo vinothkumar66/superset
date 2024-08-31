@@ -27,9 +27,15 @@ REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
 # to enforce single-threaded access, which may be problematic in some edge cases
 # SQLALCHEMY_DATABASE_URI = 'postgresql://superset:superset@db:5432/superset'
 # SQLALCHEMY_DATABASE_URI = 'postgresql://Jeni:Supra123@192.168.29.77:5432/TestDB'
+
+# for docker 
+SQLALCHEMY_DATABASE_URI = 'sqlite:////app/superset_home/superset.db'
+# for local setup
+# SQLALCHEMY_DATABASE_URI = 'sqlite:////home/supra/superset/superset_home/superset.db'
+
+
 # SQLALCHEMY_DATABASE_URI = 'sqlite:///superset_home/superset.db'
-# SQLALCHEMY_DATABASE_URI = 'sqlite:///superset_home/superset.db'
-SQLALCHEMY_DATABASE_URI = 'sqlite:////home/reports/project/superset/superset_home/superset.db'
+# SQLALCHEMY_DATABASE_URI = 'sqlite:////home/reports/project/superset/superset_home/superset.db'
 
 # SQLALCHEMY_TRACK_MODIFICATIONS = True
 # SQLALCHEMY_DATABASE_URI = 'sqlite:////home/reports/project/superset/superset.db?charset=utf8'
@@ -141,7 +147,7 @@ SCHEDULER_API_ENABLED = True
 SCHEDULER_RUN_INTERVAL = 60  # Adjust as needed
 
 # Retry settings
-REPORTS_RETRY = 3  # Number of retries before failing
+REPORTS_RETRY = 0  # Number of retries before failing
 # Path to the Chrome executable
 CHROME_BIN = '/opt/google/chrome/google-chrome'
 
@@ -181,4 +187,7 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 STATIC_FOLDER = os.path.join(BASE_DIR, 'superset-frontend', 'dist')
 STATIC_URL_PATH = '/static'
 
-PDF_PATH='/home/reports/project/superset/TEST_REPORT'
+# PDF_PATH='/home/reports/project/superset/TEST_REPORT'
+
+PDF_PATH='/app'
+# '//wsl.localhost/Ubuntu-22.04/home/supra/test/'

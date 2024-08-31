@@ -26,6 +26,7 @@ from pytz import all_timezones
 from superset.reports.models import (
     ReportCreationMethod,
     ReportDataFormat,
+    ReportPaperSize,
     ReportRecipientType,
     ReportScheduleType,
     ReportScheduleValidatorType,
@@ -216,6 +217,9 @@ class ReportSchedulePostSchema(Schema):
         dump_default=ReportDataFormat.PNG,
         validate=validate.OneOf(choices=tuple(key.value for key in ReportDataFormat)),
     )
+    paper_size = fields.String(
+        dump_default=ReportPaperSize.A4
+    )
     extra = fields.Dict(
         dump_default=None,
     )
@@ -354,6 +358,9 @@ class ReportSchedulePutSchema(Schema):
     report_format = fields.String(
         dump_default=ReportDataFormat.PNG,
         validate=validate.OneOf(choices=tuple(key.value for key in ReportDataFormat)),
+    )
+    paper_size = fields.String(
+        dump_default=ReportPaperSize.A4
     )
     extra = fields.Dict(dump_default=None)
     force_screenshot = fields.Boolean(dump_default=False)

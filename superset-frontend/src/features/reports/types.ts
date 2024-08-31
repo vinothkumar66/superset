@@ -49,6 +49,7 @@ export interface ReportObject {
     { recipient_config_json: { target: string }; type: ReportRecipientType },
   ];
   report_format: string;
+  paper_size: string;
   timezone: string;
   type: ReportScheduleType;
   validator_config_json: {} | null;

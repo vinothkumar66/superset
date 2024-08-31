@@ -65,6 +65,7 @@ RUN apt-get update -y && \
     build-essential \ 
     pkg-config \
     libmariadb-dev \ 
+    sqlite3 \
     && rm -rf /var/lib/apt/lists/*
 
 # Set environment variables for Superset

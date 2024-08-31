@@ -113,6 +113,7 @@ class ReportScheduleRestApi(BaseSupersetModelRestApi):
         "recipients.recipient_config_json",
         "recipients.type",
         "report_format",
+        "paper_size",
         "sql",
         "timezone",
         "type",
@@ -171,6 +172,7 @@ class ReportScheduleRestApi(BaseSupersetModelRestApi):
         "owners",
         "recipients",
         "report_format",
+        "paper_size",
         "sql",
         "timezone",
         "type",
@@ -351,6 +353,7 @@ class ReportScheduleRestApi(BaseSupersetModelRestApi):
                 dashboard_id=request.json.get("dashboard", None),
                 chart_id=request.json.get("chart", None),
                 report_format=request.json.get("report_format", None),
+                paper_size = request.json.get("paper_size", None),
                 active=request.json.get("active", None),
             )
         # This validates custom Schema with custom validations
@@ -431,6 +434,7 @@ class ReportScheduleRestApi(BaseSupersetModelRestApi):
                 dashboard_id=request.json.get("dashboard", None),
                 chart_id=request.json.get("chart", None),
                 report_format=request.json.get("report_format", None),
+                paper_size = request.json.get("paper_size", None),
                 active=request.json.get("active", None),
             )
         # This validates custom Schema with custom validations

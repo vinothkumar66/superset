@@ -320,6 +320,7 @@ rich==13.7.1
     # via flask-limiter
 rsa==4.9
     # via google-auth
+reportlab==4.2.2
 selenium==3.141.0
     # via apache-superset
 shillelagh[gsheetsapi]==1.2.18

@@ -78,6 +78,9 @@ class ReportDataFormat(StrEnum):
     CSV = "CSV"
     TEXT = "TEXT"
 
+class ReportPaperSize(StrEnum):
+    A4 = 'A4'
+    A3 = 'A3'
 
 class ReportCreationMethod(StrEnum):
     CHARTS = "charts"
@@ -130,6 +133,7 @@ class ReportSchedule(AuditMixinNullable, ExtraJSONMixin, Model):
     )
     timezone = Column(String(100), default="UTC", nullable=False)
     report_format = Column(String(50), default=ReportDataFormat.PNG)
+    paper_size = Column(String(50), default=ReportPaperSize.A4)
     sql = Column(MediumText())
     # (Alerts/Reports) M-O to chart
     chart_id = Column(Integer, ForeignKey("slices.id"), nullable=True)

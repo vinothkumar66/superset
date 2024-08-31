@@ -617,29 +617,71 @@ class PivotData {
       'PivotData',
     );
 
-    this.aggregator = this.props
-      .aggregatorsFactory(this.props.defaultFormatter)
-      [this.props.aggregatorName](this.props.vals);
+    // this.aggregator = this.props
+    //   .aggregatorsFactory(this.props.defaultFormatter)
+    //   [this.props.aggregatorName](this.props.vals);
+    // this.formattedAggregators =
+    //   this.props.customFormatters &&
+    //   Object.entries(this.props.customFormatters).reduce(
+    //     (acc, [key, columnFormatter]) => {
+    //       acc[key] = {};
+    //       Object.entries(columnFormatter).forEach(([column, formatter]) => {
+    //         acc[key][column] = this.props
+    //           .aggregatorsFactory(formatter)
+    //           [this.props.aggregatorName](this.props.vals);
+    //       });
+    //       return acc;
+    //     },
+    //     {},
+    //   );
+    console.log(this.props.aggregatorName, this.props, 'this.props.aggregatorName,this props');
+    console.log(Array.isArray(this.props.aggregatorName),"aggregator name is array??");
+// Handling multiple aggregation functions
+this.aggregator = this.props.aggregatorName.map(aggregatorName => {
+  const aggregatorFunction = this.props.aggregatorsFactory(this.props.defaultFormatter)[aggregatorName];
+  
+  // Ensure that the aggregator function exists before calling it
+  if (typeof aggregatorFunction === 'function') {
+    return aggregatorFunction(this.props.vals);
+  } else {
+    console.error(`Aggregator function for "${aggregatorName}" not found.`);
+    return null;
+  }
+});
+    // Formatting aggregators
     this.formattedAggregators =
       this.props.customFormatters &&
       Object.entries(this.props.customFormatters).reduce(
-        (acc, [key, columnFormatter]) => {
+        (acc, [key, columnFormatter]) => {this.props.aggregatorName
           acc[key] = {};
           Object.entries(columnFormatter).forEach(([column, formatter]) => {
-            acc[key][column] = this.props
-              .aggregatorsFactory(formatter)
-              [this.props.aggregatorName](this.props.vals);
+            acc[key][column] = this.props.aggregatorName.map(aggregatorName =>
+              this.props
+                .aggregatorsFactory(formatter)
+                [aggregatorName](this.props.vals),
+            );
           });
           return acc;
         },
         {},
       );
+ 
     this.tree = {};
     this.rowKeys = [];
     this.colKeys = [];
     this.rowTotals = {};
     this.colTotals = {};
-    this.allTotal = this.aggregator(this, [], []);
+    // this.allTotal = this.aggregator(this, [], []);
+    this.allTotal = [];
+
+// Loop through each aggregator function
+this.aggregator.forEach(aggregator => {
+  if (aggregator) {
+    // Apply the aggregator to the data (replace `this` with the appropriate data input)
+    const result = aggregator(this, [], []);  // Adjust the parameters as needed
+    this.allTotal.push(result);  // Store the result in the allTotal array
+  }
+});
     this.subtotals = subtotals;
     this.sorted = false;
 
@@ -648,6 +690,7 @@ class PivotData {
   }
 
   getFormattedAggregator(record, totalsKeys) {
+    console.log(record, totalsKeys,"record, totalsKeys")
     if (!this.formattedAggregators) {
       return this.aggregator;
     }
@@ -844,11 +887,11 @@ PivotData.forEachRecord = function (input, processRecord) {
 };
 
 PivotData.defaultProps = {
-  aggregators,
+  aggregators:[],
   cols: [],
   rows: [],
   vals: [],
-  aggregatorName: 'Count',
+  aggregatorName: ['Count'],
   sorters: {},
   rowOrder: 'key_a_to_z',
   colOrder: 'key_a_to_z',
@@ -857,7 +900,7 @@ PivotData.defaultProps = {
 PivotData.propTypes = {
   data: PropTypes.oneOfType([PropTypes.array, PropTypes.object, PropTypes.func])
     .isRequired,
-  aggregatorName: PropTypes.string,
+  aggregatorName: PropTypes.arrayOf(PropTypes.string),
   cols: PropTypes.arrayOf(PropTypes.string),
   rows: PropTypes.arrayOf(PropTypes.string),
   vals: PropTypes.arrayOf(PropTypes.string),

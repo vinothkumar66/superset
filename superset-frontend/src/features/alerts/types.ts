@@ -93,6 +93,7 @@ export type AlertObject = {
   timezone?: string;
   recipients?: Array<Recipient>;
   report_format?: NotificationFormats;
+  paper_size?: string;
   type?: string;
   validator_config_json?: {
     op?: Operator;
