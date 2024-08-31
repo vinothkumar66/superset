@@ -192,6 +192,7 @@ function ReportModal({
       description: currentReport.description,
       crontab: currentReport.crontab,
       report_format: currentReport.report_format || defaultNotificationFormat,
+      paper_size: currentReport.paper_size,
       timezone: currentReport.timezone,
     };
 

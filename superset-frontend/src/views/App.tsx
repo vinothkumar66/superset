@@ -41,7 +41,7 @@ import { store } from 'src/views/store';
 // import { Footer } from 'antd/lib/layout/layout';
 import { RootContextProviders } from './RootContextProviders';
 import { ScrollToTop } from './ScrollToTop';
-import './App.css';
+// import './App.css';
 
 setupApp();
 setupPlugins();

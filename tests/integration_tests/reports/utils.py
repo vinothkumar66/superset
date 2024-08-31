@@ -27,6 +27,7 @@ from superset.models.dashboard import Dashboard
 from superset.models.slice import Slice
 from superset.reports.models import (
     ReportDataFormat,
+    ReportPaperSize,
     ReportExecutionLog,
     ReportRecipients,
     ReportRecipientType,
@@ -63,6 +64,7 @@ def insert_report_schedule(
     grace_period: Optional[int] = None,
     recipients: Optional[list[ReportRecipients]] = None,
     report_format: Optional[ReportDataFormat] = None,
+    paper_size: Optional[ReportPaperSize] = None,
     logs: Optional[list[ReportExecutionLog]] = None,
     extra: Optional[dict[Any, Any]] = None,
     force_screenshot: bool = False,
@@ -92,6 +94,7 @@ def insert_report_schedule(
             logs=logs,
             last_state=last_state,
             report_format=report_format,
+            paper_size=paper_size,
             extra=extra,
             force_screenshot=force_screenshot,
         )
@@ -112,6 +115,7 @@ def create_report_notification(
     validator_config_json: Optional[str] = None,
     grace_period: Optional[int] = None,
     report_format: Optional[ReportDataFormat] = None,
+    paper_size: Optional[ReportPaperSize] = None,
     name: Optional[str] = None,
     extra: Optional[dict[str, Any]] = None,
     force_screenshot: bool = False,
@@ -159,6 +163,7 @@ def create_report_notification(
         validator_config_json=validator_config_json,
         grace_period=grace_period,
         report_format=report_format or ReportDataFormat.PNG,
+        paper_size=paper_size or ReportPaperSize.A4,
         extra=extra,
         force_screenshot=force_screenshot,
     )

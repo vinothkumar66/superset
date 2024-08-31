@@ -28,7 +28,7 @@ const formData: PivotTableQueryFormData = {
   tableRenderer: 'Table With Subtotal',
   colOrder: 'key_a_to_z',
   rowOrder: 'key_a_to_z',
-  aggregateFunction: 'Sum',
+  aggregateFunction: ['Sum']
   transposePivot: true,
   rowSubtotalPosition: true,
   colSubtotalPosition: true,

@@ -255,24 +255,45 @@ class BaseReportState:
             raise ReportScheduleScreenshotFailedError()
         return [image]
 
+    # def _get_papersizes(self, paper_size: str) -> dict:
+    #     """
+    #     Get paper size dimensions based on the selected paper size.
+    #     :param paper_size: Paper size (e.g., A4, A3)
+    #     :return: Dictionary with width and height
+    #     """
+    #     print(paper_size,"****paper_size********************")
+    #     if paper_size == 'A4':
+    #         return {'width': 210, 'height': 297}  # A4 dimensions in mm
+    #     elif paper_size == 'A3':
+    #         return {'width': 297, 'height': 420}  # A3 dimensions in mm
+    #     else:
+    #         raise ValueError(f"Unsupported paper size: {paper_size}")
+
     def _get_pdf(self) -> bytes:
         """
         Get chart or dashboard pdf
         :raises: ReportSchedulePdfFailedError
         """
+        # papersizes = self._report_schedule.paper_size
         screenshots = self._get_screenshots()
+        # print(paper_size,"****paper_size _get_pdf********************")
+        # papersizes = self._get_papersizes(paper_size)
+        # print(papersizes,"****paper_size _get_pdf 2********************")
+        print("build_pdf_from_screenshots!")
+        # pdf = build_pdf_from_screenshots(screenshots,papersizes)
         pdf = build_pdf_from_screenshots(screenshots)
+        print("build_pdf_from_screenshots")
 
 
-        output_path=os.path.join(PDF_PATH,'reports')
-        if not os.path.exists(output_path):
-            os.makedirs(output_path)
-        output_path_main=os.path.join(output_path,f'{dtt.now().year}_{dtt.now().month}_{dtt.now().day}_reports')
-        if not os.path.exists(output_path_main):
-            os.makedirs(output_path_main)
-        pdf_out=os.path.join(output_path_main,f'{dtt.now().year}_{dtt.now().month}_{dtt.now().day}_{dtt.now().hour}_{dtt.now().minute}_{dtt.now().second}_report.pdf')    
-        with open(pdf_out, 'wb') as f:
-            f.write(pdf)   
+        # output_path=os.path.join(PDF_PATH,'reports')
+        # if not os.path.exists(output_path):
+        #     os.makedirs(output_path)
+        # output_path_main=os.path.join(output_path,f'{dtt.now().year}_{dtt.now().month}_{dtt.now().day}_reports')
+        # if not os.path.exists(output_path_main):
+        #     os.makedirs(output_path_main)
+        # pdf_out=os.path.join(output_path_main,f'{dtt.now().year}_{dtt.now().month}_{dtt.now().day}_{dtt.now().hour}_{dtt.now().minute}_{dtt.now().second}_report.pdf')    
+        # with open(pdf_out, 'wb') as f:
+        #     f.write(pdf)   
             
         return pdf
 
@@ -396,6 +417,19 @@ class BaseReportState:
                     error_text = "Unexpected missing screenshot"
             elif self._report_schedule.report_format == ReportDataFormat.PDF:
                 pdf_data = self._get_pdf()
+#-----------------------------------------------------------------------------------------------------------------
+                # exe_dir = os.path.dirname(sys.executable)
+                # print('file--------------------------------------',pdf_data)
+                new_folder = os.path.join(PDF_PATH, 'reportsfolder')
+                if not os.path.exists(new_folder):
+                    os.mkdir(new_folder)
+                    print('----------done------------')
+                pdf_file_path=os.path.join(new_folder,f'{dtt.now().minute}_{dtt.now().second}.pdf')
+                with open(pdf_file_path, 'wb') as pdf_file:
+                    pdf_file.write(pdf_data)
+
+                print('path-----------:',new_folder)
+#-----------------------------------------------------------------------------------------------------------------
                 if not pdf_data:
                     error_text = "Unexpected missing pdf"
             elif (
