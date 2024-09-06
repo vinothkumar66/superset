@@ -1074,16 +1074,14 @@ console.log(aggregatorFactory,"aggregatorFactory")
         style={{ padding: '5px' }}
       >
         {(() => {
-          const aggregator = pivotData.getAggregator([], []);
-          const aggValue = aggregator.value();
-          console.log(aggValue,"aggValue")
+          const aggregator = pivotData.getAggregator([], [], aggregatorFactory);
            console.log(aggregator,"aggregator",aggregator.value,"aggregator.value")
           if (typeof aggregator !== 'object' || typeof aggregator.value !== 'function') {
             console.log(typeof aggregator,"typeof aggregator", typeof aggregator.value," typeof aggregator.value")
             return 'Error j';
           }
-          // const aggValue = aggregator.value();
-          // console.log(aggValue,"aggValue")
+          const aggValue = aggregator.value();
+          console.log(aggValue,"aggValue")
           return aggregator.format ? aggregator.format(aggValue) : aggValue;
         })()}
       </td>
