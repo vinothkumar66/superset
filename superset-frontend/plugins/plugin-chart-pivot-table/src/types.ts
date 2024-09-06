@@ -57,7 +57,7 @@ interface PivotTableCustomizeProps {
   tableRenderer: string;
   colOrder: string;
   rowOrder: string;
-  aggregateFunction: string[];
+  aggregateFunction: string[] | string | null;
   transposePivot: boolean;
   combineMetric: boolean;
   rowSubtotalPosition: boolean;

@@ -155,6 +155,12 @@ export default function PivotTableChart(props: PivotTableProps) {
     onContextMenu,
     timeGrainSqla,
   } = props;
+  // Determine the final aggregatorName dynamically
+  const finalAggregatorName = Array.isArray(aggregateFunction)
+    ? aggregateFunction 
+    : [aggregateFunction]; 
+  console.log(finalAggregatorName, 'finalAggregatorName');
+ 
 
   const theme = useTheme();
   const defaultFormatter = useMemo(
@@ -546,7 +552,7 @@ export default function PivotTableChart(props: PivotTableProps) {
           aggregatorsFactory={aggregatorsFactory}
           defaultFormatter={defaultFormatter}
           customFormatters={metricFormatters}
-          aggregatorName={aggregateFunction}
+          aggregatorName={finalAggregatorName}
           vals={vals}
           colOrder={colOrder}
           rowOrder={rowOrder}

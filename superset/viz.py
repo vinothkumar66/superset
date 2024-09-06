@@ -1007,12 +1007,14 @@ class NVD3TimeSeriesViz(NVD3Viz):
             return df
 
         if aggregate:
+            # Retrieve multiple aggregation functions
+            agg_funcs = self.form_data.get("pandas_aggfunc", ["sum"])  # Default to 'sum' if none specified
             df = df.pivot_table(
                 index=DTTM_ALIAS,
                 columns=get_column_names(self.form_data.get("groupby")),
                 values=self.metric_labels,
                 fill_value=0,
-                aggfunc=sum,
+                aggfunc=agg_funcs,  # Use multiple aggregation functions,
             )
         else:
             df = df.pivot_table(

@@ -60,6 +60,8 @@ export const getColorFunction = (
     targetValueLeft,
     targetValueRight,
     colorScheme,
+    textColor,
+    backgroundColor,
   }: ConditionalFormattingConfig,
   columnValues: number[],
   alpha?: boolean,
@@ -71,7 +73,16 @@ export const getColorFunction = (
     value: number,
     allValues: number[],
   ) => false | { cutoffValue: number; extremeValue: number };
-  if (operator === undefined || colorScheme === undefined) {
+  if (
+    operator === undefined ||
+    colorScheme === undefined ||
+    textColor === undefined ||
+    backgroundColor === undefined
+  ) {
+    // if (
+    //   operator === undefined ||
+    //   (colorScheme === undefined && !textColor && !backgroundColor)
+    // ) {
     return () => undefined;
   }
   if (

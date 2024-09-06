@@ -416,7 +416,13 @@ const config: ControlPanelConfig = {
                 const chartStatus = chart?.chartStatus;
                 const metricColumn = values.map(value => {
                   if (typeof value === 'string') {
-                    return { value, label: verboseMap[value] ?? value };
+                    if (
+                      typeof verboseMap === 'object' &&
+                      !Array.isArray(verboseMap)
+                    ) {
+                      return { value, label: verboseMap[value] ?? value };
+                    }
+                    return { value, label: value };
                   }
                   return { value: value.label, label: value.label };
                 });
