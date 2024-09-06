@@ -3,22 +3,25 @@ import {
   Comparator,
   MultipleValueComparators,
 } from '@superset-ui/chart-controls';
+import { useState } from 'react';
 import { Form, FormItem, FormProps } from 'src/components/Form';
 import Select from 'src/components/Select/Select';
 import { Col, Row } from 'src/components';
 import { InputNumber } from 'src/components/Input';
 import Button from 'src/components/Button';
+import { ChromePicker } from 'react-color';
 import { ConditionalFormattingConfig } from './types';
 
 const FullWidthInputNumber = styled(InputNumber)`
   width: 100%;
 `;
 
-const FullWidthColorInput = styled.input`
+const ColorInput = styled.input`
   width: 100%;
   height: 36px;
   border: 1px solid ${({ theme }) => theme.colors.secondary.light3};
   border-radius: 4px;
+  cursor: pointer;
 `;
 
 const JustifyEnd = styled.div`
@@ -182,9 +185,27 @@ export const FormattingPopoverContent = ({
 }) => {
   const theme = useTheme();
   const colorScheme = colorSchemeOptions(theme);
+
+  const [textColor, setTextColor] = useState(config?.textColor || '#00000');
+  const [backgroundColor, setBackgroundColor] = useState(
+    config?.backgroundColor || '#FFFFFF',
+  );
+  const [showTextColorPicker, setShowTextColorPicker] = useState(false);
+  const [showBackgroundColorPicker, setShowBackgroundColorPicker] =
+    useState(false);
+  const handleTextColorChange = (color: string) => {
+    setTextColor(color);
+    setShowTextColorPicker(false); // Close picker after selection
+  };
+
+  const handleBackgroundColorChange = (color: string) => {
+    setBackgroundColor(color);
+    setShowBackgroundColorPicker(false); // Close picker after selection
+  };
+
   return (
     <Form
-      onFinish={onChange}
+      onFinish={() => onChange({ ...config, textColor, backgroundColor })}
       initialValues={config}
       requiredMark="optional"
       layout="vertical"
@@ -213,21 +234,39 @@ export const FormattingPopoverContent = ({
       </Row>
       <Row gutter={12}>
         <Col span={12}>
-          <FormItem
-            name="textColor"
-            label={t('Text color')}
-            initialValue="#000000" // Default color
-          >
-            <FullWidthColorInput />
+          <FormItem name="textColor" label={t('Text color')}>
+            <ColorInput
+              color={textColor}
+              value={textColor}
+              readOnly
+              onClick={() => setShowTextColorPicker(!showTextColorPicker)}
+            />
+            {showTextColorPicker && (
+              <ChromePicker
+                color={textColor}
+                onChangeComplete={color => handleTextColorChange(color.hex)}
+              />
+            )}
           </FormItem>
         </Col>
         <Col span={12}>
-          <FormItem
-            name="backgroundColor"
-            label={t('Background color')}
-            initialValue="#FFFFFF" // Default color
-          >
-            <FullWidthColorInput />
+          <FormItem name="backgroundColor" label={t('Background color')}>
+            <ColorInput
+              color={backgroundColor}
+              value={backgroundColor}
+              readOnly
+              onClick={() =>
+                setShowBackgroundColorPicker(!showBackgroundColorPicker)
+              }
+            />
+            {showBackgroundColorPicker && (
+              <ChromePicker
+                color={backgroundColor}
+                onChangeComplete={color =>
+                  handleBackgroundColorChange(color.hex)
+                }
+              />
+            )}
           </FormItem>
         </Col>
       </Row>

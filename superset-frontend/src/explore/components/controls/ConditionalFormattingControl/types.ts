@@ -28,6 +28,8 @@ export type ConditionalFormattingConfig = {
   targetValueRight?: number;
   column?: string;
   colorScheme?: string;
+  textColor?: string;
+  backgroundColor?: string;
 };
 
 export type ConditionalFormattingControlProps = ControlComponentProps<

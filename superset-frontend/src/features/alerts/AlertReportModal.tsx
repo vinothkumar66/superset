@@ -24,7 +24,7 @@ import {
   useMemo,
   useCallback,
   ReactNode,
-  useRef 
+  useRef,
 } from 'react';
 
 import {
@@ -430,15 +430,15 @@ const AlertReportModal: FunctionComponent<AlertReportModalProps> = ({
   const [forceScreenshot, setForceScreenshot] = useState<boolean>(false);
 
   const [isScreenshot, setIsScreenshot] = useState<boolean>(false);
-  const [isPdf,setIsPdf] = useState<boolean>(false);
-  const [paperSize,setPaperSize] = useState<string>(DEFAULT_PAPER_SIZE);
+  const [isPdf, setIsPdf] = useState<boolean>(false);
+  const [paperSize, setPaperSize] = useState<string>(DEFAULT_PAPER_SIZE);
   useEffect(() => {
     setIsScreenshot(reportFormat === 'PNG');
-    if(reportFormat === 'PDF'){
-      setIsPdf(true)
-  }
+    if (reportFormat === 'PDF') {
+      setIsPdf(true);
+    }
   }, [reportFormat]);
-  
+
   // Dropdown options
   const [conditionNotNull, setConditionNotNull] = useState<boolean>(false);
   const [sourceOptions, setSourceOptions] = useState<MetaObject[]>([]);
@@ -610,12 +610,12 @@ const AlertReportModal: FunctionComponent<AlertReportModalProps> = ({
   // Create a ref to track the mounted status
   const isMountedRef = useRef(true);
 
-  useEffect(() => {
-    // Set ref to false on unmount
-    return () => {
+  useEffect(
+    () => () => {
       isMountedRef.current = false;
-    };
-  }, []);
+    },
+    [],
+  );
 
   // Functions
   const hide = () => {
@@ -624,9 +624,9 @@ const AlertReportModal: FunctionComponent<AlertReportModalProps> = ({
     onHide();
     // Only update state if the component is still mounted
     if (isMountedRef.current) {
-    setNotificationSettings([]);
-    setCurrentAlert({ ...defaultAlert });
-    setNotificationAddState('active');
+      setNotificationSettings([]);
+      setCurrentAlert({ ...defaultAlert });
+      setNotificationAddState('active');
     }
   };
 
@@ -1010,12 +1010,12 @@ const AlertReportModal: FunctionComponent<AlertReportModalProps> = ({
 
   const onFormatChange = (value: string) => {
     setReportFormat(value);
-    console.log(value,"reportFormat")
+    console.log(value, 'reportFormat');
   };
   const onPdfPageSizeChange = (value: string) => {
-    updateAlertState('paper_size',value)
-    setPaperSize(value)
-  }
+    updateAlertState('paper_size', value);
+    setPaperSize(value);
+  };
   const onForceScreenshotChange = (event: any) => {
     setForceScreenshot(event.target.checked);
   };
@@ -1165,7 +1165,7 @@ const AlertReportModal: FunctionComponent<AlertReportModalProps> = ({
 
   useEffect(() => {
     if (resource) {
-      console.log(resource,"###############resource#########################")
+      console.log(resource, '###############resource#########################');
       // Add notification settings
       const settings = (resource.recipients || []).map(setting => {
         const config =
@@ -1649,24 +1649,24 @@ const AlertReportModal: FunctionComponent<AlertReportModalProps> = ({
           )}
           {isPdf && (
             <StyledInputContainer
-            css={!isReport && contentType === 'chart' && noMarginBottom}
-          >
-            <div className="control-label">
-              {t('Paper size')}
-            <span className="required">*</span>
-            </div>
-            <div className="input-container">
-            <Select
-        value={paperSize}
-        onChange={onPdfPageSizeChange}
-        options={[
-          { value: 'A4', label: 'A4' },
-          { value: 'A3', label: 'A3' },
-          // { value: 'Letter', label: 'Letter' }
-        ]}
-      />
-            </div>
-            </StyledInputContainer> 
+              css={!isReport && contentType === 'chart' && noMarginBottom}
+            >
+              <div className="control-label">
+                {t('Paper size')}
+                <span className="required">*</span>
+              </div>
+              <div className="input-container">
+                <Select
+                  value={paperSize}
+                  onChange={onPdfPageSizeChange}
+                  options={[
+                    { value: 'A4', label: 'A4' },
+                    { value: 'A3', label: 'A3' },
+                    // { value: 'Letter', label: 'Letter' }
+                  ]}
+                />
+              </div>
+            </StyledInputContainer>
           )}
           {(isReport || contentType === 'dashboard') && (
             <div className="inline-container">

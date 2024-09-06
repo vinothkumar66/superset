@@ -274,14 +274,16 @@ class BaseReportState:
         Get chart or dashboard pdf
         :raises: ReportSchedulePdfFailedError
         """
-        # papersizes = self._report_schedule.paper_size
+        papersizes = self._report_schedule.paper_size
+        print(papersizes,"********************papersizes****************************************")
+
         screenshots = self._get_screenshots()
         # print(paper_size,"****paper_size _get_pdf********************")
         # papersizes = self._get_papersizes(paper_size)
         # print(papersizes,"****paper_size _get_pdf 2********************")
         print("build_pdf_from_screenshots!")
         # pdf = build_pdf_from_screenshots(screenshots,papersizes)
-        pdf = build_pdf_from_screenshots(screenshots)
+        pdf = build_pdf_from_screenshots(screenshots,papersizes)
         print("build_pdf_from_screenshots")
 
 
@@ -420,7 +422,7 @@ class BaseReportState:
 #-----------------------------------------------------------------------------------------------------------------
                 # exe_dir = os.path.dirname(sys.executable)
                 # print('file--------------------------------------',pdf_data)
-                new_folder = os.path.join(PDF_PATH, 'reportsfolder')
+                new_folder = os.path.join('/app', 'reportsfolder')
                 if not os.path.exists(new_folder):
                     os.mkdir(new_folder)
                     print('----------done------------')

@@ -48,7 +48,7 @@ def resize_image_to_paper(image, paper_size):
 
     return resized_image
 
-def build_pdf_from_screenshots(snapshots: list[bytes] ) -> bytes:
+def build_pdf_from_screenshots(snapshots: list[bytes],papersizes ) -> bytes:
     # print("paper_sizes",paper_size)
     images = []
 
@@ -57,8 +57,8 @@ def build_pdf_from_screenshots(snapshots: list[bytes] ) -> bytes:
         if img.mode == "RGBA":
             img = img.convert("RGB")
          # Resize the image to fit the selected paper size
-        # if paper_size in PAPER_SIZES:
-        #     img = resize_image_to_paper(img, PAPER_SIZES[paper_size])
+        if papersizes in PAPER_SIZES:
+            img = resize_image_to_paper(img, PAPER_SIZES[papersizes])
         images.append(img)
     logger.info("building pdf")
     try:
