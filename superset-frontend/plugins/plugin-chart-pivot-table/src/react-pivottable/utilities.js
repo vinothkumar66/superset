@@ -194,7 +194,7 @@ const baseAggregatorTemplates = {
     return () =>
       function () {
         return {
-          count: 0,
+          count: 10,
           push() {
             this.count += 1;
           },
@@ -616,44 +616,14 @@ class PivotData {
       'prop',
       'PivotData',
     );
+    console.log(this.props, 'this.props');
 
-    // this.aggregator = this.props
-    //   .aggregatorsFactory(this.props.defaultFormatter)
-    //   [this.props.aggregatorName](this.props.vals);
-    // this.formattedAggregators =
-    //   this.props.customFormatters &&
-    //   Object.entries(this.props.customFormatters).reduce(
-    //     (acc, [key, columnFormatter]) => {
-    //       acc[key] = {};
-    //       Object.entries(columnFormatter).forEach(([column, formatter]) => {
-    //         acc[key][column] = this.props
-    //           .aggregatorsFactory(formatter)
-    //           [this.props.aggregatorName](this.props.vals);
-    //       });
-    //       return acc;
-    //     },
-    //     {},
-    //   );
-    // this.tree = {};
-    // this.rowKeys = [];
-    // this.colKeys = [];
-    // this.rowTotals = {};
-    // this.colTotals = {};
-    // this.allTotal = this.aggregator(this, [], []);
-    // this.subtotals = subtotals;
-    // this.sorted = false;
-
-    // // iterate through input, accumulating data for cells
-    // PivotData.forEachRecord(this.props.data, this.processRecord);
-
-    // Initialize this.aggregators as an array or object to hold results of multiple aggregators
+    // Initialize multiple aggregators
     this.aggregators = this.props.aggregatorName.reduce(
       (acc, aggregatorName) => {
         const aggregatorFunction = this.props.aggregatorsFactory(
           this.props.defaultFormatter,
         )[aggregatorName];
-
-        // Ensure the aggregator function is valid
         if (typeof aggregatorFunction === 'function') {
           acc[aggregatorName] = aggregatorFunction(this.props.vals);
         } else {
@@ -667,6 +637,8 @@ class PivotData {
       {},
     );
 
+    // Example usage: if you need to access the formatted values
+    console.log(this.aggregators);
     // Handling customFormatters for multiple aggregators
     this.formattedAggregators = this.props.customFormatters
       ? Object.entries(this.props.customFormatters).reduce(
@@ -692,76 +664,67 @@ class PivotData {
         )
       : {};
 
-    // Initialize totals for rows, columns, and all
     this.tree = {};
     this.rowKeys = [];
     this.colKeys = [];
     this.rowTotals = {};
     this.colTotals = {};
     this.allTotal = {}; // Store all totals as an object
-
-    // Calculate total for each aggregator
-    this.props.aggregatorName.forEach(aggregatorName => {
+    // this.props.aggregatorName.forEach(aggregatorName => {
+    //   this.allTotal[aggregatorName] = this.aggregators[aggregatorName]();
+    // });
+    this.props.aggregatorName?.forEach(aggregatorName => {
       const aggregatorFunction = this.aggregators[aggregatorName];
-      if (aggregatorFunction) {
-        this.allTotal[aggregatorName] = aggregatorFunction([], []); // Replace with appropriate logic for your use case
+    
+      // Check if the aggregator function exists and is callable
+      if (typeof aggregatorFunction === 'function') {
+        // Call the aggregator function and store the result in allTotal
+        this.allTotal[aggregatorName] = aggregatorFunction();
+      } else {
+        // If no valid aggregation function is selected, handle the error
+        console.error(`Aggregator function for ${aggregatorName} is not valid.`);
+        this.allTotal[aggregatorName] = null; // or set to a default value
       }
     });
-
-    // Additional properties
+    // Calculate total for each aggregator
+    // this.props.aggregatorName.forEach(aggregatorName => {
+    //   const aggregatorFunction = this.aggregators[aggregatorName];
+    //   if (aggregatorFunction) {
+    //     this.allTotal[aggregatorName] = aggregatorFunction([], []); // Replace with appropriate logic for your use case
+    //     // this.rowTotals[aggregatorName] = aggregatorFunction([], []);
+    //     // this.colTotals[aggregatorName] = aggregatorFunction([], []);
+    //   }
+    //   console.log(aggregatorFunction, 'Aggregator function2');
+    // });
+    console.log(this.allTotal, 'this.allTotal');
     this.subtotals = subtotals;
     this.sorted = false;
 
-    // Iterate through input, accumulating data for cells
+    // iterate through input, accumulating data for cells
     PivotData.forEachRecord(this.props.data, this.processRecord);
   }
 
-  // getFormattedAggregator(record, totalsKeys) {
-  //   if (!this.formattedAggregators) {
-  //     return this.aggregators;
-  //   }
-  //   const [groupName, groupValue] =
-  //     Object.entries(record).find(
-  //       ([name, value]) =>
-  //         this.formattedAggregators[name] &&
-  //         this.formattedAggregators[name][value],
-  //     ) || [];
-  //   if (
-  //     !groupName ||
-  //     !groupValue ||
-  //     (totalsKeys && !totalsKeys.includes(groupValue))
-  //   ) {
-  //     return this.aggregators;
-  //   }
-  //   return this.formattedAggregators[groupName][groupValue] || this.aggregators;
-  // }
   getFormattedAggregator(record, totalsKeys) {
     if (!this.formattedAggregators) {
-      return [this.aggregators]; // Return an array with the default aggregator if no custom formatters
+      return this.aggregators;
     }
-  
-    // Extract all matching aggregators based on the record and formattedAggregators
-    const aggregators = this.props.aggregatorName.map(aggregatorName => {
-      const [groupName, groupValue] =
-        Object.entries(record).find(
-          ([name, value]) =>
-            this.formattedAggregators[name] &&
-            this.formattedAggregators[name][value],
-        ) || [];
-  
-      if (
-        !groupName ||
-        !groupValue ||
-        (totalsKeys && !totalsKeys.includes(groupValue))
-      ) {
-        return this.aggregators[aggregatorName] || this.aggregators;
-      }
-      return this.formattedAggregators[groupName][groupValue] || this.aggregators[aggregatorName];
-    });
-  
-    return aggregators;
+    const [groupName, groupValue] =
+      Object.entries(record).find(
+        ([name, value]) =>
+          this.formattedAggregators[name] &&
+          this.formattedAggregators[name][value],
+      ) || [];
+    console.log(this.aggregators, 'this.aggrgators');
+    if (
+      !groupName ||
+      !groupValue ||
+      (totalsKeys && !totalsKeys.includes(groupValue))
+    ) {
+      return this.aggregators;
+    }
+    return this.formattedAggregators[groupName][groupValue] || this.aggregators;
   }
-  
+
   arrSort(attrs, partialOnTop, reverse = false) {
     const sortersArr = attrs.map(a => getSort(this.props.sorters, a));
     return function (a, b) {
@@ -828,155 +791,148 @@ class PivotData {
     return this.rowKeys;
   }
 
-  // processRecord(record) {
-  //   // this code is called in a tight loop
-  //   const colKey = [];
-  //   const rowKey = [];
-  //   this.props.cols.forEach(col => {
-  //     colKey.push(col in record ? record[col] : 'null');
-  //   });
-  //   this.props.rows.forEach(row => {
-  //     rowKey.push(row in record ? record[row] : 'null');
-  //   });
 
-  //   this.allTotal.push(record);
-
-  //   const rowStart = this.subtotals.rowEnabled ? 1 : Math.max(1, rowKey.length);
-  //   const colStart = this.subtotals.colEnabled ? 1 : Math.max(1, colKey.length);
-
-  //   let isRowSubtotal;
-  //   let isColSubtotal;
-  //   for (let ri = rowStart; ri <= rowKey.length; ri += 1) {
-  //     isRowSubtotal = ri < rowKey.length;
-  //     const fRowKey = rowKey.slice(0, ri);
-  //     const flatRowKey = flatKey(fRowKey);
-  //     if (!this.rowTotals[flatRowKey]) {
-  //       this.rowKeys.push(fRowKey);
-  //       this.rowTotals[flatRowKey] = this.getFormattedAggregator(
-  //         record,
-  //         rowKey,
-  //       )(this, fRowKey, []);
-  //     }
-  //     this.rowTotals[flatRowKey].push(record);
-  //     this.rowTotals[flatRowKey].isSubtotal = isRowSubtotal;
-  //   }
-
-  //   for (let ci = colStart; ci <= colKey.length; ci += 1) {
-  //     isColSubtotal = ci < colKey.length;
-  //     const fColKey = colKey.slice(0, ci);
-  //     const flatColKey = flatKey(fColKey);
-  //     if (!this.colTotals[flatColKey]) {
-  //       this.colKeys.push(fColKey);
-  //       this.colTotals[flatColKey] = this.getFormattedAggregator(
-  //         record,
-  //         colKey,
-  //       )(this, [], fColKey);
-  //     }
-  //     this.colTotals[flatColKey].push(record);
-  //     this.colTotals[flatColKey].isSubtotal = isColSubtotal;
-  //   }
-
-  //   // And now fill in for all the sub-cells.
-  //   for (let ri = rowStart; ri <= rowKey.length; ri += 1) {
-  //     isRowSubtotal = ri < rowKey.length;
-  //     const fRowKey = rowKey.slice(0, ri);
-  //     const flatRowKey = flatKey(fRowKey);
-  //     if (!this.tree[flatRowKey]) {
-  //       this.tree[flatRowKey] = {};
-  //     }
-  //     for (let ci = colStart; ci <= colKey.length; ci += 1) {
-  //       isColSubtotal = ci < colKey.length;
-  //       const fColKey = colKey.slice(0, ci);
-  //       const flatColKey = flatKey(fColKey);
-  //       if (!this.tree[flatRowKey][flatColKey]) {
-  //         this.tree[flatRowKey][flatColKey] = this.getFormattedAggregator(
-  //           record,
-  //         )(this, fRowKey, fColKey);
-  //       }
-  //       this.tree[flatRowKey][flatColKey].push(record);
-
-  //       this.tree[flatRowKey][flatColKey].isRowSubtotal = isRowSubtotal;
-  //       this.tree[flatRowKey][flatColKey].isColSubtotal = isColSubtotal;
-  //       this.tree[flatRowKey][flatColKey].isSubtotal =
-  //         isRowSubtotal || isColSubtotal;
-  //     }
-  //   }
-  // }
   processRecord(record) {
-    const colKey = [];
-    const rowKey = [];
+    // Generate column and row keys from the record
+    const colKey = this.props.cols.map(col => (col in record ? record[col] : 'null'));
+    const rowKey = this.props.rows.map(row => (row in record ? record[row] : 'null'));
+  // Check if an aggregation function is selected, otherwise set default to "Sum"
+  const aggregatorNames = this.props.aggregatorName.length
+    ? this.props.aggregatorName
+    : ['Sum']; // Default to "Sum" if no aggregator is selected
     
-    this.props.cols.forEach(col => {
-      colKey.push(col in record ? record[col] : 'null');
-    });
-    
-    this.props.rows.forEach(row => {
-      rowKey.push(row in record ? record[row] : 'null');
-    });
-  
-    // Get all aggregators for the current record
-    const aggregators = this.getFormattedAggregator(record, []);
-  
-    // Handling each aggregator
-    aggregators.forEach(aggregator => {
-      if (typeof aggregator === 'function') {
-        aggregator(this, rowKey, colKey); // Apply each aggregator function
+    // Ensure each aggregator function is applied to `allTotal`
+    aggregatorNames.forEach(aggregatorName => {
+      const aggregatorFunction = this.aggregators[aggregatorName];
+      if (typeof aggregatorFunction === 'function') {
+        // Initialize the aggregator if not already initialized
+        if (!this.allTotal[aggregatorName]) {
+          this.allTotal[aggregatorName] = aggregatorFunction();
+        }
+        // Call push on the aggregator for this record
+        this.allTotal[aggregatorName].push(record);
+      } else {
+        console.error(`Aggregator function for '${aggregatorName}' is not defined.`);
       }
     });
+    // this.props.aggregatorName.forEach(aggregatorName => {
+    //   const aggregatorFunction = this.aggregators[aggregatorName];
+    //   if (typeof aggregatorFunction === 'function') {
+    //     // Initialize the aggregator if not already initialized
+    //     if (!this.allTotal[aggregatorName]) {
+    //       this.allTotal[aggregatorName] = aggregatorFunction();
+    //     }
+    //     // Call push on the aggregator for this record
+    //     this.allTotal[aggregatorName].push(record);
+    //   } else {
+    //     console.error(`Aggregator function for '${aggregatorName}' is not defined.`);
+    //   }
+    // });
   
+    // Calculate rowStart and colStart based on whether subtotals are enabled
     const rowStart = this.subtotals.rowEnabled ? 1 : Math.max(1, rowKey.length);
     const colStart = this.subtotals.colEnabled ? 1 : Math.max(1, colKey.length);
   
-    let isRowSubtotal;
-    let isColSubtotal;
-  
+    // Process row totals
     for (let ri = rowStart; ri <= rowKey.length; ri += 1) {
-      isRowSubtotal = ri < rowKey.length;
       const fRowKey = rowKey.slice(0, ri);
       const flatRowKey = flatKey(fRowKey);
+      const isRowSubtotal = ri < rowKey.length;
+  
       if (!this.rowTotals[flatRowKey]) {
+        this.rowTotals[flatRowKey] = {};
+  
+        // Initialize row totals for each aggregator
+        this.props.aggregatorName.forEach(aggregatorName => {
+          const aggregatorFunction = this.aggregators[aggregatorName];
+          if (typeof aggregatorFunction === 'function') {
+            this.rowTotals[flatRowKey][aggregatorName] = aggregatorFunction();
+          }
+        });
+  
         this.rowKeys.push(fRowKey);
-        this.rowTotals[flatRowKey] = this.getFormattedAggregator(record, rowKey)[0](this, fRowKey, []);
       }
-      this.rowTotals[flatRowKey].push(record);
+  
+      // Push record to each aggregator for this row total
+      this.props.aggregatorName.forEach(aggregatorName => {
+        const aggregatorFunction = this.rowTotals[flatRowKey][aggregatorName];
+        if (typeof aggregatorFunction.push === 'function') {
+          aggregatorFunction.push(record);
+        }
+      });
+  
       this.rowTotals[flatRowKey].isSubtotal = isRowSubtotal;
     }
   
+    // Process column totals
     for (let ci = colStart; ci <= colKey.length; ci += 1) {
-      isColSubtotal = ci < colKey.length;
       const fColKey = colKey.slice(0, ci);
       const flatColKey = flatKey(fColKey);
+      const isColSubtotal = ci < colKey.length;
+  
       if (!this.colTotals[flatColKey]) {
+        this.colTotals[flatColKey] = {};
+  
+        // Initialize column totals for each aggregator
+        this.props.aggregatorName.forEach(aggregatorName => {
+          const aggregatorFunction = this.aggregators[aggregatorName];
+          if (typeof aggregatorFunction === 'function') {
+            this.colTotals[flatColKey][aggregatorName] = aggregatorFunction();
+          }
+        });
+  
         this.colKeys.push(fColKey);
-        this.colTotals[flatColKey] = this.getFormattedAggregator(record, colKey)[0](this, [], fColKey);
       }
-      this.colTotals[flatColKey].push(record);
+  
+      // Push record to each aggregator for this column total
+      this.props.aggregatorName.forEach(aggregatorName => {
+        const aggregatorFunction = this.colTotals[flatColKey][aggregatorName];
+        if (typeof aggregatorFunction.push === 'function') {
+          aggregatorFunction.push(record);
+        }
+      });
+  
       this.colTotals[flatColKey].isSubtotal = isColSubtotal;
     }
   
-    // Fill in for all the sub-cells.
+    // Process tree (sub-cell level) totals
     for (let ri = rowStart; ri <= rowKey.length; ri += 1) {
-      isRowSubtotal = ri < rowKey.length;
       const fRowKey = rowKey.slice(0, ri);
       const flatRowKey = flatKey(fRowKey);
+  
       if (!this.tree[flatRowKey]) {
         this.tree[flatRowKey] = {};
       }
+  
       for (let ci = colStart; ci <= colKey.length; ci += 1) {
-        isColSubtotal = ci < colKey.length;
         const fColKey = colKey.slice(0, ci);
         const flatColKey = flatKey(fColKey);
+        const isRowSubtotal = ri < rowKey.length;
+        const isColSubtotal = ci < colKey.length;
+  
         if (!this.tree[flatRowKey][flatColKey]) {
-          this.tree[flatRowKey][flatColKey] = this.getFormattedAggregator(
-            record,
-          )[0](this, fRowKey, fColKey);
+          this.tree[flatRowKey][flatColKey] = {};
+  
+          // Initialize each aggregator in the cell
+          this.props.aggregatorName.forEach(aggregatorName => {
+            const aggregatorFunction = this.aggregators[aggregatorName];
+            if (typeof aggregatorFunction === 'function') {
+              this.tree[flatRowKey][flatColKey][aggregatorName] = aggregatorFunction();
+            }
+          });
         }
-        this.tree[flatRowKey][flatColKey].push(record);
+  
+        // Push record to each aggregator in the cell
+        this.props.aggregatorName.forEach(aggregatorName => {
+          const aggregatorFunction = this.tree[flatRowKey][flatColKey][aggregatorName];
+          if (typeof aggregatorFunction.push === 'function') {
+            aggregatorFunction.push(record);
+          }
+        });
   
         this.tree[flatRowKey][flatColKey].isRowSubtotal = isRowSubtotal;
         this.tree[flatRowKey][flatColKey].isColSubtotal = isColSubtotal;
-        this.tree[flatRowKey][flatColKey].isSubtotal =
-          isRowSubtotal || isColSubtotal;
+        this.tree[flatRowKey][flatColKey].isSubtotal = isRowSubtotal || isColSubtotal;
       }
     }
   }
@@ -1006,6 +962,7 @@ class PivotData {
       }
     );
   }
+
 }
 
 // can handle arrays or jQuery selections of tables
@@ -1031,7 +988,10 @@ PivotData.defaultProps = {
 PivotData.propTypes = {
   data: PropTypes.oneOfType([PropTypes.array, PropTypes.object, PropTypes.func])
     .isRequired,
-  aggregatorName: PropTypes.string,
+  aggregatorName: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.arrayOf(PropTypes.string),
+  ]),
   cols: PropTypes.arrayOf(PropTypes.string),
   rows: PropTypes.arrayOf(PropTypes.string),
   vals: PropTypes.arrayOf(PropTypes.string),
