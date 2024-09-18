@@ -27,6 +27,8 @@ export interface DashboardContextForExplore {
   labelColors: Record<string, string>;
   sharedLabelColors: Record<string, string>;
   colorScheme: string;
+  // textColor: string;
+  // backgroundColor: string;
   chartConfiguration: ChartConfiguration;
   nativeFilters: PartialFilters;
   dataMask: DataMaskStateWithId;

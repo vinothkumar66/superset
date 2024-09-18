@@ -158,8 +158,9 @@ export default function PivotTableChart(props: PivotTableProps) {
   // Determine the final aggregatorName dynamically
   const finalAggregatorName = Array.isArray(aggregateFunction)
     ? aggregateFunction 
-    : [aggregateFunction]; 
+    : ['Sum']; 
   console.log(finalAggregatorName, 'finalAggregatorName');
+ 
  
 
   const theme = useTheme();
@@ -207,7 +208,6 @@ export default function PivotTableChart(props: PivotTableProps) {
         : undefined,
     [customFormatsArray, hasCustomMetricFormatters],
   );
-
   const metricNames = useMemo(
     () =>
       metrics.map((metric: string | AdhocMetric) =>

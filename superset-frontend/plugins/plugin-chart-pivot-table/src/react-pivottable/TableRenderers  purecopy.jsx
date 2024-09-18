@@ -691,7 +691,11 @@ export class TableRenderer extends Component {
     const valueCells = visibleColKeys.map(colKey => {
       const flatColKey = flatKey(colKey);
       const agg = pivotData.getAggregator(rowKey, colKey);
-      const aggValue = agg.value();
+      console.log(agg,"agg RTR")
+      const firstAggregatorName = this.props.aggregatorName[0];
+      const firstAggregator = agg[firstAggregatorName];
+      console.log(firstAggregatorName,firstAggregator,"1st agg name,1st agg")
+      const aggValue = firstAggregator.value();
 
       const keys = [...rowKey, ...colKey];
       let backgroundColor;
@@ -728,26 +732,31 @@ export class TableRenderer extends Component {
           onContextMenu={e => this.props.onContextMenu(e, colKey, rowKey)}
           style={style}
         >
-          {agg.format(aggValue)}
+          {firstAggregator.format(aggValue)}
         </td>
       );
     });
 
     let totalCell = null;
     if (rowTotals) {
-      const agg = pivotData.getAggregator(rowKey, []);
-      const aggValue = agg.value();
-      totalCell = (
-        <td
-          role="gridcell"
-          key="total"
-          className="pvtTotal"
-          onClick={rowTotalCallbacks[flatRowKey]}
-          onContextMenu={e => this.props.onContextMenu(e, undefined, rowKey)}
-        >
-          {agg.format(aggValue)}
-        </td>
-      );
+        const agg = pivotData.getAggregator(rowKey, []);
+        this.props.aggregatorName.map((aggName)=>{
+        const aggValue = agg[aggName].value();
+        console.log(agg,aggValue,"agg,aggvalue")
+        totalCell = (
+          <td
+            role="gridcell"
+            key="total"
+            className="pvtTotal"
+            onClick={rowTotalCallbacks[flatRowKey]}
+            onContextMenu={e => this.props.onContextMenu(e, undefined, rowKey)}
+          >
+            {agg.format(aggValue)}
+
+          </td>
+        );
+      })
+      
     }
 
     const rowCells = [

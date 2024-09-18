@@ -48,11 +48,11 @@ function displayHeaderCell(
         role="button"
         tabIndex="0"
         className="toggle"
-        onClick={onArrowClick}
+        onClick={ onArrowClick }
       >
-        {ArrowIcon}
+        { ArrowIcon }
       </span>
-      <span className="toggle-val">{parseLabel(name)}</span>
+      <span className="toggle-val">{ parseLabel(name) }</span>
     </span>
   ) : (
     parseLabel(name)
@@ -186,6 +186,8 @@ export class TableRenderer extends Component {
     const colAttrs = this.props.cols;
     const rowAttrs = this.props.rows;
     const value = pivotData.getAggregator(rowValues, colValues).value();
+    console.log(value, "value$$")
+
     const filters = {};
     const colLimit = Math.min(colAttrs.length, colValues.length);
     for (let i = 0; i < colLimit; i += 1) {
@@ -363,8 +365,8 @@ export class TableRenderer extends Component {
       attrIdx === 0 && rowAttrs.length !== 0 ? (
         <th
           key="padding"
-          colSpan={rowAttrs.length}
-          rowSpan={colAttrs.length}
+          colSpan={ rowAttrs.length }
+          rowSpan={ colAttrs.length }
           aria-hidden="true"
         />
       ) : null;
@@ -382,13 +384,13 @@ export class TableRenderer extends Component {
     }
     const attrNameCell = (
       <th key="label" className="pvtAxisLabel">
-        {displayHeaderCell(
+        { displayHeaderCell(
           needToggle,
           subArrow,
           arrowClickHandle,
           attrName,
           namesMapping,
-        )}
+        ) }
       </th>
     );
 
@@ -425,27 +427,27 @@ export class TableRenderer extends Component {
 
         const headerCellFormattedValue =
           dateFormatters &&
-          dateFormatters[attrName] &&
-          typeof dateFormatters[attrName] === 'function'
+            dateFormatters[attrName] &&
+            typeof dateFormatters[attrName] === 'function'
             ? dateFormatters[attrName](colKey[attrIdx])
             : colKey[attrIdx];
         attrValueCells.push(
           <th
-            className={colLabelClass}
-            key={`colKey-${flatColKey}`}
-            colSpan={colSpan}
-            rowSpan={rowSpan}
+            className={ colLabelClass }
+            key={ `colKey-${flatColKey}` }
+            colSpan={ colSpan }
+            rowSpan={ rowSpan }
             role="columnheader button"
-            onClick={this.clickHeaderHandler(
+            onClick={ this.clickHeaderHandler(
               pivotData,
               colKey,
               this.props.cols,
               attrIdx,
               this.props.tableOptions.clickColumnHeaderCallback,
-            )}
-            onContextMenu={handleContextMenu}
+            ) }
+            onContextMenu={ handleContextMenu }
           >
-            {displayHeaderCell(
+            { displayHeaderCell(
               needToggle,
               this.state.collapsedCols[flatColKey]
                 ? arrowCollapsed
@@ -453,66 +455,65 @@ export class TableRenderer extends Component {
               onArrowClick,
               headerCellFormattedValue,
               namesMapping,
-            )}
+            ) }
           </th>,
         );
       } else if (attrIdx === colKey.length) {
         const rowSpan = colAttrs.length - colKey.length + rowIncrSpan;
         attrValueCells.push(
           <th
-            className={`${colLabelClass} pvtSubtotalLabel`}
-            key={`colKeyBuffer-${flatKey(colKey)}`}
-            colSpan={colSpan}
-            rowSpan={rowSpan}
+            className={ `${colLabelClass} pvtSubtotalLabel` }
+            key={ `colKeyBuffer-${flatKey(colKey)}` }
+            colSpan={ colSpan }
+            rowSpan={ rowSpan }
             role="columnheader button"
-            onClick={this.clickHeaderHandler(
+            onClick={ this.clickHeaderHandler(
               pivotData,
               colKey,
               this.props.cols,
               attrIdx,
               this.props.tableOptions.clickColumnHeaderCallback,
               true,
-            )}
+            ) }
           >
-            {t('Subtotal')}
+            { t('Subtotal') }
           </th>,
         );
       }
       // The next colSpan columns will have the same value anyway...
       i += colSpan;
     }
-
-    const totalCell =
-      attrIdx === 0 && rowTotals ? (
-        <th
-          key="total"
-          className="pvtTotalLabel"
-          rowSpan={colAttrs.length + Math.min(rowAttrs.length, 1)}
-          role="columnheader button"
-          onClick={this.clickHeaderHandler(
-            pivotData,
-            [],
-            this.props.cols,
-            attrIdx,
-            this.props.tableOptions.clickColumnHeaderCallback,
-            false,
-            true,
-          )}
-        >
-          {t('Total (%(aggregatorName)s)', {
-            aggregatorName: t(this.props.aggregatorName),
-          })}
-        </th>
-      ) : null;
-
-    const cells = [spaceCell, attrNameCell, ...attrValueCells, totalCell];
-    return <tr key={`colAttr-${attrIdx}`}>{cells}</tr>;
+    const totalCells =
+      attrIdx === 0 && rowTotals
+        ? this.props.aggregatorName.map((aggName, idx) => (
+          <th
+            key={ `total-${aggName}-${idx}` }
+            className="pvtTotalLabel"
+            rowSpan={ colAttrs.length + Math.min(rowAttrs.length, 1) }
+            role="columnheader button"
+            onClick={ this.clickHeaderHandler(
+              pivotData,
+              [],
+              this.props.cols,
+              attrIdx,
+              this.props.tableOptions.clickColumnHeaderCallback,
+              false,
+              true,
+            ) }
+          >
+            { t('Total (%(aggregatorName)s)', {
+              aggregatorName: t(aggName),
+            }) }
+          </th>
+        ))
+        : null;
+    const cells = [spaceCell, attrNameCell, ...attrValueCells, totalCells];
+    return <tr key={ `colAttr-${attrIdx}` }>{ cells }</tr>;
   }
 
   renderRowHeaderRow(pivotSettings) {
     // Render just the attribute names of the rows (the actual attribute values
     // will show up in the individual rows).
-
     const {
       rowAttrs,
       colAttrs,
@@ -524,9 +525,10 @@ export class TableRenderer extends Component {
       pivotData,
       namesMapping,
     } = pivotSettings;
+
     return (
       <tr key="rowHdr">
-        {rowAttrs.map((r, i) => {
+        { rowAttrs.map((r, i) => {
           const needLabelToggle =
             rowSubtotalDisplay.enabled && i !== rowAttrs.length - 1;
           let arrowClickHandle = null;
@@ -539,44 +541,49 @@ export class TableRenderer extends Component {
             subArrow = i + 1 < maxRowVisible ? arrowExpanded : arrowCollapsed;
           }
           return (
-            <th className="pvtAxisLabel" key={`rowAttr-${i}`}>
-              {displayHeaderCell(
+            <th className="pvtAxisLabel" key={ `rowAttr-${i}` }>
+              { displayHeaderCell(
                 needLabelToggle,
                 subArrow,
                 arrowClickHandle,
                 r,
                 namesMapping,
-              )}
+              ) }
             </th>
           );
-        })}
-        <th
-          className="pvtTotalLabel"
-          key="padding"
-          role="columnheader button"
-          onClick={this.clickHeaderHandler(
-            pivotData,
-            [],
-            this.props.rows,
-            0,
-            this.props.tableOptions.clickRowHeaderCallback,
-            false,
-            true,
-          )}
-        >
-          {colAttrs.length === 0
-            ? t('Total (%(aggregatorName)s)', {
-                aggregatorName: t(this.props.aggregatorName),
-              })
-            : null}
-        </th>
+        }) }
+
+        {/* Render multiple aggregator function names for the "Total" header */ }
+        { colAttrs.length === 0
+          ? this.props.aggregatorName.map((aggName, idx) => (
+            <th
+              className="pvtTotalLabel"
+              key={ `total-${aggName}-${idx}` }
+              role="columnheader button"
+              onClick={ this.clickHeaderHandler(
+                pivotData,
+                [],
+                this.props.rows,
+                0,
+                this.props.tableOptions.clickRowHeaderCallback,
+                false,
+                true,
+              ) }
+            >
+              { t('Total (%(aggregatorName)s)', {
+                aggregatorName: t(aggName),
+              }) }
+            </th>
+          ))
+          : null }
       </tr>
     );
   }
-
+  
   renderTableRow(rowKey, rowIdx, pivotSettings) {
     // Render a single row in the pivot table.
-console.log(rowKey, rowIdx, pivotSettings,"rowKey, rowIdx, pivotSettings")
+    console.log(rowKey, rowIdx, pivotSettings, "rowKey, rowIdx, pivotSettings");
+
     const {
       rowAttrs,
       colAttrs,
@@ -599,9 +606,11 @@ console.log(rowKey, rowIdx, pivotSettings,"rowKey, rowIdx, pivotSettings")
       cellColorFormatters,
       dateFormatters,
     } = this.props.tableOptions;
-    const flatRowKey = flatKey(rowKey);
 
+    const flatRowKey = flatKey(rowKey);
     const colIncrSpan = colAttrs.length !== 0 ? 1 : 0;
+
+    // Create row header cells
     const attrValueCells = rowKey.map((r, i) => {
       let handleContextMenu;
       let valueCellClassName = 'pvtRowLabel';
@@ -609,7 +618,7 @@ console.log(rowKey, rowIdx, pivotSettings,"rowKey, rowIdx, pivotSettings")
         if (highlightHeaderCellsOnHover) {
           valueCellClassName += ' hoverable';
         }
-        handleContextMenu = e =>
+        handleContextMenu = (e) =>
           this.props.onContextMenu(e, undefined, rowKey, {
             [rowAttrs[i]]: r,
           });
@@ -635,23 +644,24 @@ console.log(rowKey, rowIdx, pivotSettings,"rowKey, rowIdx, pivotSettings")
           dateFormatters && dateFormatters[rowAttrs[i]]
             ? dateFormatters[rowAttrs[i]](r)
             : r;
+
         return (
           <th
-            key={`rowKeyLabel-${i}`}
-            className={valueCellClassName}
-            rowSpan={rowSpan}
-            colSpan={colSpan}
+            key={ `rowKeyLabel-${i}` }
+            className={ valueCellClassName }
+            rowSpan={ rowSpan }
+            colSpan={ colSpan }
             role="columnheader button"
-            onClick={this.clickHeaderHandler(
+            onClick={ this.clickHeaderHandler(
               pivotData,
               rowKey,
               this.props.rows,
               i,
               this.props.tableOptions.clickRowHeaderCallback,
-            )}
-            onContextMenu={handleContextMenu}
+            ) }
+            onContextMenu={ handleContextMenu }
           >
-            {displayHeaderCell(
+            { displayHeaderCell(
               needRowToggle,
               this.state.collapsedRows[flatRowKey]
                 ? arrowCollapsed
@@ -659,40 +669,51 @@ console.log(rowKey, rowIdx, pivotSettings,"rowKey, rowIdx, pivotSettings")
               onArrowClick,
               headerCellFormattedValue,
               namesMapping,
-            )}
+            ) }
           </th>
         );
       }
       return null;
     });
 
+    // Add padding cell for subtotal rows
     const attrValuePaddingCell =
       rowKey.length < rowAttrs.length ? (
         <th
           className="pvtRowLabel pvtSubtotalLabel"
           key="rowKeyBuffer"
-          colSpan={rowAttrs.length - rowKey.length + colIncrSpan}
-          rowSpan={1}
+          colSpan={ rowAttrs.length - rowKey.length + colIncrSpan }
+          rowSpan={ 1 }
           role="columnheader button"
-          onClick={this.clickHeaderHandler(
+          onClick={ this.clickHeaderHandler(
             pivotData,
             rowKey,
             this.props.rows,
             rowKey.length,
             this.props.tableOptions.clickRowHeaderCallback,
             true,
-          )}
+          ) }
         >
-          {t('Subtotal')}
+          { t('Subtotal') }
         </th>
       ) : null;
 
     const rowClickHandlers = cellCallbacks[flatRowKey] || {};
+    
     const valueCells = visibleColKeys.map(colKey => {
       const flatColKey = flatKey(colKey);
       const agg = pivotData.getAggregator(rowKey, colKey);
-      const aggValue = agg.value();
-console.log(agg.format(aggValue),"agg.format(aggValue)")
+      console.log(agg,"agg RTR")
+      const firstAggregatorName = this.props.aggregatorName[0];
+      let firstAggregator = agg[firstAggregatorName];
+      if (!firstAggregator) {
+        console.warn(`Aggregator '${firstAggregatorName}' is not found. Using default 'Sum' aggregator.`);
+        // Assuming 'Sum' is a default aggregator and is available
+        firstAggregator = agg
+      }
+      console.log(firstAggregatorName,firstAggregator,"1st agg name,1st agg")
+      const aggValue = firstAggregator.value();
+
       const keys = [...rowKey, ...colKey];
       let backgroundColor;
       if (cellColorFormatters) {
@@ -728,380 +749,226 @@ console.log(agg.format(aggValue),"agg.format(aggValue)")
           onContextMenu={e => this.props.onContextMenu(e, colKey, rowKey)}
           style={style}
         >
-          {agg.format(aggValue)}
+          {firstAggregator.format(aggValue)}
         </td>
       );
     });
+    
 
-    let totalCell = null;
-    if (rowTotals) {
-      const agg = pivotData.getAggregator(rowKey, []);
-      const aggValue = agg.value();
-      totalCell = (
-        <td
-          role="gridcell"
-          key="total"
-          className="pvtTotal"
-          onClick={rowTotalCallbacks[flatRowKey]}
-          onContextMenu={e => this.props.onContextMenu(e, undefined, rowKey)}
-        >
-          {agg.format(aggValue)}
-        </td>
-      );
-    }
-
+    const totalCells = rowTotals
+    ? this.props.aggregatorName.map((aggName, idx) => {
+        const agg = pivotData.getAggregator(rowKey, []); // Updated method call
+        // const totalSum = agg['Sum'].value();
+        // console.log(totalSum,"total sum",rowKey)
+        // Ensure that the aggregator object is valid
+        if (!agg || typeof agg !== 'object') {
+          console.error(`Invalid aggregator object for rowKey: ${rowKey}`);
+          return <td key={`error-${idx}`}>Error</td>;
+        }
+  
+        // Ensure that the current aggregator is valid
+        const currentAgg = agg[aggName];
+        if (!currentAgg || typeof currentAgg.value !== 'function') {
+          console.error(`Invalid aggregator for ${aggName}:`, currentAgg);
+          return <td key={`error-${aggName}-${idx}`}>Error</td>;
+        }
+  
+        const aggValue = currentAgg.value();
+  console.log(aggValue,"aggvalue %%%%%",currentAgg,agg,"currentAgg,agg")
+        return (
+          <td
+            role="gridcell"
+            key={`total-${aggName}-${idx}`}
+            className="pvtTotal"
+            onClick={rowTotalCallbacks[flatRowKey]}
+            onContextMenu={(e) => this.props.onContextMenu(e, undefined, rowKey)}
+          >
+            {currentAgg.format(aggValue)}
+          </td>
+        );
+      })
+    : [];
+  
+  
+console.log(totalCells,"totalCells")
     const rowCells = [
       ...attrValueCells,
       attrValuePaddingCell,
       ...valueCells,
-      totalCell,
+      totalCells,
     ];
 
-    return <tr key={`keyRow-${flatRowKey}`}>{rowCells}</tr>;
+    return <tr key={ `keyRow-${flatRowKey}` }>{ rowCells }</tr>;
   }
 
-//   renderTotalsRow(pivotSettings) {
-//     // Render the final totals rows that has the totals for all the columns.
-//     console.log('aggregator function', pivotSettings);
-//     const {
-//       rowAttrs,
-//       colAttrs,
-//       visibleColKeys,
-//       rowTotals,
-//       pivotData,
-//       colTotalCallbacks,
-//       grandTotalCallback,
-//     } = pivotSettings;
+  renderTotalsRow(pivotSettings) {
+    const {
+      rowAttrs,
+      colAttrs,
+      visibleColKeys,
+      pivotData,
+      colTotalCallbacks,
+      grandTotalCallback,
+      rowTotals,
+    } = pivotSettings;
 
-//     const totalLabelCell = (
-//       <th
-//         key="label"
-//         className="pvtTotalLabel pvtRowTotalLabel"
-//         colSpan={rowAttrs.length + Math.min(colAttrs.length, 1)}
-//         role="columnheader button"
-//         onClick={this.clickHeaderHandler(
-//           pivotData,
-//           [],
-//           this.props.rows,
-//           0,
-//           this.props.tableOptions.clickRowHeaderCallback,
-//           false,
-//           true,
-//         )}
-//       >
-//         {t('Total (%(aggregatorName)s)', {
-//           aggregatorName: t(this.props.aggregatorName),
-//         })}
-//       </th>
-//     );
-
-//     // Render total cells for each aggregator
-// const totalValueCells = visibleColKeys.flatMap(colKey => {
-//   const flatColKey = flatKey(colKey);
-
-//   // Generate a cell for each aggregator function
-//   return this.props.aggregatorName.map((aggName, idx) => {
-//     const aggregator = this.props.aggregators[idx];
-//     const agg = pivotData.getAggregator([], colKey, aggregator);
-//     const aggValue = agg.value();
-
-//     return (
-//       <td
-//         role="gridcell"
-//         className="pvtTotal pvtRowTotal"
-//         key={`total-${flatColKey}-${idx}`}
-//         onClick={colTotalCallbacks[flatColKey]}
-//         onContextMenu={e => this.props.onContextMenu(e, colKey, undefined)}
-//         style={{ padding: '5px' }}
-//       >
-//         {agg.format(aggValue)}
-//       </td>
-//     );
-//   });
-// });
-//     // Render the grand total cell for each aggregator
-// const grandTotalCells = this.props.aggregatorName.map((aggName, idx) => {
-//   const aggregator = this.props.aggregators[idx];
-//   const agg = pivotData.getAggregator([], []);
-//   const aggValue = agg.value();
-
-//   return (
-//     <td
-//       role="gridcell"
-//       key={`grand-total-${idx}`}
-//       className="pvtGrandTotal pvtRowTotal"
-//       onClick={grandTotalCallback}
-//       onContextMenu={e => this.props.onContextMenu(e, undefined, undefined)}
-//     >
-//       {agg.format(aggValue)}
-//     </td>
-//   );
-// });
-
-//     const totalCells = [totalLabelCell, ...totalValueCells, grandTotalCells];
-
-//     return (
-//       <tr key="total" className="pvtRowTotals">
-//         {totalCells}
-//       </tr>
-//     );
-//   }
-
-
-// renderTotalsRow(pivotSettings) {
-//   const {
-//     rowAttrs,
-//     colAttrs,
-//     visibleColKeys,
-//     pivotData,
-//     colTotalCallbacks,
-//     grandTotalCallback,
-//   } = pivotSettings;
-// console.log("pivot settings",pivotSettings)
-//   // Create a row for each aggregator
-//   const totalRows = this.props.aggregatorName.map((aggName, idx) => {
-//     // Access the aggregator using the name instead of the index
-//     const aggregator = pivotData.aggregators[aggName];
-
-//     // Ensure the aggregator is a function
-//     if (typeof aggregator !== 'function') {
-//       console.error(`Aggregator ${aggName} is not a function`);
-//       return (
-//         <tr key={`total-row-${idx}`} className="pvtRowTotals">
-//           <th
-//             key={`label-${idx}`}
-//             className="pvtTotalLabel pvtRowTotalLabel"
-//             colSpan={rowAttrs.length + Math.min(colAttrs.length, 1)}
-//             role="columnheader button"
-//           >
-//             {aggName}
-//           </th>
-//           {visibleColKeys.map(colKey => (
-//             <td
-//               key={`total-${flatKey(colKey)}-${idx}`}
-//               className="pvtTotal pvtRowTotal"
-//               style={{ padding: '5px' }}
-//             >
-//               Error
-//             </td>
-//           ))}
-//           <td
-//             className="pvtGrandTotal pvtRowTotal"
-//             style={{ padding: '5px' }}
-//           >
-//             Error
-//           </td>
-//         </tr>
-//       );
-//     }
-
-//     // Render label cell for the current aggregator
-//     const totalLabelCell = (
-//       <th
-//         key={`label-${idx}`}
-//         className="pvtTotalLabel pvtRowTotalLabel"
-//         colSpan={rowAttrs.length + Math.min(colAttrs.length, 1)}
-//         role="columnheader button"
-//       >
-//         {aggName}
-//       </th>
-//     );
-
-//     // Render total cells for each column for the current aggregator
-//     const totalValueCells = visibleColKeys.map(colKey => {
-//       const flatColKey = flatKey(colKey);
-//       const agg = pivotData.getAggregator([], colKey, aggregator);
-
-//       if (typeof agg !== 'object' || typeof agg.value !== 'function') {
-//         return (
-//           <td
-//             key={`total-${flatColKey}-${idx}`}
-//             className="pvtTotal pvtRowTotal"
-//             style={{ padding: '5px' }}
-//           >
-//             Error
-//           </td>
-//         );
-//       }
-
-//       const aggValue = agg.value();
-//       return (
-//         <td
-//           key={`total-${flatColKey}-${idx}`}
-//           className="pvtTotal pvtRowTotal"
-//           onClick={colTotalCallbacks[flatColKey]}
-//           onContextMenu={e => this.props.onContextMenu(e, colKey, undefined)}
-//           style={{ padding: '5px' }}
-//         >
-//           {agg.format ? agg.format(aggValue) : aggValue}
-//         </td>
-//       );
-//     });
-
-//     // Render grand total cell for the current aggregator
-//     const grandTotalCell = (
-//       <td
-//         key={`grand-total-${idx}`}
-//         className="pvtGrandTotal pvtRowTotal"
-//         onClick={grandTotalCallback}
-//         onContextMenu={e => this.props.onContextMenu(e, undefined, undefined)}
-//         style={{ padding: '5px' }}
-//       >
-//         {(() => {
-//           const agg = pivotData.getAggregator([], []); // Grand total with no filters
-//           if (typeof agg !== 'object' || typeof agg.value !== 'function') {
-//             return 'Error';
-//           }
-//           const aggValue = agg.value();
-//           return agg.format ? agg.format(aggValue) : aggValue;
-//         })()}
-//       </td>
-//     );
-
-//     // Combine all cells into a row
-//     return (
-//       <tr key={`total-row-${idx}`} className="pvtRowTotals">
-//         {totalLabelCell}
-//         {totalValueCells}
-//         {grandTotalCell}
-//       </tr>
-//     );
-//   });
-
-//   return <tbody>{totalRows}</tbody>;
-// }
-renderTotalsRow(pivotSettings) {
-  const {
-    rowAttrs,
-    colAttrs,
-    visibleColKeys,
-    pivotData,
-    colTotalCallbacks,
-    grandTotalCallback,
-  } = pivotSettings;
-console.log(pivotSettings,"pivotSettings")
-  // Create a row for each aggregator
-  const totalRows = this.props.aggregatorName.map((aggName, idx) => {
-    // Access the aggregator factory by name
-    const aggregatorFactory = pivotData.aggregators[aggName];
-console.log(aggregatorFactory,"aggregatorFactory")
-    if (typeof aggregatorFactory !== 'function') {
-      console.error(`Aggregator ${aggName} is not a function`);
-      return (
-        <tr key={`total-row-${idx}`} className="pvtRowTotals">
-          <th
-            key={`label-${idx}`}
-            className="pvtTotalLabel pvtRowTotalLabel"
-            colSpan={rowAttrs.length + Math.min(colAttrs.length, 1)}
-            role="columnheader button"
-          >
-            {aggName}
-          </th>
-          {visibleColKeys.map(colKey => (
-            <td
-              key={`total-${flatKey(colKey)}-${idx}`}
-              className="pvtTotal pvtRowTotal"
-              style={{ padding: '5px' }}
-            >
-              Error list
-            </td>
-          ))}
-        </tr>
-      );
-    }
-
-    // Render label cell for the current aggregator
-    const totalLabelCell = (
-      <th
-        key={`label-${idx}`}
-        className="pvtTotalLabel pvtRowTotalLabel"
-        colSpan={rowAttrs.length + Math.min(colAttrs.length, 1)}
-        role="columnheader button"
-        onClick={this.clickHeaderHandler(
-          pivotData,
-          [],
-          this.props.rows,
-          0,
-          this.props.tableOptions.clickRowHeaderCallback,
-          false,
-          true,
-        )}
-      >
-        {aggName}
-      </th>
-    );
-
-    // Render total cells for each column for the current aggregator
-    const totalValueCells = visibleColKeys.map(colKey => {
-      const flatColKey = flatKey(colKey);
-      const aggregator = pivotData.getAggregator([], colKey, aggregatorFactory);
-
-      if (typeof aggregator !== 'object' || typeof aggregator.value !== 'function') {
-        console.log(typeof aggregator,"typeof aggregator 1111111111111111", typeof aggregator.value," typeof aggregator.value")
+    const totalRows = this.props.aggregatorName.map((aggName, aggIdx) => {
+      const aggregatorFactory = pivotData.aggregators[aggName];
+      console.log(aggregatorFactory, "aggregatorFactory JJJJJ")
+      if (typeof aggregatorFactory !== 'function') {
+        console.error(`Aggregator ${aggName} is not a function`);
         return (
-          <td
-            key={`total-${flatColKey}-${idx}`}
-            className="pvtTotal pvtRowTotal"
-            style={{ padding: '5px' }}
-          >
-            Error buf
-          </td>
+          <tr key={ `total-row-${aggIdx}` } className="pvtRowTotals">
+            <th
+              key={ `label-${aggIdx}` }
+              className="pvtTotalLabel pvtRowTotalLabel"
+              colSpan={ rowAttrs.length + Math.min(colAttrs.length, 1) }
+              role="columnheader button"
+            >
+              { `Total (${aggName})` }
+            </th>
+            { visibleColKeys.map(colKey => (
+              <td
+                key={ `total-${flatKey(colKey)}-${aggIdx}` }
+                className="pvtTotal pvtRowTotal"
+                style={ { padding: '5px' } }
+              >
+                Error in aggregator
+              </td>
+            )) }
+          </tr>
         );
       }
 
-      // Calculate the value for the current aggregator and column
-      const aggValue = aggregator.value();
+      const totalLabelCell = (
+        <th
+          key={ `label-${aggIdx}` }
+          className="pvtTotalLabel pvtRowTotalLabel"
+          colSpan={ rowAttrs.length + Math.min(colAttrs.length, 1) }
+          role="columnheader button"
+          onClick={ this.clickHeaderHandler(
+            pivotData,
+            [],
+            this.props.rows,
+            0,
+            this.props.tableOptions.clickRowHeaderCallback,
+            false,
+            true,
+          ) }
+        >
+          { `Total (${aggName})` }
+        </th>
+      );
+
+  // For each aggregation function (e.g., 'Sum', 'Count'), we generate a full row of values
+  const totalValueCells = visibleColKeys.map((colKey, idx) => {
+    const flatColKey = flatKey(colKey);  // Get a flattened version of the column key
+    const aggregator = pivotData.getAggregator([], colKey);  // Fetch the aggregator for the column
+
+    // Get the specific aggregator dynamically based on the name (e.g., 'Sum', 'Count')
+    const currentAggregator = aggregator[aggName];
+
+    // Check if the aggregator is valid
+    if (typeof currentAggregator !== 'object' || typeof currentAggregator.value !== 'function') {
+      console.error(`Aggregator for ${aggName} is not valid`, currentAggregator);
       return (
         <td
-          key={`total-${flatColKey}-${idx}`}
+          key={`total-${flatColKey}-${aggIdx}-${idx}`}
           className="pvtTotal pvtRowTotal"
-          onClick={colTotalCallbacks[flatColKey]}
-          onContextMenu={e => this.props.onContextMenu(e, colKey, undefined)}
-          style={{ padding: '5px' }}
+          style={{ padding: '5px', color: 'red' }}
         >
-          {aggregator.format ? aggregator.format(aggValue) : aggValue}
+          Error
         </td>
       );
-    });
+    }
 
-    // Render grand total cell for the current aggregator
-    const grandTotalCell = (
+    // Get the value from the aggregator
+    let aggValue;
+    try {
+      aggValue = currentAggregator.value();  // Fetch the total value
+    } catch (e) {
+      console.error(`Error fetching value for ${aggName}`, e);
+      return (
+        <td
+          key={`total-${flatColKey}-${aggIdx}-${idx}`}
+          className="pvtTotal pvtRowTotal"
+          style={{ padding: '5px', color: 'red' }}
+        >
+          Error
+        </td>
+      );
+    }
+    console.log(aggValue,"aggValue ++++++++++++++++++++++")
+console.log( currentAggregator.format(aggValue)," currentAggregator.format(aggValue)")
+    // Render the value (formatted if a formatter exists)
+    return (
       <td
-        key={`grand-total-${idx}`}
-        className="pvtGrandTotal pvtRowTotal"
-        onClick={grandTotalCallback}
-        onContextMenu={e => this.props.onContextMenu(e, undefined, undefined)}
+        key={`total-${flatColKey}-${aggIdx}-${idx}`}
+        className="pvtTotal pvtRowTotal"
+        onClick={colTotalCallbacks[flatColKey]}
+        onContextMenu={e => this.props.onContextMenu(e, colKey, undefined)}
         style={{ padding: '5px' }}
       >
-        {(() => {
-          const aggregator = pivotData.getAggregator([], [], aggregatorFactory);
-           console.log(aggregator,"aggregator",aggregator.value,"aggregator.value")
-          if (typeof aggregator !== 'object' || typeof aggregator.value !== 'function') {
-            console.log(typeof aggregator,"typeof aggregator", typeof aggregator.value," typeof aggregator.value")
-            return 'Error j';
-          }
-          const aggValue = aggregator.value();
-          console.log(aggValue,"aggValue")
-          return aggregator.format ? aggregator.format(aggValue) : aggValue;
-        })()}
+        {/* {aggName} */}
+        {currentAggregator.format ? currentAggregator.format(aggValue) : aggValue}
       </td>
-    );
-    const totalCells = [totalLabelCell, ...totalValueCells, grandTotalCell];
-    // Combine all cells into a row
-    return (
-      <tr key={`total-row-${idx}`} className="pvtRowTotals">
-        {/* {totalLabelCell}
-        {totalValueCells}
-        {grandTotalCell} */}
-        {totalCells}
-      </tr>
     );
   });
 
-  return totalRows 
-}
+      let grandTotalCells = [];
 
+      if (rowTotals && this.props.aggregatorName) {
+        grandTotalCells = this.props.aggregatorName.map((aggName, idx) => {
+          const aggregatorFunction = pivotData.aggregators[aggName];
+          if (typeof aggregatorFunction !== 'function') {
+            console.error(`Aggregator ${aggName} is not a function`);
+            return (
+              <td key={ `total-${idx}` } className="pvtGrandTotal pvtRowTotal">
+                Error in aggregator
+              </td>
+            );
+          }
 
+          const agg = pivotData.getAggregator([], []);
+          const currentAggregator = agg[aggName];
+          if (typeof currentAggregator !== 'object' || typeof currentAggregator.value !== 'function') {
+            console.error(`Aggregator for ${aggName} is not valid`, currentAggregator);
+            return (
+              <td key={ `total-${idx}` } className="pvtGrandTotal pvtRowTotal">
+                Error grandtot
+              </td>
+            );
+          }
+
+          const aggValue = currentAggregator.value();
+          console.log(aggValue,"aggValue &&&&&&&&&&&&&&&&&&&&&&&")
+          console.log( currentAggregator.format(aggValue)," currentAggregator.format(aggValue)&&&&&&&&&&&&&&&&&&&&&&")
+          return (
+            <td
+              role="gridcell"
+              key={ `total-${idx}` }
+              className="pvtGrandTotal pvtRowTotal"
+              onClick={ grandTotalCallback }
+              onContextMenu={ e => this.props.onContextMenu(e, undefined, undefined) }
+            >
+              {/* g.tot {aggName} */}
+            { currentAggregator.format ? currentAggregator.format(aggValue) : aggValue }
+            </td>
+          );
+        });
+      }
+
+      return (
+        <tr key={ `total-row-${aggIdx}` } className="pvtRowTotals">
+          { totalLabelCell }
+          { totalValueCells }
+          {grandTotalCells} 
+        </tr>
+      );
+    });
+
+    return totalRows;
+  }
 
 
   visibleKeys(keys, collapsed, numAttrs, subtotalDisplay) {
@@ -1163,19 +1030,19 @@ console.log(aggregatorFactory,"aggregatorFactory")
     };
 
     return (
-      <Styles isDashboardEditMode={this.isDashboardEditMode()}>
+      <Styles isDashboardEditMode={ this.isDashboardEditMode() }>
         <table className="pvtTable" role="grid">
           <thead>
-            {colAttrs.map((c, j) =>
+            { colAttrs.map((c, j) =>
               this.renderColHeaderRow(c, j, pivotSettings),
-            )}
-            {rowAttrs.length !== 0 && this.renderRowHeaderRow(pivotSettings)}
+            ) }
+            { rowAttrs.length !== 0 && this.renderRowHeaderRow(pivotSettings) }
           </thead>
           <tbody>
-            {visibleRowKeys.map((r, i) =>
+            { visibleRowKeys.map((r, i) =>
               this.renderTableRow(r, i, pivotSettings),
-            )}
-            {colTotals && this.renderTotalsRow(pivotSettings)}
+            ) }
+            { colTotals && this.renderTotalsRow(pivotSettings) }
           </tbody>
         </table>
       </Styles>
