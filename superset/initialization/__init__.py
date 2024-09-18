@@ -165,6 +165,11 @@ class SupersetAppInitializer:  # pylint: disable=too-many-public-methods
             ReportViewerModelView,
             ReportViewerModelViewAsync,
             )
+        from superset.views.webReportViewer.views import (
+            WebReportViewerView,
+            WebReportViewerModelView,
+            WebReportViewerModelViewAsync,
+            )
         from superset.views.core import Superset
         from superset.views.css_templates import (
             CssTemplateAsyncModelView,
@@ -274,6 +279,14 @@ class SupersetAppInitializer:  # pylint: disable=too-many-public-methods
             category="",
             category_icon="",
         )
+        appbuilder.add_view(
+            WebReportViewerModelView,
+            "WebReportViewer",
+            label=__("Web Report viewer"),
+            icon="fa-bar-chart",
+            category="",
+            category_icon="",
+        )
         appbuilder.add_link(
             "Datasets",
             label=__("Datasets"),
@@ -313,6 +326,8 @@ class SupersetAppInitializer:  # pylint: disable=too-many-public-methods
         appbuilder.add_view_no_menu(DashboardModelViewAsync)
         appbuilder.add_view_no_menu(ReportViewerView)
         appbuilder.add_view_no_menu(ReportViewerModelViewAsync)
+        appbuilder.add_view_no_menu(WebReportViewerView)
+        appbuilder.add_view_no_menu(WebReportViewerModelViewAsync)
         appbuilder.add_view_no_menu(Datasource)
         appbuilder.add_view_no_menu(DatasetEditor)
         appbuilder.add_view_no_menu(EmbeddedView)

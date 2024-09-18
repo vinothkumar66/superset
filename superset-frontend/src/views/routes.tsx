@@ -110,6 +110,9 @@ const SqlLab = lazy(
 const ReportViewer = lazy(
   () => import(/* webpackChunkName: "ReportViewer" */ 'src/pages/ReportViewer'),
 );
+const WebReportViewer = lazy(
+  () => import(/* webpackChunkName: "ReportViewer" */ 'src/pages/WebReportViewer'),
+);
 const AllEntities = lazy(
   () => import(/* webpackChunkName: "AllEntities" */ 'src/pages/AllEntities'),
 );
@@ -230,6 +233,10 @@ export const routes: Routes = [
   {
     path: '/reportviewer/list',
     Component: ReportViewer,
+  },
+  {
+    path: '/webreportviewer/list',
+    Component: WebReportViewer,
   },
 ];
 
