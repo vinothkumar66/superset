@@ -1,10 +1,3 @@
-// export default function ReportViewer() {
-//   return (
-//     <>
-//       <h4>rrewtertert</h4>
-//     </>
-//   );
-// }
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -30,18 +23,15 @@ import {
   SupersetClient,
   t,
 } from '@superset-ui/core';
-import { useSelector } from 'react-redux';
 import { useState, useMemo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import rison from 'rison';
 import {
-  createFetchRelated,
   createErrorHandler,
   handleDashboardDelete,
 } from 'src/views/CRUD/utils';
 import { useListViewResource, useFavoriteStatus } from 'src/views/CRUD/hooks';
 import ConfirmStatusChange from 'src/components/ConfirmStatusChange';
-import { TagsList } from 'src/components/Tags';
 import handleResourceExport from 'src/utils/export';
 import Loading from 'src/components/Loading';
 import SubMenu, { SubMenuProps } from 'src/features/home/SubMenu';
@@ -55,13 +45,11 @@ import { dangerouslyGetItemDoNotUse } from 'src/utils/localStorageHelpers';
 import Owner from 'src/types/Owner';
 import Tag from 'src/types/TagType';
 import withToasts from 'src/components/MessageToasts/withToasts';
-import FacePile from 'src/components/FacePile';
 import Icons from 'src/components/Icons';
 import DeleteModal from 'src/components/DeleteModal';
 import FaveStar from 'src/components/FaveStar';
 import PropertiesModal from 'src/dashboard/components/PropertiesModal';
 import { Tooltip } from 'src/components/Tooltip';
-import ImportModelsModal from 'src/components/ImportModal/index';
 
 import Dashboard from 'src/dashboard/containers/Dashboard';
 import {
@@ -69,29 +57,13 @@ import {
   QueryObjectColumns,
 } from 'src/views/CRUD/types';
 import CertifiedBadge from 'src/components/CertifiedBadge';
-import { loadTags } from 'src/components/Tags/utils';
 import DashboardCard from 'src/features/dashboards/DashboardCard';
-import { DashboardStatus } from 'src/features/dashboards/types';
-import { UserWithPermissionsAndRoles } from 'src/types/bootstrapTypes';
-import { findPermission } from 'src/utils/findPermission';
-import { ModifiedInfo } from 'src/components/AuditInfo';
 import { Button } from 'antd';
+import { ModifiedInfo } from 'src/components/AuditInfo';
 
 const PAGE_SIZE = 25;
-const PASSWORDS_NEEDED_MESSAGE = t(
-  'The passwords for the databases below are needed in order to ' +
-    'import them together with the dashboards. Please note that the ' +
-    '"Secure Extra" and "Certificate" sections of ' +
-    'the database configuration are not present in export files, and ' +
-    'should be added manually after the import if they are needed.',
-);
-const CONFIRM_OVERWRITE_MESSAGE = t(
-  'You are importing one or more dashboards that already exist. ' +
-    'Overwriting might cause you to lose some of your work. Are you ' +
-    'sure you want to overwrite?',
-);
 
-interface DashboardListProps {
+interface ReportListProps {
   addDangerToast: (msg: string) => void;
   addSuccessToast: (msg: string) => void;
   user: {
@@ -140,13 +112,8 @@ const DASHBOARD_COLUMNS_TO_FETCH = [
   'changed_on',
 ];
 
-function ReportViewer(props: DashboardListProps) {
+function ReportViewer(props: ReportListProps) {
   const { addDangerToast, addSuccessToast, user } = props;
-
-  const { roles } = useSelector<any, UserWithPermissionsAndRoles>(
-    state => state.user,
-  );
-  const canReadTag = findPermission('can_read', 'Tag', roles);
 
   const {
     state: {
@@ -183,38 +150,10 @@ function ReportViewer(props: DashboardListProps) {
   const [dashboardToDelete, setDashboardToDelete] =
     useState<CRUDDashboard | null>(null);
 
-  const [importingDashboard, showImportModal] = useState<boolean>(false);
-  const [passwordFields, setPasswordFields] = useState<string[]>([]);
   const [preparingExport, setPreparingExport] = useState<boolean>(false);
-  const [sshTunnelPasswordFields, setSSHTunnelPasswordFields] = useState<
-    string[]
-  >([]);
-  const [sshTunnelPrivateKeyFields, setSSHTunnelPrivateKeyFields] = useState<
-    string[]
-  >([]);
-  const [
-    sshTunnelPrivateKeyPasswordFields,
-    setSSHTunnelPrivateKeyPasswordFields,
-  ] = useState<string[]>([]);
 
-  // const openDashboardImportModal = () => {
-  //   showImportModal(true);
-  // };
-
-  const closeDashboardImportModal = () => {
-    showImportModal(false);
-  };
-
-  const handleDashboardImport = () => {
-    showImportModal(false);
-    refreshData();
-    addSuccessToast(t('Dashboard imported'));
-  };
-
-  // TODO: Fix usage of localStorage keying on the user id
   const userKey = dangerouslyGetItemDoNotUse(user?.userId?.toString(), null);
 
-  // const canCreate = hasPerm('can_write');
   const canEdit = hasPerm('can_write');
   const canDelete = hasPerm('can_write');
   const canExport = hasPerm('can_export');
@@ -235,7 +174,7 @@ function ReportViewer(props: DashboardListProps) {
             if (dashboard.id === json?.result?.id) {
               const {
                 changed_by_name,
-                changed_by,
+                changed_by, 
                 dashboard_title = '',
                 slug = '',
                 json_metadata = '',
@@ -343,58 +282,8 @@ function ReportViewer(props: DashboardListProps) {
             {dashboardTitle}
           </Link>
         ),
-        Header: t('Name'),
+        Header: t('Report Name'),
         accessor: 'dashboard_title',
-      },
-      {
-        Cell: ({
-          row: {
-            original: { status },
-          },
-        }: any) =>
-          status === DashboardStatus.PUBLISHED ? t('Published') : t('Draft'),
-        Header: t('Status'),
-        accessor: 'published',
-        size: 'xl',
-      },
-      {
-        Cell: ({
-          row: {
-            original: { tags = [] },
-          },
-        }: {
-          row: {
-            original: {
-              tags: Tag[];
-            };
-          };
-        }) => (
-          // Only show custom type tags
-          <TagsList
-            tags={tags.filter(
-              (tag: Tag) => tag.type === 'TagTypes.custom' || tag.type === 1,
-            )}
-            maxTags={3}
-          />
-        ),
-        Header: t('Tags'),
-        accessor: 'tags',
-        disableSortBy: true,
-        hidden: !isFeatureEnabled(FeatureFlag.TaggingSystem),
-      },
-      {
-        Cell: ({
-          row: {
-            original: { owners = [] },
-          },
-        }: any) => <FacePile users={owners} />,
-        Header: t('Owners'),
-        accessor: 'owners',
-        disableSortBy: true,
-        cellProps: {
-          style: { padding: '0px' },
-        },
-        size: 'xl',
       },
       {
         Cell: ({
@@ -530,117 +419,22 @@ function ReportViewer(props: DashboardListProps) {
   const filters: Filters = useMemo(() => {
     const filters_list = [
       {
-        Header: t('Name'),
+        Header: t('Report Name'),
         key: 'search',
         id: 'dashboard_title',
         input: 'search',
         operator: FilterOperator.TitleOrSlug,
       },
       {
-        Header: t('Status'),
-        key: 'published',
-        id: 'published',
-        input: 'select',
-        operator: FilterOperator.Equals,
-        unfilteredLabel: t('Any'),
-        selects: [
-          { label: t('Published'), value: true },
-          { label: t('Draft'), value: false },
-        ],
-      },
-      ...(isFeatureEnabled(FeatureFlag.TaggingSystem) && canReadTag
-        ? [
-            {
-              Header: t('Tag'),
-              key: 'tags',
-              id: 'tags',
-              input: 'select',
-              operator: FilterOperator.DashboardTags,
-              unfilteredLabel: t('All'),
-              fetchSelects: loadTags,
-            },
-          ]
-        : []),
-      {
-        Header: t('Owner'),
-        key: 'owner',
-        id: 'owners',
-        input: 'select',
-        operator: FilterOperator.RelationManyMany,
-        unfilteredLabel: t('All'),
-        fetchSelects: createFetchRelated(
-          'dashboard',
-          'owners',
-          createErrorHandler(errMsg =>
-            addDangerToast(
-              t(
-                'An error occurred while fetching dashboard owner values: %s',
-                errMsg,
-              ),
-            ),
-          ),
-          props.user,
-        ),
-        paginate: true,
-      },
-      ...(user?.userId ? [favoritesFilter] : []),
-      {
-        Header: t('Certified'),
-        key: 'certified',
-        id: 'id',
-        urlDisplay: 'certified',
-        input: 'select',
-        operator: FilterOperator.DashboardIsCertified,
-        unfilteredLabel: t('Any'),
-        selects: [
-          { label: t('Yes'), value: true },
-          { label: t('No'), value: false },
-        ],
-      },
-      {
-        Header: t('Modified by'),
-        key: 'changed_by',
-        id: 'changed_by',
-        input: 'select',
-        operator: FilterOperator.RelationOneMany,
-        unfilteredLabel: t('All'),
-        fetchSelects: createFetchRelated(
-          'dashboard',
-          'changed_by',
-          createErrorHandler(errMsg =>
-            t(
-              'An error occurred while fetching dataset datasource values: %s',
-              errMsg,
-            ),
-          ),
-          user,
-        ),
-        paginate: true,
+        Header: t('Date range'),
+        key: 'range',
+        id: 'dashboard_title',
+        input: 'datetime_range',
+        operator: FilterOperator.Between,
       },
     ] as Filters;
     return filters_list;
   }, [addDangerToast, favoritesFilter, props.user]);
-
-  const sortTypes = [
-    {
-      desc: false,
-      id: 'dashboard_title',
-      label: t('Alphabetical'),
-      value: 'alphabetical',
-    },
-    {
-      desc: true,
-      id: 'changed_on_delta_humanized',
-      label: t('Recently modified'),
-      value: 'recently_modified',
-    },
-    {
-      desc: false,
-      id: 'changed_on_delta_humanized',
-      label: t('Least recently modified'),
-      value: 'least_recently_modified',
-    },
-  ];
 
   const renderCard = useCallback(
     (dashboard: Dashboard) => (
@@ -674,41 +468,7 @@ function ReportViewer(props: DashboardListProps) {
   );
 
   const subMenuButtons: SubMenuProps['buttons'] = [];
-  // if (canDelete || canExport) {
-  //   subMenuButtons.push({
-  //     name: t('Bulk select'),
-  //     buttonStyle: 'secondary',
-  //     'data-test': 'bulk-select',
-  //     onClick: toggleBulkSelect,
-  //   });
-  // }
-  // if (canCreate) {
-  //   subMenuButtons.push({
-  //     name: (
-  //       <>
-  //         <i className="fa fa-plus" /> {t('Dashboard')}
-  //       </>
-  //     ),
-  //     buttonStyle: 'primary',
-  //     onClick: () => {
-  //       window.location.assign('/dashboard/new');
-  //     },
-  //   });
 
-  //   subMenuButtons.push({
-  //     name: (
-  //       <Tooltip
-  //         id="import-tooltip"
-  //         title={t('Import dashboards')}
-  //         placement="bottomRight"
-  //       >
-  //         <Icons.Import data-test="import-button" />
-  //       </Tooltip>
-  //     ),
-  //     buttonStyle: 'link',
-  //     onClick: openDashboardImportModal,
-  //   });
-  // }
   return (
     <>
       <SubMenu name={t('Report Viewer')} buttons={subMenuButtons} />
@@ -774,7 +534,6 @@ function ReportViewer(props: DashboardListProps) {
               <ListView<Dashboard>
                 bulkActions={bulkActions}
                 bulkSelectEnabled={bulkSelectEnabled}
-                cardSortSelectOptions={sortTypes}
                 className="dashboard-list-view"
                 columns={columns}
                 count={dashboardCount}
@@ -806,28 +565,6 @@ function ReportViewer(props: DashboardListProps) {
           );
         }}
       </ConfirmStatusChange>
-
-      <ImportModelsModal
-        resourceName="dashboard"
-        resourceLabel={t('dashboard')}
-        passwordsNeededMessage={PASSWORDS_NEEDED_MESSAGE}
-        confirmOverwriteMessage={CONFIRM_OVERWRITE_MESSAGE}
-        addDangerToast={addDangerToast}
-        addSuccessToast={addSuccessToast}
-        onModelImport={handleDashboardImport}
-        show={importingDashboard}
-        onHide={closeDashboardImportModal}
-        passwordFields={passwordFields}
-        setPasswordFields={setPasswordFields}
-        sshTunnelPasswordFields={sshTunnelPasswordFields}
-        setSSHTunnelPasswordFields={setSSHTunnelPasswordFields}
-        sshTunnelPrivateKeyFields={sshTunnelPrivateKeyFields}
-        setSSHTunnelPrivateKeyFields={setSSHTunnelPrivateKeyFields}
-        sshTunnelPrivateKeyPasswordFields={sshTunnelPrivateKeyPasswordFields}
-        setSSHTunnelPrivateKeyPasswordFields={
-          setSSHTunnelPrivateKeyPasswordFields
-        }
-      />
 
       {preparingExport && <Loading />}
     </>

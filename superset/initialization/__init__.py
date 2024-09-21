@@ -279,14 +279,14 @@ class SupersetAppInitializer:  # pylint: disable=too-many-public-methods
             category="",
             category_icon="",
         )
-        appbuilder.add_view(
-            WebReportViewerModelView,
-            "WebReportViewer",
-            label=__("Web Report viewer"),
-            icon="fa-bar-chart",
-            category="",
-            category_icon="",
-        )
+        # appbuilder.add_view(
+        #     WebReportViewerModelView,
+        #     "WebReportViewer",
+        #     label=__("Web Report viewer"),
+        #     icon="fa-bar-chart",
+        #     category="",
+        #     category_icon="",
+        # )
         appbuilder.add_link(
             "Datasets",
             label=__("Datasets"),

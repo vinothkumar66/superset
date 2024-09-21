@@ -120,4 +120,5 @@ export enum FilterOperator {
   DashboardTags = 'dashboard_tags',
   ChartTags = 'chart_tags',
   SavedQueryTags = 'saved_query_tags',
+  DateRange = "DateRange",
 }

@@ -140,7 +140,7 @@ const DASHBOARD_COLUMNS_TO_FETCH = [
   'changed_on',
 ];
 
-function ReportViewer(props: DashboardListProps) {
+function WebReportViewer(props: DashboardListProps) {
   const { addDangerToast, addSuccessToast, user } = props;
 
   const { roles } = useSelector<any, UserWithPermissionsAndRoles>(
@@ -674,41 +674,7 @@ function ReportViewer(props: DashboardListProps) {
   );
 
   const subMenuButtons: SubMenuProps['buttons'] = [];
-  // if (canDelete || canExport) {
-  //   subMenuButtons.push({
-  //     name: t('Bulk select'),
-  //     buttonStyle: 'secondary',
-  //     'data-test': 'bulk-select',
-  //     onClick: toggleBulkSelect,
-  //   });
-  // }
-  // if (canCreate) {
-  //   subMenuButtons.push({
-  //     name: (
-  //       <>
-  //         <i className="fa fa-plus" /> {t('Dashboard')}
-  //       </>
-  //     ),
-  //     buttonStyle: 'primary',
-  //     onClick: () => {
-  //       window.location.assign('/dashboard/new');
-  //     },
-  //   });
-
-  //   subMenuButtons.push({
-  //     name: (
-  //       <Tooltip
-  //         id="import-tooltip"
-  //         title={t('Import dashboards')}
-  //         placement="bottomRight"
-  //       >
-  //         <Icons.Import data-test="import-button" />
-  //       </Tooltip>
-  //     ),
-  //     buttonStyle: 'link',
-  //     onClick: openDashboardImportModal,
-  //   });
-  // }
+  
   return (
     <>
       <SubMenu name={t('Web Report Viewer')} buttons={subMenuButtons} />
@@ -834,4 +800,4 @@ function ReportViewer(props: DashboardListProps) {
   );
 }
 
-export default withToasts(ReportViewer);
+export default withToasts(WebReportViewer);
