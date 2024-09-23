@@ -61,7 +61,7 @@ export const getColorFunction = (
     targetValueRight,
     colorScheme,
     textColor,
-    backgroundColor,
+
   }: ConditionalFormattingConfig,
   columnValues: number[],
   alpha?: boolean,
@@ -76,13 +76,8 @@ export const getColorFunction = (
   if (
     operator === undefined ||
     colorScheme === undefined ||
-    textColor === undefined ||
-    backgroundColor === undefined
+    textColor === undefined
   ) {
-    // if (
-    //   operator === undefined ||
-    //   (colorScheme === undefined && !textColor && !backgroundColor)
-    // ) {
     return () => undefined;
   }
   if (
@@ -188,15 +183,59 @@ export const getColorFunction = (
     const compareResult = comparatorFunction(value, columnValues);
     if (compareResult === false) return undefined;
     const { cutoffValue, extremeValue } = compareResult;
-    if (alpha === undefined || alpha) {
-      return addAlpha(
-        colorScheme,
-        getOpacity(value, cutoffValue, extremeValue, minOpacity, maxOpacity),
-      );
-    }
-    return colorScheme;
+    const backgroundColor = alpha === undefined || alpha
+      ? addAlpha(
+          colorScheme,
+          getOpacity(value, cutoffValue, extremeValue, minOpacity, maxOpacity),
+        )
+      : colorScheme;
+    
+    // Return both backgroundColor and textColor
+    return { backgroundColor, textColor };
+
+
+    // if (alpha === undefined || alpha) {
+    //   return addAlpha(
+    //     colorScheme,
+    //     getOpacity(value, cutoffValue, extremeValue, minOpacity, maxOpacity),
+    //   );
+    // }
+    // return colorScheme;
   };
 };
+
+// export const getColorFormatters = memoizeOne(
+//   (
+//     columnConfig: ConditionalFormattingConfig[] | undefined,
+//     data: DataRecord[],
+//     alpha?: boolean,
+//   ) =>
+//     columnConfig?.reduce(
+//       (acc: ColorFormatters, config: ConditionalFormattingConfig) => {
+//         if (
+//           config?.column !== undefined &&
+//           (config?.operator === Comparator.None ||
+//             (config?.operator !== undefined &&
+//               (MultipleValueComparators.includes(config?.operator)
+//                 ? config?.targetValueLeft !== undefined &&
+//                   config?.targetValueRight !== undefined
+//                 : config?.targetValue !== undefined)))
+//         ) {
+//           acc.push({
+//             column: config?.column,
+//             getColorFromValue: getColorFunction(
+//               config,
+//               data.map(row => row[config.column!] as number),
+//               alpha,
+//             ),
+//           });
+//         }
+//         return acc;
+//       },
+//       [],
+//     ) ?? [],
+// );
+
 
 export const getColorFormatters = memoizeOne(
   (

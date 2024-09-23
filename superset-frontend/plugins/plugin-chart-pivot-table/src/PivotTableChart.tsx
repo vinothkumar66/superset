@@ -157,11 +157,9 @@ export default function PivotTableChart(props: PivotTableProps) {
   } = props;
   // Determine the final aggregatorName dynamically
   const finalAggregatorName = Array.isArray(aggregateFunction)
-    ? aggregateFunction 
-    : ['Sum']; 
+    ? aggregateFunction
+    : ['Sum'];
   console.log(finalAggregatorName, 'finalAggregatorName');
- 
- 
 
   const theme = useTheme();
   const defaultFormatter = useMemo(
