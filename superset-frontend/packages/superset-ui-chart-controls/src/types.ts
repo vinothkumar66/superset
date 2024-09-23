@@ -457,7 +457,7 @@ export type ConditionalFormattingConfig = {
 
 export type ColorFormatters = {
   column: string;
-  getColorFromValue: (value: number) => string | undefined;
+  getColorFromValue: (value: number) => { backgroundColor: string; textColor: string } | undefined;
 }[];
 
 export default {};

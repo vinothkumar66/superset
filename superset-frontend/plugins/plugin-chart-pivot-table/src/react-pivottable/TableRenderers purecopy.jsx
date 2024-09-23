@@ -691,10 +691,10 @@ export class TableRenderer extends Component {
     const valueCells = visibleColKeys.map(colKey => {
       const flatColKey = flatKey(colKey);
       const agg = pivotData.getAggregator(rowKey, colKey);
-      console.log(agg,"agg RTR")
+      console.log(agg, 'agg RTR');
       const firstAggregatorName = this.props.aggregatorName[0];
       const firstAggregator = agg[firstAggregatorName];
-      console.log(firstAggregatorName,firstAggregator,"1st agg name,1st agg")
+      console.log(firstAggregatorName, firstAggregator, '1st agg name,1st agg');
       const aggValue = firstAggregator.value();
 
       const keys = [...rowKey, ...colKey];
@@ -739,10 +739,10 @@ export class TableRenderer extends Component {
 
     let totalCell = null;
     if (rowTotals) {
-        const agg = pivotData.getAggregator(rowKey, []);
-        this.props.aggregatorName.map((aggName)=>{
+      const agg = pivotData.getAggregator(rowKey, []);
+      this.props.aggregatorName.map(aggName => {
         const aggValue = agg[aggName].value();
-        console.log(agg,aggValue,"agg,aggvalue")
+        console.log(agg, aggValue, 'agg,aggvalue');
         totalCell = (
           <td
             role="gridcell"
@@ -752,11 +752,9 @@ export class TableRenderer extends Component {
             onContextMenu={e => this.props.onContextMenu(e, undefined, rowKey)}
           >
             {agg.format(aggValue)}
-
           </td>
         );
-      })
-      
+      });
     }
 
     const rowCells = [
