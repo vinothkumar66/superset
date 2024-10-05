@@ -184,6 +184,10 @@ const renderOperatorFields = ({ getFieldValue }: GetFieldValue) =>
       operator: config?.operator || Comparator.None,
       textColor: config?.textColor || localColor,
       colorScheme: config?.colorScheme || localColorScheme,
+      targetValue: config?.targetValue || 0,
+      targetValueLeft: config?.targetValueLeft || 0,
+      targetValueRight: config?.targetValueRight || 0,
+    
     });
   
     const handleFormChange = (changedValues: any) => {
