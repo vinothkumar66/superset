@@ -462,7 +462,7 @@ export default function PivotTableChart(props: PivotTableProps) {
       toggleFilter,
     ],
   );
-
+console.log(metricColorFormatters,"metricColorFormatters",[METRIC_KEY],"[METRIC_KEY]")
   const subtotalOptions = useMemo(
     () => ({
       colSubtotalDisplay: { displayOnTop: colSubtotalPosition },
