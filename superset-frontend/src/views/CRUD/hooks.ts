@@ -572,6 +572,11 @@ const favoriteApis = {
     method: 'GET',
     endpoint: '/api/v1/dashboard/favorite_status/',
   }),
+  reportViewer: makeApi<Array<string | number>, FavoriteStatusResponse>({
+    requestType: 'rison',
+    method: 'GET',
+    endpoint: '/api/v1/reportViewer/favorite_status/',
+  }),
   tag: makeApi<Array<string | number>, FavoriteStatusResponse>({
     requestType: 'rison',
     method: 'GET',
@@ -580,7 +585,7 @@ const favoriteApis = {
 };
 
 export function useFavoriteStatus(
-  type: 'chart' | 'dashboard' | 'tag',
+  type: 'chart' | 'dashboard' | 'tag' | 'reportViewer',
   ids: Array<string | number>,
   handleErrorMsg: (message: string) => void,
 ) {
@@ -595,7 +600,7 @@ export function useFavoriteStatus(
     }
     favoriteApis[type](ids).then(
       ({ result }) => {
-        const update = result.reduce((acc, element) => {
+        const update = result.reduce((acc: any, element) => {
           acc[element.id] = element.value;
           return acc;
         }, {});

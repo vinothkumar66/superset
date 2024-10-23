@@ -31,7 +31,7 @@ REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
 # for docker 
 # SQLALCHEMY_DATABASE_URI = 'sqlite:////app/superset_home/superset.db'
 # for local setup
-SQLALCHEMY_DATABASE_URI = 'sqlite:////home/vino/superset/superset_home/superset.db'
+SQLALCHEMY_DATABASE_URI = 'sqlite:////home/vino/superset/superset_home/1.db'
 
 
 # SQLALCHEMY_DATABASE_URI = 'sqlite:///superset_home/superset.db'

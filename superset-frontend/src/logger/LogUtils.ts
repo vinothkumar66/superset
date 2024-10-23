@@ -22,9 +22,11 @@ export const LOG_ACTIONS_RENDER_CHART = 'render_chart';
 export const LOG_ACTIONS_HIDE_BROWSER_TAB = 'hide_browser_tab';
 
 export const LOG_ACTIONS_MOUNT_DASHBOARD = 'mount_dashboard';
+export const LOG_ACTIONS_MOUNT_REPORTVIEWER = 'mount_reportviewer';
 export const LOG_ACTIONS_MOUNT_EXPLORER = 'mount_explorer';
 
 export const LOG_ACTIONS_SELECT_DASHBOARD_TAB = 'select_dashboard_tab';
+export const LOG_ACTIONS_SELECT_REPORTVIEWER_TAB = 'select_reportviewer_tab';
 export const LOG_ACTIONS_FORCE_REFRESH_CHART = 'force_refresh_chart';
 export const LOG_ACTIONS_CHANGE_EXPLORE_CONTROLS = 'change_explore_controls';
 export const LOG_ACTIONS_TOGGLE_EDIT_DASHBOARD = 'toggle_edit_dashboard';
@@ -37,6 +39,17 @@ export const LOG_ACTIONS_EXPORT_CSV_DASHBOARD_CHART =
 export const LOG_ACTIONS_EXPORT_XLSX_DASHBOARD_CHART =
   'export_xlsx_dashboard_chart';
 export const LOG_ACTIONS_CHANGE_DASHBOARD_FILTER = 'change_dashboard_filter';
+export const LOG_ACTIONS_TOGGLE_EDIT_REPORTVIEWER = 'toggle_edit_reportviewer';
+export const LOG_ACTIONS_FORCE_REFRESH_REPORTVIEWER = 'force_refresh_reportviewer';
+export const LOG_ACTIONS_PERIODIC_RENDER_REPORTVIEWER =
+  'periodic_render_reportviewer';
+export const LOG_ACTIONS_EXPLORE_REPORTVIEWER_CHART = 'explore_reportviewer_chart';
+export const LOG_ACTIONS_EXPORT_CSV_REPORTVIEWER_CHART =
+  'export_csv_reportviewer_chart';
+export const LOG_ACTIONS_EXPORT_XLSX_REPORTVIEWER_CHART =
+  'export_xlsx_reportviewer_chart';
+export const LOG_ACTIONS_CHANGE_REPORTVIEWER_FILTER = 'change_reportviewer_filter';
+
 export const LOG_ACTIONS_DATASET_CREATION_EMPTY_CANCELLATION =
   'dataset_creation_empty_cancellation';
 export const LOG_ACTIONS_DATASET_CREATION_DATABASE_CANCELLATION =
@@ -53,6 +66,12 @@ export const LOG_ACTIONS_DASHBOARD_DOWNLOAD_AS_IMAGE =
   'dashboard_download_as_image';
 export const LOG_ACTIONS_DASHBOARD_DOWNLOAD_AS_PDF =
   'dashboard_download_as_pdf';
+  export const LOG_ACTIONS_CONFIRM_OVERWRITE_REPORTVIEWER_METADATA =
+  'confirm_overwrite_reportviewer_metadata';
+export const LOG_ACTIONS_REPORTVIEWER_DOWNLOAD_AS_IMAGE =
+  'reportviewer_download_as_image';
+export const LOG_ACTIONS_REPORTVIEWER_DOWNLOAD_AS_PDF =
+  'reportviewer_download_as_pdf';
 export const LOG_ACTIONS_CHART_DOWNLOAD_AS_IMAGE = 'chart_download_as_image';
 export const LOG_ACTIONS_CHART_DOWNLOAD_AS_CSV = 'chart_download_as_csv';
 export const LOG_ACTIONS_CHART_DOWNLOAD_AS_CSV_PIVOTED =
@@ -93,6 +112,20 @@ export const LOG_EVENT_TYPE_USER = new Set([
   LOG_ACTIONS_CONFIRM_OVERWRITE_DASHBOARD_METADATA,
   LOG_ACTIONS_DASHBOARD_DOWNLOAD_AS_IMAGE,
   LOG_ACTIONS_DASHBOARD_DOWNLOAD_AS_PDF,
+  LOG_ACTIONS_MOUNT_REPORTVIEWER,
+  LOG_ACTIONS_SELECT_REPORTVIEWER_TAB,
+  LOG_ACTIONS_EXPLORE_REPORTVIEWER_CHART,
+  LOG_ACTIONS_FORCE_REFRESH_CHART,
+  LOG_ACTIONS_EXPORT_CSV_REPORTVIEWER_CHART,
+  LOG_ACTIONS_CHANGE_REPORTVIEWER_FILTER,
+  LOG_ACTIONS_CHANGE_EXPLORE_CONTROLS,
+  LOG_ACTIONS_TOGGLE_EDIT_REPORTVIEWER,
+  LOG_ACTIONS_FORCE_REFRESH_REPORTVIEWER,
+  LOG_ACTIONS_PERIODIC_RENDER_REPORTVIEWER,
+  LOG_ACTIONS_MOUNT_EXPLORER,
+  LOG_ACTIONS_CONFIRM_OVERWRITE_REPORTVIEWER_METADATA,
+  LOG_ACTIONS_REPORTVIEWER_DOWNLOAD_AS_IMAGE,
+  LOG_ACTIONS_REPORTVIEWER_DOWNLOAD_AS_PDF,
   LOG_ACTIONS_CHART_DOWNLOAD_AS_IMAGE,
 ]);
 

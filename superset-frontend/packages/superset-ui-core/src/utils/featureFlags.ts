@@ -29,10 +29,13 @@ export enum FeatureFlag {
   AvoidColorsCollision = 'AVOID_COLORS_COLLISION',
   ChartPluginsExperimental = 'CHART_PLUGINS_EXPERIMENTAL',
   ConfirmDashboardDiff = 'CONFIRM_DASHBOARD_DIFF',
-  /** @deprecated */
   DashboardCrossFilters = 'DASHBOARD_CROSS_FILTERS',
   DashboardVirtualization = 'DASHBOARD_VIRTUALIZATION',
   DashboardRbac = 'DASHBOARD_RBAC',
+  ConfirmReportViewerDiff = 'CONFIRM_ReportViewer_DIFF',
+  ReportViewerCrossFilters = 'ReportViewer_CROSS_FILTERS',
+  ReportViewerVirtualization = 'ReportViewer_VIRTUALIZATION',
+  ReportViewerRbac = 'ReportViewer_RBAC',
   DatapanelClosedByDefault = 'DATAPANEL_CLOSED_BY_DEFAULT',
   DisableLegacyDatasourceEditor = 'DISABLE_LEGACY_DATASOURCE_EDITOR',
   DrillToDetail = 'DRILL_TO_DETAIL',
@@ -41,7 +44,6 @@ export enum FeatureFlag {
   EmbeddableCharts = 'EMBEDDABLE_CHARTS',
   EmbeddedSuperset = 'EMBEDDED_SUPERSET',
   EnableAdvancedDataTypes = 'ENABLE_ADVANCED_DATA_TYPES',
-  /** @deprecated */
   EnableJavascriptControls = 'ENABLE_JAVASCRIPT_CONTROLS',
   EnableTemplateProcessing = 'ENABLE_TEMPLATE_PROCESSING',
   EscapeMarkdownHtml = 'ESCAPE_MARKDOWN_HTML',

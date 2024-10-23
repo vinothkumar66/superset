@@ -28,7 +28,7 @@ import { Link } from 'react-router-dom';
 import rison from 'rison';
 import {
   createErrorHandler,
-  handleDashboardDelete,
+  handleReportDelete,
 } from 'src/views/CRUD/utils';
 import { useListViewResource, useFavoriteStatus } from 'src/views/CRUD/hooks';
 import ConfirmStatusChange from 'src/components/ConfirmStatusChange';
@@ -48,18 +48,17 @@ import withToasts from 'src/components/MessageToasts/withToasts';
 import Icons from 'src/components/Icons';
 import DeleteModal from 'src/components/DeleteModal';
 import FaveStar from 'src/components/FaveStar';
-import PropertiesModal from 'src/dashboard/components/PropertiesModal';
 import { Tooltip } from 'src/components/Tooltip';
 
-import Dashboard from 'src/dashboard/containers/Dashboard';
-import {
-  Dashboard as CRUDDashboard,
+import { 
+  ReportViewer as CRUDReport,
   QueryObjectColumns,
 } from 'src/views/CRUD/types';
 import CertifiedBadge from 'src/components/CertifiedBadge';
-import DashboardCard from 'src/features/dashboards/DashboardCard';
+import ReportViewerCard from 'src/features/reportViewers/ReportViewerCard';
 import { Button } from 'antd';
 import { ModifiedInfo } from 'src/components/AuditInfo';
+import PropertiesModal from 'src/reportViewer/components/PropertiesModal';
 
 const PAGE_SIZE = 25;
 
@@ -73,11 +72,11 @@ interface ReportListProps {
   };
 }
 
-export interface Dashboard {
+export interface ReportViewer {
   changed_by_name: string;
   changed_on_delta_humanized: string;
   changed_by: string;
-  dashboard_title: string;
+  reportViewer_title: string;
   id: number;
   published: boolean;
   url: string;
@@ -92,8 +91,8 @@ const Actions = styled.div`
 `;
 
 const DASHBOARD_COLUMNS_TO_FETCH = [
-  'id',
-  'dashboard_title',
+  'id', 
+  'reportViewer_title',
   'published',
   'url',
   'slug',
@@ -118,18 +117,18 @@ function ReportViewer(props: ReportListProps) {
   const {
     state: {
       loading,
-      resourceCount: dashboardCount,
-      resourceCollection: dashboards,
+      resourceCount: reportViewerCount,
+      resourceCollection: reportViewers,
       bulkSelectEnabled,
     },
-    setResourceCollection: setDashboards,
+    setResourceCollection: setReportViewers,
     hasPerm,
     fetchData,
     toggleBulkSelect,
     refreshData,
-  } = useListViewResource<Dashboard>(
-    'dashboard',
-    t('dashboard'),
+  } = useListViewResource<ReportViewer>(
+    'reportViewer',
+    t('reportViewer'),
     addDangerToast,
     undefined,
     undefined,
@@ -137,18 +136,18 @@ function ReportViewer(props: ReportListProps) {
     undefined,
     DASHBOARD_COLUMNS_TO_FETCH,
   );
-  const dashboardIds = useMemo(() => dashboards.map(d => d.id), [dashboards]);
+  const reportViewerIds = useMemo(() => reportViewers.map(d => d.id), [reportViewers]);
   const [saveFavoriteStatus, favoriteStatus] = useFavoriteStatus(
-    'dashboard',
-    dashboardIds,
+    'reportViewer',
+    reportViewerIds,
     addDangerToast,
   );
 
-  const [dashboardToEdit, setDashboardToEdit] = useState<Dashboard | null>(
+  const [reportViewerToEdit, setReportViewerToEdit] = useState<ReportViewer | null>(
     null,
   );
-  const [dashboardToDelete, setDashboardToDelete] =
-    useState<CRUDDashboard | null>(null);
+  const [reportViewerToDelete, setReportViewerToDelete] =
+    useState<CRUDReport | null>(null);
 
   const [preparingExport, setPreparingExport] = useState<boolean>(false);
 
@@ -160,22 +159,22 @@ function ReportViewer(props: ReportListProps) {
 
   const initialSort = [{ id: 'changed_on_delta_humanized', desc: true }];
 
-  function openDashboardEditModal(dashboard: Dashboard) {
-    setDashboardToEdit(dashboard);
+  function openReportViewerEditModal(reportViewer: ReportViewer) {
+    setReportViewerToEdit(reportViewer);
   }
 
-  function handleDashboardEdit(edits: Dashboard) {
+  function handleReportViewerEdit(edits: ReportViewer) {
     return SupersetClient.get({
-      endpoint: `/api/v1/dashboard/${edits.id}`,
+      endpoint: `/api/v1/reportViewer/${edits.id}`,
     }).then(
       ({ json = {} }) => {
-        setDashboards(
-          dashboards.map(dashboard => {
-            if (dashboard.id === json?.result?.id) {
+        setReportViewers(
+          reportViewers.map(reportViewer => {
+            if (reportViewer.id === json?.result?.id) {
               const {
                 changed_by_name,
                 changed_by, 
-                dashboard_title = '',
+                reportViewer_title = '',
                 slug = '',
                 json_metadata = '',
                 changed_on_delta_humanized,
@@ -186,10 +185,10 @@ function ReportViewer(props: ReportListProps) {
                 tags,
               } = json.result;
               return {
-                ...dashboard,
+                ...reportViewer,
                 changed_by_name,
                 changed_by,
-                dashboard_title,
+                reportViewer_title,
                 slug,
                 json_metadata,
                 changed_on_delta_humanized,
@@ -200,30 +199,30 @@ function ReportViewer(props: ReportListProps) {
                 tags,
               };
             }
-            return dashboard;
+            return reportViewer;
           }),
         );
       },
       createErrorHandler(errMsg =>
         addDangerToast(
-          t('An error occurred while fetching dashboards: %s', errMsg),
+          t('An error occurred while fetching reportViewers: %s', errMsg),
         ),
       ),
     );
   }
 
-  const handleBulkDashboardExport = (dashboardsToExport: Dashboard[]) => {
-    const ids = dashboardsToExport.map(({ id }) => id);
-    handleResourceExport('dashboard', ids, () => {
+  const handleBulkReportViewerExport = (reportViewersToExport: ReportViewer[]) => {
+    const ids = reportViewersToExport.map(({ id }) => id);
+    handleResourceExport('reportViewer', ids, () => {
       setPreparingExport(false);
     });
     setPreparingExport(true);
   };
 
-  function handleBulkDashboardDelete(dashboardsToDelete: Dashboard[]) {
+  function handleBulkReportViewerDelete(reportViewersToDelete: ReportViewer[]) {
     return SupersetClient.delete({
-      endpoint: `/api/v1/dashboard/?q=${rison.encode(
-        dashboardsToDelete.map(({ id }) => id),
+      endpoint: `/api/v1/reportViewer/?q=${rison.encode(
+        reportViewersToDelete.map(({ id }) => id),
       )}`,
     }).then(
       ({ json = {} }) => {
@@ -232,7 +231,7 @@ function ReportViewer(props: ReportListProps) {
       },
       createErrorHandler(errMsg =>
         addDangerToast(
-          t('There was an issue deleting the selected dashboards: ', errMsg),
+          t('There was an issue deleting the selected reportViewers: ', errMsg),
         ),
       ),
     );
@@ -264,7 +263,7 @@ function ReportViewer(props: ReportListProps) {
           row: {
             original: {
               url,
-              dashboard_title: dashboardTitle,
+              reportViewer_title: reportViewerTitle,
               certified_by: certifiedBy,
               certification_details: certificationDetails,
             },
@@ -279,11 +278,11 @@ function ReportViewer(props: ReportListProps) {
                 />{' '}
               </>
             )}
-            {dashboardTitle}
+            {reportViewerTitle}
           </Link>
         ),
         Header: t('Report Name'),
-        accessor: 'dashboard_title',
+        accessor: 'reportViewer_title',
       },
       {
         Cell: ({
@@ -301,14 +300,14 @@ function ReportViewer(props: ReportListProps) {
       {
         Cell: ({ row: { original } }: any) => {
           const handleDelete = () =>
-            handleDashboardDelete(
+            handleReportDelete(
               original,
               refreshData,
               addSuccessToast,
               addDangerToast,
             );
-          const handleEdit = () => openDashboardEditModal(original);
-          const handleExport = () => handleBulkDashboardExport([original]);
+          const handleEdit = () => openReportViewerEditModal(original);
+          const handleExport = () => handleBulkReportViewerExport([original]);
 
           return (
             <Actions className="actions">
@@ -318,7 +317,7 @@ function ReportViewer(props: ReportListProps) {
                   description={
                     <>
                       {t('Are you sure you want to delete')}{' '}
-                      <b>{original.dashboard_title}</b>?
+                      <b>{original.reportViewer_title}</b>?
                     </>
                   }
                   onConfirm={handleDelete}
@@ -335,7 +334,7 @@ function ReportViewer(props: ReportListProps) {
                         className="action-button"
                         onClick={confirmDelete}
                       >
-                        <Icons.Trash data-test="dashboard-list-trash-icon" />
+                        <Icons.Trash data-test="reportViewer-list-trash-icon" />
                       </Button>
                     </Tooltip>
                   )}
@@ -353,7 +352,7 @@ function ReportViewer(props: ReportListProps) {
                     className="action-button"
                     onClick={handleExport}
                   >
-                    <Icons.Share />
+                    <Icons.Share /> 
                   </Button>
                 </Tooltip>
               )}
@@ -406,7 +405,7 @@ function ReportViewer(props: ReportListProps) {
       id: 'id',
       urlDisplay: 'favorite',
       input: 'select',
-      operator: FilterOperator.DashboardIsFav,
+      operator: FilterOperator.ReportViewerIsFav,
       unfilteredLabel: t('Any'),
       selects: [
         { label: t('Yes'), value: true },
@@ -421,14 +420,14 @@ function ReportViewer(props: ReportListProps) {
       {
         Header: t('Report Name'),
         key: 'search',
-        id: 'dashboard_title',
+        id: 'reportViewer_title',
         input: 'search',
         operator: FilterOperator.TitleOrSlug,
       },
       {
         Header: t('Date range'),
         key: 'range',
-        id: 'dashboard_title',
+        id: 'reportViewer_title',
         input: 'datetime_range',
         operator: FilterOperator.Between,
       },
@@ -437,9 +436,9 @@ function ReportViewer(props: ReportListProps) {
   }, [addDangerToast, favoritesFilter, props.user]);
 
   const renderCard = useCallback(
-    (dashboard: Dashboard) => (
-      <DashboardCard
-        dashboard={dashboard}
+    (reportViewer: ReportViewer) => (
+      <ReportViewerCard
+        reportViewer={reportViewer}
         hasPerm={hasPerm}
         bulkSelectEnabled={bulkSelectEnabled}
         showThumbnails={
@@ -449,11 +448,11 @@ function ReportViewer(props: ReportListProps) {
         }
         userId={user?.userId}
         loading={loading}
-        openDashboardEditModal={openDashboardEditModal}
+        openReportViewerEditModal={openReportViewerEditModal}
         saveFavoriteStatus={saveFavoriteStatus}
-        favoriteStatus={favoriteStatus[dashboard.id]}
-        handleBulkDashboardExport={handleBulkDashboardExport}
-        onDelete={dashboard => setDashboardToDelete(dashboard)}
+        favoriteStatus={favoriteStatus[reportViewer.id]}
+        handleBulkReportViewerExport={handleBulkReportViewerExport}
+        onDelete={reportViewer => setReportViewerToDelete(reportViewer)}
       />
     ),
     [
@@ -475,9 +474,9 @@ function ReportViewer(props: ReportListProps) {
       <ConfirmStatusChange
         title={t('Please confirm')}
         description={t(
-          'Are you sure you want to delete the selected dashboards?',
+          'Are you sure you want to delete the selected reports?',
         )}
-        onConfirm={handleBulkDashboardDelete}
+        onConfirm={handleBulkReportViewerDelete}
       >
         {confirmDelete => {
           const bulkActions: ListViewProps['bulkActions'] = [];
@@ -494,50 +493,50 @@ function ReportViewer(props: ReportListProps) {
               key: 'export',
               name: t('Export'),
               type: 'primary',
-              onSelect: handleBulkDashboardExport,
+              onSelect: handleBulkReportViewerExport,
             });
           }
           return (
             <>
-              {dashboardToEdit && (
+              {reportViewerToEdit && (
                 <PropertiesModal
-                  dashboardId={dashboardToEdit.id}
+                  reportViewerId={reportViewerToEdit.id}
                   show
-                  onHide={() => setDashboardToEdit(null)}
-                  onSubmit={handleDashboardEdit}
+                  onHide={() => setReportViewerToEdit(null)}
+                  onSubmit={handleReportViewerEdit}
                 />
               )}
-              {dashboardToDelete && (
+              {reportViewerToDelete && (
                 <DeleteModal
                   description={
                     <>
                       {t('Are you sure you want to delete')}{' '}
-                      <b>{dashboardToDelete.dashboard_title}</b>?
+                      <b>{reportViewerToDelete.reportViewer_title}</b>?
                     </>
                   }
                   onConfirm={() => {
-                    handleDashboardDelete(
-                      dashboardToDelete,
+                    handleReportDelete(
+                      reportViewerToDelete,
                       refreshData,
                       addSuccessToast,
                       addDangerToast,
                       undefined,
                       user?.userId,
                     );
-                    setDashboardToDelete(null);
+                    setReportViewerToDelete(null);
                   }}
-                  onHide={() => setDashboardToDelete(null)}
-                  open={!!dashboardToDelete}
+                  onHide={() => setReportViewerToDelete(null)}
+                  open={!!reportViewerToDelete}
                   title={t('Please confirm')}
                 />
               )}
-              <ListView<Dashboard>
+              <ListView<ReportViewer>
                 bulkActions={bulkActions}
                 bulkSelectEnabled={bulkSelectEnabled}
-                className="dashboard-list-view"
+                className="reportViewer-list-view"
                 columns={columns}
-                count={dashboardCount}
-                data={dashboards}
+                count={reportViewerCount}
+                data={reportViewers}
                 disableBulkSelect={toggleBulkSelect}
                 fetchData={fetchData}
                 refreshData={refreshData}
@@ -559,7 +558,7 @@ function ReportViewer(props: ReportListProps) {
                     : 'table'
                 }
                 enableBulkTag
-                bulkTagResourceName="dashboard"
+                bulkTagResourceName="reportViewer"
               />
             </>
           );

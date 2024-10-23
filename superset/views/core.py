@@ -711,7 +711,7 @@ class Superset(BaseSupersetView):
         db_name = request.args.get("db_name")
         extra_filters = request.args.get("extra_filters")
         slices: list[Slice] = []
-
+ 
         if not slice_id and not (table_name and db_name):
             return json_error_response(
                 __(

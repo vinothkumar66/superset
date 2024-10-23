@@ -23,6 +23,7 @@ import { makeSingleton } from '../utils';
 export enum SharedLabelColorSource {
   Dashboard,
   Explore,
+  ReportViewer,
 }
 export class SharedLabelColor {
   sliceLabelMap: Map<number, string[]>;

@@ -56,6 +56,7 @@ export enum LocalStorageKeys {
   DashboardExploreContext = 'dashboard__explore_context',
   DashboardEditorShowOnlyMyCharts = 'dashboard__editor_show_only_my_charts',
   CommonResizableSidebarWidths = 'common__resizable_sidebar_widths',
+  ReportViewerExploreContext = "ReportViewerExploreContext",
 }
 
 export type LocalStorageValues = {

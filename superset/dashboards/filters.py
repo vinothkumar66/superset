@@ -99,25 +99,26 @@ class DashboardAccessFilter(BaseFilter):  # pylint: disable=too-few-public-metho
     This means they do not get curation but can still sort by "published"
     if they wish to see those dashboards which are published first.
     """
-
+   
     def apply(self, query: Query, value: Any) -> Query:
         if security_manager.is_admin():
             return query
 
-        is_rbac_disabled_filter = []
+        is_rbac_disabled_filter = [] 
         dashboard_has_roles = Dashboard.roles.any()
         if is_feature_enabled("DASHBOARD_RBAC"):
             is_rbac_disabled_filter.append(~dashboard_has_roles)
 
         datasource_perm_query = (
-            db.session.query(Dashboard.id)
+            db.session.query(Dashboard.id) 
             .join(Dashboard.slices, isouter=True)
             .join(SqlaTable, Slice.datasource_id == SqlaTable.id)
             .join(Database, SqlaTable.database_id == Database.id)
             .filter(
                 and_(
                     Dashboard.published.is_(True),
-                    *is_rbac_disabled_filter,
+                    *is_rbac_disabled_filter,  
+
                     get_dataset_access_filters(
                         Slice,
                         security_manager.can_access_all_datasources(),
@@ -144,7 +145,7 @@ class DashboardAccessFilter(BaseFilter):  # pylint: disable=too-few-public-metho
                         Role.id.in_([x.id for x in security_manager.get_user_roles()]),
                     ),
                 )
-            )
+            ) 
 
             feature_flagged_filters.append(Dashboard.id.in_(roles_based_query))
 

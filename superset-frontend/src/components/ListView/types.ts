@@ -111,6 +111,7 @@ export enum FilterOperator {
   DatasetIsNullOrEmpty = 'dataset_is_null_or_empty',
   Between = 'between',
   DashboardIsFav = 'dashboard_is_favorite',
+  ReportViewerIsFav = 'reportviewer_is_favorite',
   ChartIsFav = 'chart_is_favorite',
   ChartIsCertified = 'chart_is_certified',
   DashboardIsCertified = 'dashboard_is_certified',

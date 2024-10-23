@@ -207,7 +207,7 @@ function DashboardList(props: DashboardListProps) {
   const userKey = dangerouslyGetItemDoNotUse(user?.userId?.toString(), null);
 
   const canCreate = hasPerm('can_write');
-  const canEdit = hasPerm('can_write');
+  const canEdit = hasPerm('can_write'); 
   const canDelete = hasPerm('can_write');
   const canExport = hasPerm('can_export');
 
@@ -242,7 +242,7 @@ function DashboardList(props: DashboardListProps) {
                 ...dashboard,
                 changed_by_name,
                 changed_by,
-                dashboard_title,
+                dashboard_title,  
                 slug,
                 json_metadata,
                 changed_on_delta_humanized,
@@ -270,7 +270,7 @@ function DashboardList(props: DashboardListProps) {
     handleResourceExport('dashboard', ids, () => {
       setPreparingExport(false);
     });
-    setPreparingExport(true);
+    setPreparingExport(true); 
   };
 
   function handleBulkDashboardDelete(dashboardsToDelete: Dashboard[]) {
@@ -561,7 +561,7 @@ function DashboardList(props: DashboardListProps) {
         operator: FilterOperator.RelationManyMany,
         unfilteredLabel: t('All'),
         fetchSelects: createFetchRelated(
-          'dashboard',
+          'dashboard', 
           'owners',
           createErrorHandler(errMsg =>
             addDangerToast(
@@ -655,7 +655,7 @@ function DashboardList(props: DashboardListProps) {
       />
     ),
     [
-      bulkSelectEnabled,
+      bulkSelectEnabled, 
       favoriteStatus,
       hasPerm,
       loading,

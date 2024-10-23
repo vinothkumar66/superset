@@ -103,7 +103,7 @@ class ReportViewerModelView(DashboardMixin, SupersetModelView, DeleteMixin):  # 
                 mimetype="application/text",
             )
         return self.render_template(
-            "superset/export_dashboards.html", dashboards_url="/dashboard/list"
+            "superset/export_dashboards.html", dashboards_url="/dashboard/list" 
         )
 
 
@@ -123,7 +123,7 @@ class ReportViewerView(BaseSupersetView):
         )
         db.session.add(new_dashboard)
         db.session.commit()
-        return redirect(f"/superset/dashboard/{new_dashboard.id}/?edit=true")
+        return redirect(f"/superset/webreports/{new_dashboard.id}/?edit=true")
 
     @expose("/<dashboard_id_or_slug>/embedded")
     @event_logger.log_this_with_extra_payload
