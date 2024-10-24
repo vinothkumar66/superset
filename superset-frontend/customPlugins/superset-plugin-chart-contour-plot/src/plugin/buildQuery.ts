@@ -32,13 +32,83 @@ import { buildQueryContext, QueryFormData } from '@superset-ui/core';
  * it is possible to define post processing operations in the QueryObject, or multiple queries
  * if a viz needs multiple different result sets.
  */
+
+// export default function buildQuery(formData: QueryFormData) {
+//   // const { x_axis_column, y_axis_column, z_axis_column } = formData;
+//   const x_axis_column = formData.x_axis_column[0]; // 'latitude'
+//   const y_axis_column = formData.y_axis_column[0]; // 'longitude'
+//   const z_axis_column = formData.z_axis_column[0]; // 'temperature'
+
+//   console.log('Form Data:', formData);
+//   return buildQueryContext(formData, baseQueryObject => [
+//     {
+//       ...baseQueryObject,
+//       columns: [x_axis_column, y_axis_column, z_axis_column],
+//       metrics: [], // Optional: add a metric here if needed
+//       // post_processing: [
+//       //   {
+//       //     operation: 'pivot',
+//       //     options: {
+//       //       index: [x_axis_column],
+//       //       columns: [y_axis_column],
+//       //       aggregates: {
+//       //         [z_axis_column]: {
+//       //           operator: 'mean',
+//       //         },
+//       //       },
+//       //       drop_missing_columns: false,
+//       //     },
+//       //   },
+//       // ],
+//       is_timeseries: false,
+//     },
+//   ]);
+// }
 export default function buildQuery(formData: QueryFormData) {
-  const { cols: groupby } = formData;
+  // Extract the axis columns from the formData. Assuming they are arrays, use the first element.
+  const x_axis_column = formData.x_axis_column; // 'latitude'
+    const y_axis_column = formData.y_axis_column; // 'longitude'
+    const z_axis_column = formData.z_axis_column; // 'temperature'
+
+  console.log('Form Data:', formData);
+
+  // Build the query context using the form data and configured query object
   return buildQueryContext(formData, baseQueryObject => [
     {
       ...baseQueryObject,
-      groupby,
-      is_timeseries: false,
+      columns: [x_axis_column, y_axis_column, z_axis_column],
+      metrics: [], // Optional: you can add a metric if needed
+      // Uncomment and configure the post-processing section if pivoting is necessary
+      post_processing: [],
+
+      // post_processing: [
+      //   {
+      //     operation: 'pivot',
+      //     options: {
+      //       index: [x_axis_column],
+      //       columns: [y_axis_column],
+      //       aggregates: {
+      //         [z_axis_column]: {
+      //           operator: 'mean', // Aggregation operator
+      //         },
+      //       },
+      //       drop_missing_columns: false,
+      //     },
+      //   },
+      // ],
+      is_timeseries: false, // Set to true if the data is time-series based
     },
   ]);
 }
+
+// export default function buildQuery(formData: QueryFormData) {
+//   const { cols: groupby } = formData;
+//   return buildQueryContext(formData, baseQueryObject => [
+//     {
+//       ...baseQueryObject,
+//       groupby,
+//       is_timeseries: false,
+//     },
+//   ]);
+// }
+

@@ -191,21 +191,21 @@ export const getOpacity = (
 //   //         getOpacity(value, cutoffValue, extremeValue, minOpacity, maxOpacity),
 //   //       )
 //   //     : colorScheme;
-    
+
 //   //   // Return both backgroundColor and textColor
 //   //   return { backgroundColor, textColor };
 
 //   return (value: number) => {
 //     console.log(value, "value");
-  
+
 //     // Compare the value using your comparator function
 //     const compareResult = comparatorFunction(value, columnValues);
 //     console.log(compareResult, "compareResult");
-  
+
 //     if (compareResult === false) return undefined;
-  
+
 //     const { cutoffValue, extremeValue } = compareResult;
-  
+
 //     // Calculate backgroundColor using the compare result
 //     const backgroundColor = alpha === undefined || alpha
 //       ? addAlpha(
@@ -213,11 +213,10 @@ export const getOpacity = (
 //           getOpacity(value, cutoffValue, extremeValue, minOpacity, maxOpacity),
 //         )
 //       : colorScheme;
-  
-  
+
 //     // Now find the row that contains the value and apply formatting
 //     const rowElements = document.querySelectorAll('.pvtTable tbody tr');
-    
+
 //     rowElements.forEach((rowElement) => {
 //       const cellValues = Array.from(rowElement.querySelectorAll('td, th')).map(
 //         (cell) => {
@@ -225,15 +224,15 @@ export const getOpacity = (
 //           return parseFloat(htmlCell.textContent || "") || htmlCell.textContent;
 //         }
 //       );
-  
+
 //       // If the row contains the value we are comparing, apply formatting
 //       if (cellValues.includes(value)) {
 //         console.log(`Applying formatting to row with value: ${value}`);
-  
+
 //         const htmlRowElement = rowElement as HTMLElement; // Cast to HTMLElement to use style
 //         htmlRowElement.style.backgroundColor = backgroundColor;
 //         htmlRowElement.style.color = textColor;
-  
+
 //         // Apply the formatting to all cells in the row
 //         rowElement.querySelectorAll('td, th').forEach((cell) => {
 //           const htmlCell = cell as HTMLElement; // Cast to HTMLElement to use style
@@ -242,13 +241,10 @@ export const getOpacity = (
 //         });
 //       }
 //     });
-  
+
 //     // Return both backgroundColor and textColor
 //     return { backgroundColor, textColor };
 
-  
-  
-    
 //     // if (alpha === undefined || alpha) {
 //     //   return addAlpha(
 //     //     colorScheme,
@@ -291,7 +287,6 @@ export const getOpacity = (
 //       },
 //       [],
 //     ) ?? [],
-
 
 export const getColorFunction = (
   {
@@ -376,41 +371,48 @@ export const getColorFunction = (
 
   // Function to apply the formatting
   return (value: number) => {
-    console.log(value, "value");
+    console.log(value, 'value');
 
     // Compare the value using the comparator function
     const compareResult = comparatorFunction(value, columnValues);
-    console.log(compareResult, "compareResult");
+    console.log(compareResult, 'compareResult');
 
     if (compareResult === false) return undefined;
 
     const { cutoffValue, extremeValue } = compareResult;
 
     // Calculate backgroundColor using the compare result
-    const backgroundColor = alpha === undefined || alpha
-      ? addAlpha(
-          colorScheme,
-          getOpacity(value, cutoffValue, extremeValue, minOpacity, maxOpacity),
-        )
-      : colorScheme;
+    const backgroundColor =
+      alpha === undefined || alpha
+        ? addAlpha(
+            colorScheme,
+            getOpacity(
+              value,
+              cutoffValue,
+              extremeValue,
+              minOpacity,
+              maxOpacity,
+            ),
+          )
+        : colorScheme;
 
     // Now find the row or column containing the value and apply formatting
     const rowElements = document.querySelectorAll('.pvtTable tbody tr');
-    console.log(rowElements, "rowElements file")
- 
-    rowElements.forEach((rowElement) => {
+    console.log(rowElements, 'rowElements file');
+
+    rowElements.forEach(rowElement => {
       const cellValues = Array.from(rowElement.querySelectorAll('td, th')).map(
-        (cell) => {
+        cell => {
           const htmlCell = cell as HTMLElement; // Cast to HTMLElement to avoid TS error
-          return parseFloat(htmlCell.textContent || "") || htmlCell.textContent;
-        }
+          return parseFloat(htmlCell.textContent || '') || htmlCell.textContent;
+        },
       );
 
       // If the row or cell contains the value we are comparing, apply formatting
       if (cellValues.includes(value)) {
         console.log(`Applying formatting to cell with value: ${value}`);
 
-        rowElement.querySelectorAll('td, th').forEach((cell) => {
+        rowElement.querySelectorAll('td, th').forEach(cell => {
           const htmlCell = cell as HTMLElement; // Cast to HTMLElement to use style
           htmlCell.style.backgroundColor = backgroundColor;
           htmlCell.style.color = textColor;
@@ -432,7 +434,7 @@ export const getColorFormatters = memoizeOne(
   ) =>
     columnConfig?.reduce(
       (acc: ColorFormatters, config: ConditionalFormattingConfig) => {
-        console.log(acc, "acc, config", config);
+        console.log(acc, 'acc, config', config);
 
         if (
           config?.column !== undefined &&
@@ -451,7 +453,13 @@ export const getColorFormatters = memoizeOne(
               alpha,
             ),
           });
-          console.log(config?.column, config, data, alpha, "config?.column, config, data, alpha");
+          console.log(
+            config?.column,
+            config,
+            data,
+            alpha,
+            'config?.column, config, data, alpha',
+          );
         }
         return acc;
       },

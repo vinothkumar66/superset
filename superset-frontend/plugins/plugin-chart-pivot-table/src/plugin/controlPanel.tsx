@@ -406,26 +406,29 @@ const config: ControlPanelConfig = {
               description: t('Apply conditional color formatting to metrics'),
               mapStateToProps(explore, _, chart) {
                 console.log('Conditional formatting explore', explore);
-              //   const metrics =
-              //   (explore?.controls?.metrics?.value as QueryFormMetric[]) ?? [];
-              // const groupbyColumns = explore?.form_data?.groupbyColumns ?? [];
-              // const groupbyRows = explore?.form_data?.groupbyRows ?? [];
-              // const aggFunc = explore?.form_data?.aggregateFunction ?? [];  
-              // const updatedAggFunc = aggFunc.map((func:any) => `Total(${func})`);
-              // Combine metrics, groupbyColumns, and groupbyRows into one array
-              // const values = [...metrics, ...groupbyColumns, ...groupbyRows, ...updatedAggFunc];
-              const values =
+                //   const metrics =
+                //   (explore?.controls?.metrics?.value as QueryFormMetric[]) ?? [];
+                // const groupbyColumns = explore?.form_data?.groupbyColumns ?? [];
+                // const groupbyRows = explore?.form_data?.groupbyRows ?? [];
+                // const aggFunc = explore?.form_data?.aggregateFunction ?? [];
+                // const updatedAggFunc = aggFunc.map((func:any) => `Total(${func})`);
+                // Combine metrics, groupbyColumns, and groupbyRows into one array
+                // const values = [...metrics, ...groupbyColumns, ...groupbyRows, ...updatedAggFunc];
+                const values =
                   (explore?.controls?.metrics?.value as QueryFormMetric[]) ??
                   [];
 
-                  console.log('Conditional formatting values', explore?.controls?.metrics?.value);
+                console.log(
+                  'Conditional formatting values',
+                  explore?.controls?.metrics?.value,
+                );
                 console.log('Conditional formatting values', values);
                 const verboseMap = explore?.datasource?.hasOwnProperty(
                   'verbose_map',
                 )
                   ? (explore?.datasource as Dataset)?.verbose_map
                   : explore?.datasource?.columns ?? {};
-                console.log(verboseMap,"verboseMap");
+                console.log(verboseMap, 'verboseMap');
                 const chartStatus = chart?.chartStatus;
                 const metricColumn = values.map(value => {
                   if (typeof value === 'string') {

@@ -28,7 +28,7 @@ import { Col, Row } from 'src/components';
 import { InputNumber } from 'src/components/Input';
 import Button from 'src/components/Button';
 import { ConditionalFormattingConfig } from './types';
-import { ChromePicker } from 'react-color'; 
+import { ChromePicker } from 'react-color';
 
 const FullWidthInputNumber = styled(InputNumber)`
   width: 100%;
@@ -202,7 +202,7 @@ export const FormattingPopoverContent = ({
   });
   const handleColorChange = (newColor: any) => {
     setColor(newColor.hex);
-    setFormValues((prevValues) => ({
+    setFormValues(prevValues => ({
       ...prevValues,
       textColor: newColor.hex,
     }));
@@ -210,7 +210,7 @@ export const FormattingPopoverContent = ({
 
   // Handle form field changes
   const handleFormChange = (changedValues: any) => {
-    setFormValues((prevValues) => ({
+    setFormValues(prevValues => ({
       ...prevValues,
       ...changedValues,
     }));
@@ -251,7 +251,7 @@ export const FormattingPopoverContent = ({
             <Select ariaLabel={t('Color scheme')} options={colorScheme} />
             <ChromePicker
               color={config?.colorScheme || colorScheme[0].value}
-              onChangeComplete={(color) => {
+              onChangeComplete={color => {
                 // Call the existing onChange handler for background color
                 onChange({ colorScheme: color.hex });
               }}

@@ -100,7 +100,7 @@ export default function extractQueryFields(
     }
   });
 
-  console.log(metrics,"metrics");
+  console.log(metrics, 'metrics');
   return {
     columns: removeDuplicates(
       columns.filter(col => col !== ''),
@@ -125,7 +125,5 @@ export default function extractQueryFields(
             return item;
           })
         : undefined,
-        
   };
-  
 }
