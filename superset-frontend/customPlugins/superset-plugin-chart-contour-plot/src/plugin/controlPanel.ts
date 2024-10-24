@@ -146,79 +146,92 @@
 import { t, validateNonEmpty } from '@superset-ui/core';
 import {
   ControlPanelConfig,
-  sections,
   sharedControls,
 } from '@superset-ui/chart-controls';
 
 const config: ControlPanelConfig = {
   controlPanelSections: [
-    sections.legacyTimeseriesTime,
     {
       label: t('Query'),
       expanded: true,
       controlSetRows: [
+        // [
+        //   {
+        //     name: 'cols',
+        //     config: {
+        //       ...sharedControls.groupby,
+        //       label: t('Columns'),
+        //       description: t('Columns to group by'),
+        //     },
+        //   },
+        // ],
+        // [
+        //   {
+        //     name: 'metrics',
+        //     config: {
+        //       ...sharedControls.metrics,
+        //       // it's possible to add validators to controls if
+        //       // certain selections/types need to be enforced
+        //       validators: [validateNonEmpty],
+        //     },
+        //   },
+        // ],
+        // ['adhoc_filters'],
+        // [
+        //   {
+        //     name: 'row_limit',
+        //     config: sharedControls.row_limit,
+        //   },
+        // ],
+        // {
+        // label: t('Query'),
+        // expanded: true,
+        // controlSetRows: [
         [
           {
-            name: 'cols',
+            name: 'x_axis_column',
             config: {
               ...sharedControls.groupby,
-              label: t('Columns'),
-              description: t('Columns to group by'),
-            },
-          },
-        ],
-        [
-          {
-            name: 'metrics',
-            config: {
-              ...sharedControls.metrics,
-              // it's possible to add validators to controls if
-              // certain selections/types need to be enforced
+              label: t('X Axis'),
+              multi: false,
               validators: [validateNonEmpty],
             },
           },
         ],
-        ['adhoc_filters'],
         [
           {
-            name: 'row_limit',
-            config: sharedControls.row_limit,
+            name: 'y_axis_column',
+            config: {
+              ...sharedControls.groupby,
+              label: t('Y Axis'),
+              multi: false,
+              validators: [validateNonEmpty],
+            },
           },
         ],
-        // {
-        //   label: t('Query'),
-        //   expanded: true,
-        //   controlSetRows: [
-        //     [
-        //       {
-        //         name: 'x_axis_column',
-        //         config: {
-        //           ...sharedControls.groupby,
-        //           label: t('X Axis Column'),
-        //           validators: [validateNonEmpty],
-        //         },
-        //       },
-        //     ],
-        //     [
-        //       {
-        //         name: 'y_axis_column',
-        //         config: {
-        //           ...sharedControls.groupby,
-        //           label: t('Y Axis Column'),
-        //           validators: [validateNonEmpty],
-        //         },
-        //       },
-        //     ],
-        //     [
-        //       {
-        //         name: 'z_axis_column',
-        //         config: {
-        //           ...sharedControls.groupby,
-        //           label: t('Z Axis Column'),
-        //           validators: [validateNonEmpty],
-        //         },
-        //       },
-        //     ],
+        [
+          {
+            name: 'z_axis_column',
+            config: {
+              ...sharedControls.groupby,
+              label: t('Z Axis'),
+              multi: false,
+              validators: [validateNonEmpty],
+            },
+          },
+        ],
+        // [
+        //   {
+        //     name: 'metrics',
+        //     config: {
+        //       ...sharedControls.metrics,
+        //       // it's possible to add validators to controls if
+        //       // certain selections/types need to be enforced
+        //       // validators: [validateNonEmpty],
+        //     },
+        //   },
+        // ],
+        
       ],
     },
     {
@@ -284,21 +297,21 @@ const config: ControlPanelConfig = {
             },
           },
         ],
-        [
-          {
-            name: 'color_scheme',
-            config: {
-              type: 'ColorSchemeControl',
-              label: t('Color Scheme'),
-              default: 'd3Category10',
-              renderTrigger: true,
-              description: t('Color scheme for the contour plot'),
-              mapStateToProps: state => ({
-                schemes: state?.chart?.colorScheme,
-              }),
-            },
-          },
-        ],
+        // [
+        //   {
+        //     name: 'color_scheme',
+        //     config: {
+        //       type: 'ColorSchemeControl',
+        //       label: t('Color Scheme'),
+        //       default: 'd3Category10',
+        //       renderTrigger: true,
+        //       description: t('Color scheme for the contour plot'),
+        //       mapStateToProps: state => ({
+        //         schemes: state?.chart?.colorScheme,
+        //       }),
+        //     },
+        //   },
+        // ],
         [
           {
             name: 'show_labels',

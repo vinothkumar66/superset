@@ -64,6 +64,7 @@ const getMemoizedSectionsToRender = memoizeOne(
       .concat(controlPanelSections.filter(isControlPanelSectionConfig))
       .map(section => {
         const { controlSetRows } = section;
+        console.log(controlSetRows, 'controlsetrows');
         return {
           ...section,
           controlSetRows:

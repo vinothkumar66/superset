@@ -409,7 +409,10 @@ const config: ControlPanelConfig = {
                 const values =
                   (explore?.controls?.metrics?.value as QueryFormMetric[]) ??
                   [];
-                  console.log('Conditional formatting values', explore?.controls?.metrics?.value);
+                console.log(
+                  'Conditional formatting values',
+                  explore?.controls?.metrics?.value,
+                );
                 console.log('Conditional formatting values', values);
                 const verboseMap = explore?.datasource?.hasOwnProperty(
                   'verbose_map',
