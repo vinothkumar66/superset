@@ -231,7 +231,6 @@ const config: ControlPanelConfig = {
         //     },
         //   },
         // ],
-        
       ],
     },
     {
@@ -240,7 +239,7 @@ const config: ControlPanelConfig = {
       controlSetRows: [
         [
           {
-            name: 'header_text',
+            name: 'headerText',
             config: {
               type: 'TextControl',
               default: 'Contour Plot',
