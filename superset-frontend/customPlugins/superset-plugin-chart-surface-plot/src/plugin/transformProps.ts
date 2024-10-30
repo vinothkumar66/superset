@@ -65,24 +65,24 @@
 //   };
 // }
 
-
 // transformProps.ts
 
-import { ChartProps, QueryFormData } from '@superset-ui/core';
-import { SupersetPluginChartSurfacePlotProps } from './types';
+import { SupersetPluginChartSurfacePlotProps } from '../types';
 
-export default function transformProps(chartProps: ChartProps): SupersetPluginChartSurfacePlotProps {
-  const { width, height, formData, queriesData } = chartProps;
-  const { headerText, headerFontSize, boldText } = formData;
-  const data = queriesData[0].data;
+export default function transformProps(chartProps: any): SupersetPluginChartSurfacePlotProps {
+  const { formData, width, height, queriesData } = chartProps;
+  const { header_text, bold_text, header_font_size, x_axis_column, y_axis_column, z_axis_column } = formData;
 
   return {
-    data,
     width,
     height,
-    headerText,
-    headerFontSize,
-    boldText,
-    showWireframe: formData.showWireframe, // Map showWireframe from formData
+    data: queriesData[0].data, // Assuming your data comes in this format
+    headerText: header_text,
+    boldText: bold_text,
+    headerFontSize: header_font_size,
+    xAxisColumn: x_axis_column,
+    yAxisColumn: y_axis_column,
+    zAxisColumn: z_axis_column,
   };
 }
+

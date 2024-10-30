@@ -16,11 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import {
-  QueryFormData,
-  supersetTheme,
-  TimeseriesDataRecord,
-} from '@superset-ui/core';
+import { QueryFormData, supersetTheme } from '@superset-ui/core';
 
 export interface SupersetPluginChartSurfacePlotStylesProps {
   height: number;
@@ -42,14 +38,14 @@ export type SupersetPluginChartSurfacePlotQueryFormData = QueryFormData &
 //     data: TimeseriesDataRecord[];
 //     // add typing here for the props you pass in from transformProps.ts!
 //   };
-  export interface SupersetPluginChartSurfacePlotProps {
-    xAxisRange: any;
-    yAxisRange: any;
-    data: any;
-    height: number;
-    width: number;
-    headerText: string;
-    headerFontSize: 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl';
-    boldText: boolean;
-    showWireframe: boolean; // Add this line to define the showWireframe property
-  }
+export interface SupersetPluginChartSurfacePlotProps {
+  xAxisColumn: any;
+  yAxisColumn: any;
+  zAxisColumn: any,
+  data: any;
+  height: number;
+  width: number;
+  headerText: string;
+  headerFontSize: 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl';
+  boldText: boolean;
+}

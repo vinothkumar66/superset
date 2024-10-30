@@ -102,7 +102,12 @@ const SupersetPluginChartContourPlot: React.FC<
   console.log(data, 'data###########');
   // Destructure x, y, and z arrays directly from the data prop
   const { z, x, y } = data || { z: [], x: [], y: [] };
-console.log( xAxisColumn, yAxisColumn, zAxisColumn,"xAxisColumn,yAxisColumn,zAxisColumn")
+  console.log(
+    xAxisColumn,
+    yAxisColumn,
+    zAxisColumn,
+    'xAxisColumn,yAxisColumn,zAxisColumn',
+  );
   // Debugging: Log the incoming data
   console.log('Contour Plot Data:', { x, y, z }, 'Other Props:', {
     height,
@@ -128,9 +133,9 @@ console.log( xAxisColumn, yAxisColumn, zAxisColumn,"xAxisColumn,yAxisColumn,zAxi
       <Plot
         data={[
           {
-          z,
-          x,
-          y,
+            z,
+            x,
+            y,
             // z: z, // Data for z-axis
             // x: x, // Data for x-axis
             // y: y, // Data for y-axis
