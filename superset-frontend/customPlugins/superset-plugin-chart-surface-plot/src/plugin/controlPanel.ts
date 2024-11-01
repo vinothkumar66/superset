@@ -19,7 +19,6 @@
 import { t, validateNonEmpty } from '@superset-ui/core';
 import {
   ControlPanelConfig,
-  sections,
   sharedControls,
 } from '@superset-ui/chart-controls';
 
@@ -100,7 +99,6 @@ const config: ControlPanelConfig = {
 
   // For control input types, see: superset-frontend/src/explore/components/controls/index.js
   controlPanelSections: [
-
     {
       label: t('Query'),
       expanded: true,
@@ -109,7 +107,7 @@ const config: ControlPanelConfig = {
           {
             name: 'x_axis_column',
             config: {
-              ...sharedControls.groupby,
+              ...sharedControls.columns,
               label: t('X Axis'),
               multi: false,
               validators: [validateNonEmpty],
@@ -120,7 +118,7 @@ const config: ControlPanelConfig = {
           {
             name: 'y_axis_column',
             config: {
-              ...sharedControls.groupby,
+              ...sharedControls.columns,
               label: t('Y Axis'),
               multi: false,
               validators: [validateNonEmpty],
@@ -131,7 +129,7 @@ const config: ControlPanelConfig = {
           {
             name: 'z_axis_column',
             config: {
-              ...sharedControls.groupby,
+              ...sharedControls.columns,
               label: t('Z Axis'),
               multi: false,
               validators: [validateNonEmpty],

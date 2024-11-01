@@ -191,7 +191,7 @@ const config: ControlPanelConfig = {
           {
             name: 'x_axis_column',
             config: {
-              ...sharedControls.groupby,
+              ...sharedControls.columns,
               label: t('X Axis'),
               multi: false,
               validators: [validateNonEmpty],
@@ -202,7 +202,7 @@ const config: ControlPanelConfig = {
           {
             name: 'y_axis_column',
             config: {
-              ...sharedControls.groupby,
+              ...sharedControls.columns,
               label: t('Y Axis'),
               multi: false,
               validators: [validateNonEmpty],
@@ -213,7 +213,7 @@ const config: ControlPanelConfig = {
           {
             name: 'z_axis_column',
             config: {
-              ...sharedControls.groupby,
+              ...sharedControls.columns,
               label: t('Z Axis'),
               multi: false,
               validators: [validateNonEmpty],

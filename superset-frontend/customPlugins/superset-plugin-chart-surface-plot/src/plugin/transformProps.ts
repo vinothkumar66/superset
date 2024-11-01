@@ -69,20 +69,42 @@
 
 import { SupersetPluginChartSurfacePlotProps } from '../types';
 
-export default function transformProps(chartProps: any): SupersetPluginChartSurfacePlotProps {
+export default function transformProps(
+  chartProps: any,
+): SupersetPluginChartSurfacePlotProps {
   const { formData, width, height, queriesData } = chartProps;
-  const { header_text, bold_text, header_font_size, x_axis_column, y_axis_column, z_axis_column } = formData;
+  console.log(formData, 'formData');
+  console.log(chartProps, 'chartProps');
+
+  // Corrected property names
+  const {
+    headerText,
+    boldText,
+    headerFontSize,
+    xAxisColumn,
+    yAxisColumn,
+    zAxisColumn,
+  } = formData;
+
+  console.log(
+    headerText,
+    boldText,
+    headerFontSize,
+    xAxisColumn,
+    yAxisColumn,
+    zAxisColumn,
+    '$$$$$$$$$$headerText, boldText, headerFontSize, xAxisColumn, yAxisColumn, zAxisColumn$$$$$$4444444',
+  );
 
   return {
     width,
     height,
     data: queriesData[0].data, // Assuming your data comes in this format
-    headerText: header_text,
-    boldText: bold_text,
-    headerFontSize: header_font_size,
-    xAxisColumn: x_axis_column,
-    yAxisColumn: y_axis_column,
-    zAxisColumn: z_axis_column,
+    headerText,
+    boldText,
+    headerFontSize,
+    xAxisColumn,
+    yAxisColumn,
+    zAxisColumn,
   };
 }
-

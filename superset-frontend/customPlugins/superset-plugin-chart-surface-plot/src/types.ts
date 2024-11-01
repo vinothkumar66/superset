@@ -41,7 +41,7 @@ export type SupersetPluginChartSurfacePlotQueryFormData = QueryFormData &
 export interface SupersetPluginChartSurfacePlotProps {
   xAxisColumn: any;
   yAxisColumn: any;
-  zAxisColumn: any,
+  zAxisColumn: any;
   data: any;
   height: number;
   width: number;
