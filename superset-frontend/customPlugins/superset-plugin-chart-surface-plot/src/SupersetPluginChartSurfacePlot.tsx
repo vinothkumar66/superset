@@ -112,7 +112,7 @@
 
 //   useEffect(() => {
 //     const root = rootElem.current as HTMLElement;
-    
+
 //     const myChart = echarts.init(root, undefined, { renderer: 'canvas' });
 
 //     const option = {
@@ -170,135 +170,6 @@
 //   );
 // }
 
-
-
-import React, { useEffect, createRef } from 'react';
-import { SupersetPluginChartSurfacePlotProps, SupersetPluginChartSurfacePlotStylesProps } from './types';
-import { styled } from '@superset-ui/core';
-import * as echarts from 'echarts';
-import 'echarts-gl';
-
-const Styles = styled.div<SupersetPluginChartSurfacePlotStylesProps>`
-  padding: ${({ theme }) => theme.gridUnit * 4}px;
-  border-radius: ${({ theme }) => theme.gridUnit * 2}px;
-  height: ${({ height }) => height}px;
-  width: ${({ width }) => width}px;
-
-  h3 {
-    margin-top: 0;
-    margin-bottom: ${({ theme }) => theme.gridUnit * 3}px;
-    font-size: ${({ theme, headerFontSize }) => theme.typography.sizes[headerFontSize]}px;
-    font-weight: ${({ theme, boldText }) => theme.typography.weights[boldText ? 'bold' : 'normal']};
-  }
-`;
-
-
-export default function SupersetPluginChartSurfacePlot(props: SupersetPluginChartSurfacePlotProps) {
-  const {
-    data, // use sample data if no data prop is provided
-    height,
-    width,
-    headerText,
-    boldText,
-    headerFontSize,
-    xAxisColumn = 'x',
-    yAxisColumn = 'y',
-    zAxisColumn = 'z',
-  } = props;
-
-  const rootElem = createRef<HTMLDivElement>();
-
-  useEffect(() => {
-    if (!rootElem.current) return;
-
-    const root = rootElem.current;
-    const myChart = echarts.init(root, undefined, { renderer: 'canvas' });
-    const option = {
-      tooltip: {},
-      backgroundColor: '#fff',
-      visualMap: {
-        show: false,
-        dimension: 2,
-        min: -1,
-        max: 1,
-        inRange: {
-          color: [
-            '#313695',
-            '#4575b4',
-            '#74add1',
-            '#abd9e9',
-            '#e0f3f8',
-            '#ffffbf',
-            '#fee090',
-            '#fdae61',
-            '#f46d43',
-            '#d73027',
-            '#a50026'
-          ]
-        }
-      },
-      xAxis3D: {
-        type: 'value',
-        name: xAxisColumn
-      },
-      yAxis3D: {
-        type: 'value',
-        name: yAxisColumn
-      },
-      zAxis3D: {
-        type: 'value',
-        name: zAxisColumn
-      },
-      grid3D: {
-        viewControl: {
-          // projection: 'orthographic'
-        }
-      },
-      series: [
-        {
-          type: 'surface',
-          wireframe: {
-            // show: false
-          },
-          
-          equation: {
-            x: {
-              step: 0.05
-            },
-            y: {
-              step: 0.05
-            },
-            z: function (x: number, y: number) {
-              if (Math.abs(x) < 0.1 && Math.abs(y) < 0.1) {
-                return '-';
-              }
-              return Math.sin(x * Math.PI) * Math.sin(y * Math.PI);
-            }
-          }
-        }
-      ]
-    };
-    myChart.setOption(option);
-
-    const handleResize = () => {
-      myChart.resize();
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      myChart.dispose();
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [data, xAxisColumn, yAxisColumn, zAxisColumn]);
-
-  return (
-    <Styles ref={rootElem} boldText={boldText} headerFontSize={headerFontSize} height={height} width={width}>
-      <h3>{headerText}</h3>
-    </Styles>
-  );
-}
-
 // import React, { useEffect, createRef } from 'react';
 // import { SupersetPluginChartSurfacePlotProps, SupersetPluginChartSurfacePlotStylesProps } from './types';
 // import { styled } from '@superset-ui/core';
@@ -319,47 +190,26 @@ export default function SupersetPluginChartSurfacePlot(props: SupersetPluginChar
 //   }
 // `;
 
-
-
 // export default function SupersetPluginChartSurfacePlot(props: SupersetPluginChartSurfacePlotProps) {
 //   const {
-//     data, // This should be the incoming data from control panel, can be empty if generated
+//     data, // use sample data if no data prop is provided
 //     height,
 //     width,
 //     headerText,
 //     boldText,
 //     headerFontSize,
-//     xAxisColumn = 'x', // Default column names
-//     yAxisColumn = 'y',
-//     zAxisColumn = 'z',
+//     xAxisColumn,
+//     yAxisColumn,
+//     zAxisColumn,
 //   } = props;
 
 //   const rootElem = createRef<HTMLDivElement>();
 
 //   useEffect(() => {
 //     if (!rootElem.current) return;
-
+//     console.log(data,height, width, headerText, boldText, headerFontSize, xAxisColumn, yAxisColumn, zAxisColumn, "data,height, width, headerText, boldText, headerFontSize, xAxisColumn, yAxisColumn, zAxisColumn ")
 //     const root = rootElem.current;
 //     const myChart = echarts.init(root, undefined, { renderer: 'canvas' });
-
-//     // Define xRange, yRange, and step size
-//     const xRange = [-2, 2]; // Example range for x-axis
-//     const yRange = [-2, 2]; // Example range for y-axis
-//     const step = 0.1; // Step size for sampling
-
-//     const generateSurfaceData = (xRange: number[], yRange: number[], step: number, xCol: any, yCol: any, zCol: any) => {
-//       const data = [];
-//       for (let x = xRange[0]; x <= xRange[1]; x += step) {
-//         for (let y = yRange[0]; y <= yRange[1]; y += step) {
-//           const z = Math.sin(x * Math.PI) * Math.sin(y * Math.PI); // Example function
-//           data.push({ [xCol]: x, [yCol]: y, [zCol]: z });
-//         }
-//       }
-//       return data;
-//     };
-//     // If no data is provided, generate sample data
-//     const generatedData = data.length ? data : generateSurfaceData(xRange, yRange, step, xAxisColumn, yAxisColumn, zAxisColumn);
-
 //     const option = {
 //       tooltip: {},
 //       backgroundColor: '#fff',
@@ -386,30 +236,45 @@ export default function SupersetPluginChartSurfacePlot(props: SupersetPluginChar
 //       },
 //       xAxis3D: {
 //         type: 'value',
-//         name: xAxisColumn // Use the provided column name
+//         name: xAxisColumn
 //       },
 //       yAxis3D: {
 //         type: 'value',
-//         name: yAxisColumn // Use the provided column name
+//         name: yAxisColumn
 //       },
 //       zAxis3D: {
 //         type: 'value',
-//         name: zAxisColumn // Use the provided column name
+//         name: zAxisColumn
 //       },
 //       grid3D: {
-//         viewControl: {}
+//         viewControl: {
+//           // projection: 'orthographic'
+//         }
 //       },
 //       series: [
 //         {
 //           type: 'surface',
 //           wireframe: {
-//             show: false // Uncomment if you want to show the wireframe
+//             // show: false
 //           },
-//           data: generatedData.map((d: { [x: string]: any; }) => [d[xAxisColumn], d[yAxisColumn], d[zAxisColumn]]), // Map to required format
+
+//           equation: {
+//             x: {
+//               step: 0.05
+//             },
+//             y: {
+//               step: 0.05
+//             },
+//             z: function (x: number, y: number) {
+//               if (Math.abs(x) < 0.1 && Math.abs(y) < 0.1) {
+//                 return '-';
+//               }
+//               return Math.sin(x * Math.PI) * Math.sin(y * Math.PI);
+//             }
+//           }
 //         }
 //       ]
 //     };
-
 //     myChart.setOption(option);
 
 //     const handleResize = () => {
@@ -431,3 +296,143 @@ export default function SupersetPluginChartSurfacePlot(props: SupersetPluginChar
 //   );
 // }
 
+import React, { useEffect, createRef } from 'react';
+import * as echarts from 'echarts';
+import 'echarts-gl';
+import {
+  SupersetPluginChartSurfacePlotProps,
+  SupersetPluginChartSurfacePlotStylesProps,
+} from './types';
+import { styled } from '@superset-ui/core';
+
+const Styles = styled.div<SupersetPluginChartSurfacePlotStylesProps>`
+  padding: ${({ theme }) => theme.gridUnit * 4}px;
+  border-radius: ${({ theme }) => theme.gridUnit * 2}px;
+  height: ${({ height }) => height}px;
+  width: ${({ width }) => width}px;
+
+  h3 {
+    margin-top: 0;
+    margin-bottom: ${({ theme }) => theme.gridUnit * 3}px;
+    font-size: ${({ theme, headerFontSize }) =>
+      theme.typography.sizes[headerFontSize]}px;
+    font-weight: ${({ theme, boldText }) =>
+      theme.typography.weights[boldText ? 'bold' : 'normal']};
+  }
+`;
+
+export default function SupersetPluginChartSurfacePlot(
+  props: SupersetPluginChartSurfacePlotProps,
+) {
+  const {
+    data,
+    height,
+    width,
+    headerText,
+    boldText,
+    headerFontSize,
+    xAxisColumn,
+    yAxisColumn,
+    zAxisColumn,
+  } = props;
+
+  const rootElem = createRef<HTMLDivElement>();
+
+  useEffect(() => {
+    if (!rootElem.current) return;
+
+    const root = rootElem.current;
+    const myChart = echarts.init(root, undefined, { renderer: 'canvas' });
+
+    // Format data for the surface plot
+    const formattedData = data.map((row: any) => [
+      row[xAxisColumn],
+      row[yAxisColumn],
+      row[zAxisColumn],
+    ]);
+
+    const option = {
+      tooltip: {},
+      backgroundColor: '#fff',
+      visualMap: {
+        show: false,
+        dimension: 2,
+        min: Math.min(...formattedData.map((d: any[]) => d[2])),
+        max: Math.max(...formattedData.map((d: any[]) => d[2])),
+        inRange: {
+          color: [
+            '#313695',
+            '#4575b4',
+            '#74add1',
+            '#abd9e9',
+            '#e0f3f8',
+            '#ffffbf',
+            '#fee090',
+            '#fdae61',
+            '#f46d43',
+            '#d73027',
+            '#a50026',
+          ],
+        },
+      },
+      xAxis3D: {
+        type: 'value',
+        // name: xAxisColumn
+      },
+      yAxis3D: {
+        type: 'value',
+        // name: yAxisColumn
+      },
+      zAxis3D: {
+        type: 'value',
+        // name: zAxisColumn
+      },
+      grid3D: {
+        viewControl: {
+          // Add options like rotation or zoom here
+        },
+      },
+      series: [
+        {
+          type: 'surface',
+          data: formattedData,
+          shading: 'color',
+          wireframe: {
+            show: true,
+          },
+        },
+      ],
+    };
+
+    // Set the chart option
+    myChart.setOption(option);
+
+    // Handle resizing
+    const handleResize = () => {
+      myChart.resize();
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup on component unmount
+    return () => {
+      myChart.dispose();
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [data, xAxisColumn, yAxisColumn, zAxisColumn, height, width]);
+
+  return (
+    <>
+      <div style={{ fontSize: `${headerFontSize}`, marginTop: '-10px' }}>
+        {headerText}
+      </div>
+      <Styles
+        ref={rootElem}
+        boldText={boldText}
+        headerFontSize={headerFontSize}
+        height={height}
+        width={width}
+      ></Styles>
+    </>
+  );
+}
