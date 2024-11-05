@@ -170,132 +170,6 @@
 //   );
 // }
 
-// import React, { useEffect, createRef } from 'react';
-// import { SupersetPluginChartSurfacePlotProps, SupersetPluginChartSurfacePlotStylesProps } from './types';
-// import { styled } from '@superset-ui/core';
-// import * as echarts from 'echarts';
-// import 'echarts-gl';
-
-// const Styles = styled.div<SupersetPluginChartSurfacePlotStylesProps>`
-//   padding: ${({ theme }) => theme.gridUnit * 4}px;
-//   border-radius: ${({ theme }) => theme.gridUnit * 2}px;
-//   height: ${({ height }) => height}px;
-//   width: ${({ width }) => width}px;
-
-//   h3 {
-//     margin-top: 0;
-//     margin-bottom: ${({ theme }) => theme.gridUnit * 3}px;
-//     font-size: ${({ theme, headerFontSize }) => theme.typography.sizes[headerFontSize]}px;
-//     font-weight: ${({ theme, boldText }) => theme.typography.weights[boldText ? 'bold' : 'normal']};
-//   }
-// `;
-
-// export default function SupersetPluginChartSurfacePlot(props: SupersetPluginChartSurfacePlotProps) {
-//   const {
-//     data, // use sample data if no data prop is provided
-//     height,
-//     width,
-//     headerText,
-//     boldText,
-//     headerFontSize,
-//     xAxisColumn,
-//     yAxisColumn,
-//     zAxisColumn,
-//   } = props;
-
-//   const rootElem = createRef<HTMLDivElement>();
-
-//   useEffect(() => {
-//     if (!rootElem.current) return;
-//     console.log(data,height, width, headerText, boldText, headerFontSize, xAxisColumn, yAxisColumn, zAxisColumn, "data,height, width, headerText, boldText, headerFontSize, xAxisColumn, yAxisColumn, zAxisColumn ")
-//     const root = rootElem.current;
-//     const myChart = echarts.init(root, undefined, { renderer: 'canvas' });
-//     const option = {
-//       tooltip: {},
-//       backgroundColor: '#fff',
-//       visualMap: {
-//         show: false,
-//         dimension: 2,
-//         min: -1,
-//         max: 1,
-//         inRange: {
-//           color: [
-//             '#313695',
-//             '#4575b4',
-//             '#74add1',
-//             '#abd9e9',
-//             '#e0f3f8',
-//             '#ffffbf',
-//             '#fee090',
-//             '#fdae61',
-//             '#f46d43',
-//             '#d73027',
-//             '#a50026'
-//           ]
-//         }
-//       },
-//       xAxis3D: {
-//         type: 'value',
-//         name: xAxisColumn
-//       },
-//       yAxis3D: {
-//         type: 'value',
-//         name: yAxisColumn
-//       },
-//       zAxis3D: {
-//         type: 'value',
-//         name: zAxisColumn
-//       },
-//       grid3D: {
-//         viewControl: {
-//           // projection: 'orthographic'
-//         }
-//       },
-//       series: [
-//         {
-//           type: 'surface',
-//           wireframe: {
-//             // show: false
-//           },
-
-//           equation: {
-//             x: {
-//               step: 0.05
-//             },
-//             y: {
-//               step: 0.05
-//             },
-//             z: function (x: number, y: number) {
-//               if (Math.abs(x) < 0.1 && Math.abs(y) < 0.1) {
-//                 return '-';
-//               }
-//               return Math.sin(x * Math.PI) * Math.sin(y * Math.PI);
-//             }
-//           }
-//         }
-//       ]
-//     };
-//     myChart.setOption(option);
-
-//     const handleResize = () => {
-//       myChart.resize();
-//     };
-
-//     window.addEventListener('resize', handleResize);
-
-//     return () => {
-//       myChart.dispose();
-//       window.removeEventListener('resize', handleResize);
-//     };
-//   }, [data, xAxisColumn, yAxisColumn, zAxisColumn]);
-
-//   return (
-//     <Styles ref={rootElem} boldText={boldText} headerFontSize={headerFontSize} height={height} width={width}>
-//       <h3>{headerText}</h3>
-//     </Styles>
-//   );
-// }
-
 import React, { useEffect, createRef } from 'react';
 import * as echarts from 'echarts';
 import 'echarts-gl';
@@ -387,11 +261,31 @@ export default function SupersetPluginChartSurfacePlot(
         type: 'value',
         // name: zAxisColumn
       },
+      // grid3D: {
+      //   viewControl: {
+      //     // Add options like rotation or zoom here
+      //   },
+      // },
       grid3D: {
+        boxWidth: 110,
+        boxHeight: 90,
+        boxDepth: 100,
         viewControl: {
-          // Add options like rotation or zoom here
+          distance: 100, // Adjust this to zoom in or out
+          // rotateSensitivity: [1, 0],  // Only allow horizontal rotation
         },
+        environment: '#ffffff', // Set to white or any color that fits
       },
+      // grid3D: {
+      //   boxWidth: 200,
+      //   boxHeight: 100,
+      //   boxDepth: 200,
+      //   viewControl: {
+      //     distance: 100,  // Adjust this to zoom in or out
+      //     rotateSensitivity: [1, 0],  // Only allow horizontal rotation
+      //   },
+      //   environment: '#ffffff',  // Set to white or any color that fits
+      // },
       series: [
         {
           type: 'surface',
