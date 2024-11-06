@@ -82,6 +82,7 @@ import { HandlebarsChartPlugin } from '@superset-ui/plugin-chart-handlebars';
 import { SupersetPluginChartContourPlot } from 'superset-plugin-chart-contour-plot';
 import { SupersetPluginChartSurfacePlot } from 'superset-plugin-chart-surface-plot';
 import { SupersetPluginChartCandlestickPlot } from 'superset-plugin-chart-candlestick-plot';
+import { SupersetPluginChartViolinPlot} from 'superset-plugin-chart-violin-plot';
 import { FilterPlugins } from 'src/constants';
 import TimeTableChartPlugin from '../TimeTable';
 
@@ -179,9 +180,8 @@ export default class MainPreset extends Preset {
         new HandlebarsChartPlugin().configure({ key: 'handlebars' }),
         new SupersetPluginChartContourPlot().configure({ key: 'contourPlot' }),
         new SupersetPluginChartSurfacePlot().configure({ key: 'surface_plot' }),
-        new SupersetPluginChartCandlestickPlot().configure({
-          key: 'candlestick_plot',
-        }),
+        new SupersetPluginChartCandlestickPlot().configure({ key: 'candlestick_plot' }),
+        new SupersetPluginChartViolinPlot().configure({ key: 'violin_plot'}),
         new EchartsBubbleChartPlugin().configure({ key: 'bubble_v2' }),
         ...experimentalPlugins,
       ],

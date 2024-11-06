@@ -17,8 +17,8 @@
  * under the License.
  */
 import { ChartProps, TimeseriesDataRecord } from '@superset-ui/core';
-import { SupersetPluginChartCandlestickPlotProps } from '../types';
-export default function transformProps(chartProps: ChartProps):SupersetPluginChartCandlestickPlotProps {
+
+export default function transformProps(chartProps: ChartProps) {
   /**
    * This function is called after a successful response has been
    * received from the chart data endpoint, and is used to transform
@@ -26,7 +26,7 @@ export default function transformProps(chartProps: ChartProps):SupersetPluginCha
    *
    * The transformProps function is also quite useful to return
    * additional/modified props to your data viz component. The formData
-   * can also be accessed from your SupersetPluginChartCandlestickPlot.tsx file, but
+   * can also be accessed from your SupersetPluginChartViolinPlot.tsx file, but
    * doing supplying custom props here is often handy for integrating third
    * party libraries that rely on specific props.
    *
@@ -48,22 +48,21 @@ export default function transformProps(chartProps: ChartProps):SupersetPluginCha
    * function during development with hot reloading, changes won't
    * be seen until restarting the development server.
    */
-  const { width, height, queriesData } = chartProps;
+  const { width, height, formData, queriesData } = chartProps;
+  const { boldText, headerFontSize, headerText,xAxisColumn,yAxisColumn } = formData;
+  const data = queriesData[0].data as TimeseriesDataRecord[];
 
-  const data = queriesData[0].data ;
+  console.log('formData via TransformProps.ts', formData, xAxisColumn,yAxisColumn,"x_axis_column,y_axis_column");
 
   return {
     width,
     height,
-
-    // data: data.map(item => ({
-    //   ...item,
-    //   // convert epoch to native Date
-    //   // eslint-disable-next-line no-underscore-dangle
-    //   __timestamp: new Date(item.__timestamp as number),
-    // })),
-     // Mapping data for candlestick plot with OHLC values
- data,
+    data,
     // and now your control data, manipulated as needed, and passed through as props!
+    boldText,
+    headerFontSize,
+    headerText,
+    xAxisColumn,
+    yAxisColumn
   };
 }

@@ -108,29 +108,17 @@ const Styles = styled.div<SupersetPluginChartCandlestickPlotStylesProps>`
   border-radius: ${({ theme }) => theme.gridUnit * 2}px;
   height: ${({ height }) => height}px;
   width: ${({ width }) => width}px;
-
-  h3 {
-    margin-top: 0;
-    margin-bottom: ${({ theme }) => theme.gridUnit * 3}px;
-    font-size: ${({ theme, headerFontSize }) =>
-      theme.typography.sizes[headerFontSize]}px;
-    font-weight: ${({ theme, boldText }) =>
-      theme.typography.weights[boldText ? 'bold' : 'normal']};
-  }
 `;
 
 // Main Component
 export default function SupersetPluginChartCandlestickPlot(
   props: SupersetPluginChartCandlestickPlotProps,
 ) {
-  const { data, height, width, boldText, headerFontSize, headerText } = props;
+  const { data, height, width } = props;
   const chartRef = createRef<HTMLDivElement>();
 
   useEffect(() => {
     console.log('Data:', data);
-    console.log('Header Text:', headerText); 
-    console.log('Bold Text:', boldText);
-    console.log('Header Font Size:', headerFontSize);
 
     if(!chartRef.current) return;
  
@@ -162,13 +150,31 @@ export default function SupersetPluginChartCandlestickPlot(
       // ECharts configuration
       const options = {
         title: {
-          text: headerText,
           left: 'center',
-          textStyle: {
-            fontSize: headerFontSize,
-            fontWeight: boldText ? 'bold' : 'normal',
+        },
+        tooltip: {
+          trigger: 'axis',
+          formatter: (params: [any]) => {
+            const [data] = params;
+            return `
+              <div>
+                <strong>Date: ${data.name}</strong><br />
+                Open: ${data.value[1]}<br />
+                High: ${data.value[4]}<br />
+                Low: ${data.value[3]}<br />
+                Close: ${data.value[2]}
+              </div>
+            `;
           },
         },
+        // legend: {
+        //   data: dates, // Define the name for the candlestick series
+        //   top: '10%',            // Positioning options: top, bottom, left, right
+        //   align: 'auto',         // Aligns legend automatically
+        //   textStyle: {
+        //     color: '#000',       // Legend text color
+        //   },
+        // },
         xAxis: {
           type: 'category',
           data: dates,
@@ -187,7 +193,8 @@ export default function SupersetPluginChartCandlestickPlot(
           scale: true,
         },
         series: [
-          {
+          { 
+            name: 'Candlestick', 
             type: 'candlestick',
             data: candlestickData,
             itemStyle: {
@@ -196,8 +203,23 @@ export default function SupersetPluginChartCandlestickPlot(
             },
           },
         ],
+          // series:dates.map(date => ({
+  //   name: date, // Each date will have its own legend item
+  //   type: 'candlestick',
+  //   data: data.filter(item => new Date(item.__timestamp).toLocaleDateString() === date).map(item => [
+  //     item.open,
+  //     item.close,
+  //     item.low,
+  //     item.high,
+  //   ]),
+  //   itemStyle: {
+  //     color: '#00da3c', // color for rising candlestick
+  //     color0: '#ec0000', // color for falling candlestick
+  //   },
+  // })),
       };
-  
+
+
       // Render chart with options
       chartInstance.setOption(options);
   
@@ -206,13 +228,11 @@ export default function SupersetPluginChartCandlestickPlot(
         chartInstance.dispose(); // Dispose of the chart instance to free up resources
       };
     
-  }, [data, headerText, boldText, headerFontSize]);
+  }, [data]);
   
 
   return (
     <Styles
-      boldText={boldText}
-      headerFontSize={headerFontSize}
       height={height}
       width={width}
     >
