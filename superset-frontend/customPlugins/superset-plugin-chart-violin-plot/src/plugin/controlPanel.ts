@@ -19,7 +19,6 @@
 // import { t, validateNonEmpty } from '@superset-ui/core';
 // import {
 //   ControlPanelConfig,
-//   sections,
 //   sharedControls,
 // } from '@superset-ui/chart-controls';
 
@@ -100,7 +99,7 @@
 
 //   // For control input types, see: superset-frontend/src/explore/components/controls/index.js
 //   controlPanelSections: [
-//     sections.legacyTimeseriesTime,
+    
 //     {
 //       label: t('Query'),
 //       expanded: true,
@@ -192,65 +191,79 @@
 // };
 
 // export default config;
+
+
+/**
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 import { t, validateNonEmpty } from '@superset-ui/core';
 import {
   ControlPanelConfig,
-  sections,
   sharedControls,
 } from '@superset-ui/chart-controls';
 
 const config: ControlPanelConfig = {
   controlPanelSections: [
-    sections.legacyTimeseriesTime,
     {
       label: t('Query'),
       expanded: true,
       controlSetRows: [
         [
           {
-            name: 'open_metric',
+            name: 'x_axis_column',
             config: {
               ...sharedControls.columns,
-              // type: 'MetricsControl',
-              label: t('Open Metric'),
-              description: t('Metric representing the opening price'),
-              validators: [validateNonEmpty],
+              label: t('X Axis'),
               multi: false,
-            },
-          },
-          {
-            name: 'high_metric',
-            config: {
-              ...sharedControls.columns,
-              // type: 'MetricsControl',
-              label: t('High Metric'),
-              description: t('Metric representing the high price'),
               validators: [validateNonEmpty],
-              multi: false,
             },
           },
         ],
         [
           {
-            name: 'low_metric',
+            name: 'y_axis_column',
             config: {
               ...sharedControls.columns,
-              // type: 'MetricsControl',
-              label: t('Low Metric'),
-              description: t('Metric representing the low price'),
-              validators: [validateNonEmpty],
+              label: t('Y Axis'),
               multi: false,
+              validators: [validateNonEmpty],
             },
           },
+        ],
+        // [
+        //   {
+        //     name: 'groupby',
+        //     config: {
+        //       ...sharedControls.columns,
+        //       label: t('Group by (X-axis)'),
+        //       description: t('Select the column representing categories for grouping (e.g., days of the week)'),
+        //       validators: [validateNonEmpty],
+        //     },
+        //   },
+        // ],
+        [
           {
-            name: 'close_metric',
+            name: 'metrics',
             config: {
-              ...sharedControls.columns,
-              // type: 'MetricsControl',
-              label: t('Close Metric'),
-              description: t('Metric representing the closing price'),
+              ...sharedControls.metrics,
+              label: t('Metric (Y-axis)'),
+              description: t('Choose the numeric column to display as the Y-axis value (e.g., total bill amount)'),
               validators: [validateNonEmpty],
-              multi: false,
             },
           },
         ],
@@ -264,35 +277,56 @@ const config: ControlPanelConfig = {
       ],
     },
     {
-      label: t('Candlestick Chart Options'),
+      label: t('Chart Options'),
       expanded: true,
       controlSetRows: [
         [
           {
-            name: 'color_scheme',
+            name: 'violin_mode',
             config: {
-              ...sharedControls.color_scheme,
-              label: t('Color Scheme'),
-              description: t('Select the color scheme for the candlestick chart'),
-              renderTrigger: true,
+              type: 'SelectControl',
+              label: t('Violin Mode'),
+              default: 'group',
+              choices: [
+                ['group', 'Group'],
+                ['overlay', 'Overlay'],
+                ['split', 'Split'],
+              ],
+              description: t('Select how violins are displayed. "Group" shows side-by-side violins, "Overlay" stacks them, and "Split" mirrors the violins.'),
             },
           },
         ],
-   
         [
           {
-            name: 'candlestick_width',
+            name: 'violin_color',
             config: {
-              type: 'SliderControl',
-              label: t('Candlestick Width'),
-              default: 10,
-              min: 1,
-              max: 20,
-              description: t('Adjust the width of the candlestick bars'),
-              renderTrigger: true,
+              type: 'SelectControl',
+              label: t('Violin Color'),
+              choices: [
+                ['red', 'Red'],
+                ['blue', 'Blue'],
+                ['green', 'Green'],
+                ['yellow', 'Yellow'],
+              ],
+              default: 'blue',
+              description: t('Choose a color for the violin plot.'),
             },
           },
         ],
+        [
+          {
+            name: 'show_mean',
+            config: {
+              type: 'CheckboxControl',
+              label: t('Show Mean Line'),
+              default: true,
+              renderTrigger: true,
+              description: t('Display a mean line in the violin plot.'),
+            },
+          },
+        ],
+  
+    
       ],
     },
   ],

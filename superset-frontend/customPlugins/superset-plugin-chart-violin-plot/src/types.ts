@@ -18,32 +18,29 @@
  */
 import {
   QueryFormData,
-  // TimeseriesDataRecord,
+  supersetTheme,
+  TimeseriesDataRecord,
 } from '@superset-ui/core';
 
-export interface SupersetPluginChartCandlestickPlotStylesProps {
+export interface SupersetPluginChartViolinPlotStylesProps {
   height: number;
   width: number;
+  headerFontSize: keyof typeof supersetTheme.typography.sizes;
+  boldText: boolean;
 }
 
-interface SupersetPluginChartCandlestickPlotCustomizeProps {
-  // headerText: string;
+interface SupersetPluginChartViolinPlotCustomizeProps {
+  headerText: string;
 }
 
-export type SupersetPluginChartCandlestickPlotQueryFormData = QueryFormData &
-  SupersetPluginChartCandlestickPlotStylesProps &
-  SupersetPluginChartCandlestickPlotCustomizeProps;
+export type SupersetPluginChartViolinPlotQueryFormData = QueryFormData &
+  SupersetPluginChartViolinPlotStylesProps &
+  SupersetPluginChartViolinPlotCustomizeProps;
 
-export type SupersetPluginChartCandlestickPlotProps =
-  SupersetPluginChartCandlestickPlotStylesProps &
-    SupersetPluginChartCandlestickPlotCustomizeProps & {
-      // data: TimeseriesDataRecord[];
-      data: Array<{
-        __timestamp: string | number | Date;
-        open: number;
-        close: number;
-        high: number;
-        low: number;
-      }>;
-      // add typing here for the props you pass in from transformProps.ts!
-    };
+export type SupersetPluginChartViolinPlotProps = SupersetPluginChartViolinPlotStylesProps &
+  SupersetPluginChartViolinPlotCustomizeProps & {
+    data: TimeseriesDataRecord[];
+    xAxisColumn: string;                 // Column name for the x-axis (string type)
+    yAxisColumn: string;  
+    // add typing here for the props you pass in from transformProps.ts!
+  };
