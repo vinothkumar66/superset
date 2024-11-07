@@ -8,6 +8,7 @@ x-superset-volumes: &superset-volumes
   - ./docker:/app/docker
   - ./superset:/app/superset
   - ./superset-frontend:/app/superset-frontend
+  # - ./superset_home:/app/superset_home
   - superset_data:/app/superset_home
   - ./tests:/app/tests
   - ./report_output:/app/reportsfolder
@@ -54,6 +55,7 @@ services:
       - ./superset-frontend:/app/superset-frontend
       - ./docker:/app/docker
       - superset_data:/app/superset_home
+      # - ./superset_home:/app/superset_home
     
     environment:
       SUPERSET_ENV: production
