@@ -100,7 +100,7 @@
 
 //   // For control input types, see: superset-frontend/src/explore/components/controls/index.js
 //   controlPanelSections: [
-    
+
 //     {
 //       label: t('Query'),
 //       expanded: true,
@@ -192,7 +192,6 @@
 // };
 
 // export default config;
-
 
 // controlPanel.ts
 import { t } from '@superset-ui/core';

@@ -164,11 +164,7 @@ export default function transformProps(chartProps: ChartProps) {
   const xAxisColumn = formData.xAxisColumn; // Assuming this is an array
   const yAxisColumn = formData.yAxisColumn; // Assuming this is an array
   const zAxisColumn = formData.zAxisColumn; // Assuming this is an array
-  const {
-    contourLevels,
-    colorScheme,
-    showLabels,
-  } = formData;
+  const { contourLevels, colorScheme, showLabels } = formData;
 
   console.log(formData, 'formData');
 
@@ -201,7 +197,7 @@ export default function transformProps(chartProps: ChartProps) {
 
   // Create a z matrix
   const zMatrix: number[][] = Array.from({ length: yValues.length }, () =>
-    Array(xValues.length).fill(0)
+    Array(xValues.length).fill(0),
   );
 
   // Populate the z matrix based on the data
@@ -213,7 +209,10 @@ export default function transformProps(chartProps: ChartProps) {
     if (xIndex !== -1 && yIndex !== -1) {
       zMatrix[yIndex][xIndex] = zValue;
     } else {
-      console.warn(`Invalid indices - xIndex: ${xIndex}, yIndex: ${yIndex} for row:`, row);
+      console.warn(
+        `Invalid indices - xIndex: ${xIndex}, yIndex: ${yIndex} for row:`,
+        row,
+      );
     }
   });
 
@@ -232,13 +231,11 @@ export default function transformProps(chartProps: ChartProps) {
   };
 }
 
-
-
 // import { ChartProps } from '@superset-ui/core';
 
 // export default function transformProps(chartProps: ChartProps) {
 //   const { width, height, formData, queriesData } = chartProps;
-  
+
 //   // Destructure the formData properties
 //   const {
 //     xAxisColumn,

@@ -46,9 +46,9 @@ export interface SupersetPluginChartContourPlotProps
     x: number[];
     y: number[];
   };
-  xAxisColumn: number[],
-  yAxisColumn: number[],
-  zAxisColumn: number[],
+  xAxisColumn: number[];
+  yAxisColumn: number[];
+  zAxisColumn: number[];
   headerText: string;
   contourLevels: number;
   colorScheme: string;

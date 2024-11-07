@@ -88,7 +88,6 @@
 //   );
 // }
 
-
 // supersetPluginChartSurfacePlot.tsx
 import React, { useEffect, createRef } from 'react';
 import { styled } from '@superset-ui/core';
@@ -100,7 +99,9 @@ const Styles = styled.div`
   height: 100%;
 `;
 
-export default function SupersetPluginChartSurfacePlot(props: SupersetPluginChartSurfacePlotProps) {
+export default function SupersetPluginChartSurfacePlot(
+  props: SupersetPluginChartSurfacePlotProps,
+) {
   const rootElem = createRef<HTMLDivElement>();
 
   useEffect(() => {
@@ -187,4 +188,4 @@ export default function SupersetPluginChartSurfacePlot(props: SupersetPluginChar
   }, [props.xAxisRange, props.yAxisRange]);
 
   return <Styles ref={rootElem} />;
-};
+}

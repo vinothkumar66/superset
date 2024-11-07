@@ -67,8 +67,8 @@ import { buildQueryContext, QueryFormData } from '@superset-ui/core';
 export default function buildQuery(formData: QueryFormData) {
   // Extract the axis columns from the formData. Assuming they are arrays, use the first element.
   const x_axis_column = formData.x_axis_column; // 'latitude'
-    const y_axis_column = formData.y_axis_column; // 'longitude'
-    const z_axis_column = formData.z_axis_column; // 'temperature'
+  const y_axis_column = formData.y_axis_column; // 'longitude'
+  const z_axis_column = formData.z_axis_column; // 'temperature'
 
   console.log('Form Data:', formData);
 
@@ -111,4 +111,3 @@ export default function buildQuery(formData: QueryFormData) {
 //     },
 //   ]);
 // }
-

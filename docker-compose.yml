@@ -8,7 +8,7 @@ x-superset-volumes: &superset-volumes
   - ./docker:/app/docker
   - ./superset:/app/superset
   - ./superset-frontend:/app/superset-frontend
-  - superset_data:/app/superset_home
+  - ./superset_home:/app/superset_home
   - ./tests:/app/tests
   - ./report_output:/app/reportsfolder
 
@@ -27,6 +27,15 @@ services:
       - redis:/data
     networks:
       - superset-network
+
+  # fastapi:
+  #   build:
+  #     context: .
+  #   command: ["app/aapp.sh"]
+  #   networks:
+  #     - superset-network
+  #   depends_on:
+  #     - redis
 
   postgres:
     image: postgres:13
@@ -53,7 +62,7 @@ services:
       - ./superset:/app/superset
       - ./superset-frontend:/app/superset-frontend
       - ./docker:/app/docker
-      - superset_data:/app/superset_home
+      - ./superset_home:/app/superset_home
     
     environment:
       SUPERSET_ENV: production

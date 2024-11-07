@@ -35,7 +35,7 @@ import SupersetText from 'src/utils/textUtils';
 import { findPermission } from 'src/utils/findPermission';
 import { User } from 'src/types/bootstrapTypes';
 import { WelcomeTable } from 'src/features/home/types';
-import { Dashboard, Filter, TableTab } from './types';
+import { Dashboard, Filter, TableTab, ReportViewer } from './types';
 
 // Modifies the rison encoding slightly to match the backend's rison encoding/decoding. Applies globally.
 // Code pulled from rison.js (https://github.com/Nanonid/rison), rison is licensed under the MIT license.
@@ -318,6 +318,47 @@ export function handleDashboardDelete(
   );
 }
 
+export function handleReportDelete(
+  { id, reportViewer_title: reportViewerTitle }: ReportViewer,
+  refreshData: (config?: FetchDataConfig | null) => void,
+  addSuccessToast: (arg0: string) => void,
+  addDangerToast: (arg0: string) => void,
+  reportViewerFilter?: string,
+  userId?: string | number,
+) {
+  return SupersetClient.delete({
+    endpoint: `/api/v1/reportViewer/${id}`,
+  }).then(
+    () => {
+      const filters = {
+        pageIndex: 0,
+        pageSize: PAGE_SIZE,
+        sortBy: [
+          {
+            id: 'changed_on_delta_humanized',
+            desc: true,
+          },
+        ],
+        filters: [
+          {
+            id: 'owners',
+            operator: 'rel_m_m',
+            value: `${userId}`,
+          },
+        ],
+      };
+      if (reportViewerFilter === 'Mine') refreshData(filters);
+      else refreshData();
+      addSuccessToast(t('Deleted: %s', reportViewerTitle));
+    },
+    createErrorHandler(errMsg =>
+      addDangerToast(
+        t('There was an issue deleting %s: %s', reportViewerTitle, errMsg),
+      ),
+    ),
+  );
+}
+
 export function shortenSQL(sql: string, maxLines: number) {
   let lines: string[] = sql.split('\n');
   if (lines.length >= maxLines) {
@@ -389,6 +430,7 @@ const isNeedsSSHPrivateKey = (payload: any) =>
   Array.isArray(payload._schema) &&
   !!payload._schema?.find(
     (e: string) => e === 'Must provide a private key for the ssh tunnel',
+    
   );
 
 export /* eslint-disable no-underscore-dangle */

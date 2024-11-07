@@ -15,7 +15,6 @@
 # limitations under the License.
 #
 *.bak
-*.db
 *.pyc
 *.sqllite
 *.swp
@@ -72,6 +71,9 @@ superset-frontend/**/esm/*
 superset-frontend/**/lib/*
 superset-frontend/**/storybook-static/*
 superset-frontend/migration-storybook.log
+report_output/
+superset_data/
+superset_postgres/
 yarn-error.log
 *.map
 *.min.js

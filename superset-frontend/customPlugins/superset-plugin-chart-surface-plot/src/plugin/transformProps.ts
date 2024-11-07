@@ -65,13 +65,14 @@
 //   };
 // }
 
-
 // transformProps.ts
 
 import { ChartProps, QueryFormData } from '@superset-ui/core';
 import { SupersetPluginChartSurfacePlotProps } from './types';
 
-export default function transformProps(chartProps: ChartProps): SupersetPluginChartSurfacePlotProps {
+export default function transformProps(
+  chartProps: ChartProps,
+): SupersetPluginChartSurfacePlotProps {
   const { width, height, formData, queriesData } = chartProps;
   const { headerText, headerFontSize, boldText } = formData;
   const data = queriesData[0].data;
