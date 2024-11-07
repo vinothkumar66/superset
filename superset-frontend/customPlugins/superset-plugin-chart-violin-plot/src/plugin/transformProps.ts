@@ -49,7 +49,7 @@ export default function transformProps(chartProps: ChartProps) {
    * be seen until restarting the development server.
    */
   const { width, height, formData, queriesData } = chartProps;
-  const { boldText, headerFontSize, headerText,xAxisColumn,yAxisColumn } = formData;
+  const { boldText, headerFontSize, headerText,xAxisColumn,yAxisColumn,showMean,violinColor,showBox } = formData;
   const data = queriesData[0].data as TimeseriesDataRecord[];
 
   console.log('formData via TransformProps.ts', formData, xAxisColumn,yAxisColumn,"x_axis_column,y_axis_column");
@@ -63,6 +63,10 @@ export default function transformProps(chartProps: ChartProps) {
     headerFontSize,
     headerText,
     xAxisColumn,
-    yAxisColumn
+    yAxisColumn,
+    // violinMode,
+    violinColor,
+    showMean,
+    showBox
   };
 }

@@ -110,8 +110,8 @@ const Styles = styled.div<SupersetPluginChartViolinPlotStylesProps>`
 `;
 
 export default function SupersetPluginChartViolinPlot(props: SupersetPluginChartViolinPlotProps) {
-  const { data, height, width, headerText, boldText, headerFontSize,  xAxisColumn, yAxisColumn } = props;
-  console.log(data, xAxisColumn, yAxisColumn,"x_axis_column, y_axis_column,data from violin plot");
+  const { data, height, width, headerText, boldText, headerFontSize,  xAxisColumn, yAxisColumn,violinColor,showMean,showBox } = props;
+  console.log(data, xAxisColumn, yAxisColumn,violinColor,showMean,"x_axis_column, y_axis_column,data from violin plot");
 
   // Dynamically extract x and y data based on the column names passed in x_axis_column and y_axis_column
   const xData = data.map((d: any) => d[xAxisColumn]); // Use dynamic x-axis column
@@ -123,9 +123,9 @@ console.log(xData,"xData",yData,"ydata")
     x: xData,  // Dynamic x-axis data
     y: yData,  // Dynamic y-axis data
     points: 'all',  // Display all points
-    box: { visible: true },
-    meanline: { visible: true },
-    line: { color: 'blue' },
+    box: { visible: showBox },
+    meanline: { visible: showMean },
+    line: { color: violinColor },
   };
 
   // Define layout for the plot

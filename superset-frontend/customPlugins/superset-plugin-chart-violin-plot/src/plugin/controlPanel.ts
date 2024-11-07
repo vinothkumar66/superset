@@ -280,22 +280,22 @@ const config: ControlPanelConfig = {
       label: t('Chart Options'),
       expanded: true,
       controlSetRows: [
-        [
-          {
-            name: 'violin_mode',
-            config: {
-              type: 'SelectControl',
-              label: t('Violin Mode'),
-              default: 'group',
-              choices: [
-                ['group', 'Group'],
-                ['overlay', 'Overlay'],
-                ['split', 'Split'],
-              ],
-              description: t('Select how violins are displayed. "Group" shows side-by-side violins, "Overlay" stacks them, and "Split" mirrors the violins.'),
-            },
-          },
-        ],
+        // [
+        //   {
+        //     name: 'violin_mode',
+        //     config: {
+        //       type: 'SelectControl',
+        //       label: t('Violin Mode'),
+        //       default: 'group',
+        //       choices: [
+        //         ['group', 'Group'],
+        //         // ['overlay', 'Overlay'],
+        //         ['split', 'Split'],
+        //       ],
+        //       description: t('Select how violins are displayed. "Group" shows side-by-side violins, "Overlay" stacks them, and "Split" mirrors the violins.'),
+        //     },
+        //   },
+        // ],
         [
           {
             name: 'violin_color',
@@ -322,6 +322,18 @@ const config: ControlPanelConfig = {
               default: true,
               renderTrigger: true,
               description: t('Display a mean line in the violin plot.'),
+            },
+          },
+        ],
+        [
+          {
+            name: 'show_box',
+            config: {
+              type: 'CheckboxControl',
+              label: t('Show Box'),
+              default: true,
+              renderTrigger: true,
+              description: t('Display a box in the violin plot.'),
             },
           },
         ],
