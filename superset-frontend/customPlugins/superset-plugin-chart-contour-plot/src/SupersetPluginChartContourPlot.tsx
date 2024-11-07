@@ -88,9 +88,9 @@ const SupersetPluginChartContourPlot: React.FC<
 > = ({
   height,
   width,
-  headerText,
-  boldText,
-  headerFontSize,
+  // headerText,
+  // boldText,
+  // headerFontSize,
   contourLevels,
   colorScheme,
   showLabels,
@@ -112,9 +112,9 @@ const SupersetPluginChartContourPlot: React.FC<
   console.log('Contour Plot Data:', { x, y, z }, 'Other Props:', {
     height,
     width,
-    headerText,
-    boldText,
-    headerFontSize,
+    // headerText,
+    // boldText,
+    // headerFontSize,
     contourLevels,
     colorScheme,
     showLabels,
@@ -164,7 +164,7 @@ const SupersetPluginChartContourPlot: React.FC<
         layout={{
           width,
           height,
-          title: headerText,
+          // title: headerText,
         }}
         config={{
           responsive: true,

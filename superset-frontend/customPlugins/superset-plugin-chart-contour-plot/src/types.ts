@@ -16,13 +16,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { QueryFormData, supersetTheme } from '@superset-ui/core';
+import { QueryFormData } from '@superset-ui/core';
 
 export interface SupersetPluginChartContourPlotStylesProps {
   height: number;
   width: number;
-  headerFontSize: keyof typeof supersetTheme.typography.sizes;
-  boldText: boolean;
+  // headerFontSize: keyof typeof supersetTheme.typography.sizes;
+  // boldText: boolean;
 }
 
 interface SupersetPluginChartContourPlotCustomizeProps {
@@ -49,10 +49,10 @@ export interface SupersetPluginChartContourPlotProps
   xAxisColumn: number[];
   yAxisColumn: number[];
   zAxisColumn: number[];
-  headerText: string;
+  // headerText: string;
   contourLevels: number;
   colorScheme: string;
   showLabels: boolean;
-  boldText: boolean;
-  headerFontSize: 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl';
+  // boldText: boolean;
+  // headerFontSize: 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl';
 }

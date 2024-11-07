@@ -42,5 +42,9 @@ export type SupersetPluginChartViolinPlotProps = SupersetPluginChartViolinPlotSt
     data: TimeseriesDataRecord[];
     xAxisColumn: string;                 // Column name for the x-axis (string type)
     yAxisColumn: string;  
+    // violinMode: string,
+    violinColor:string,
+    showMean: boolean,
+    showBox: boolean,
     // add typing here for the props you pass in from transformProps.ts!
   };
