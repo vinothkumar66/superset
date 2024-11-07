@@ -68,6 +68,23 @@ export interface Dashboard {
   loading?: boolean;
 }
 
+export interface ReportViewer {
+  certified_by?: string;
+  certification_details?: string;
+  changed_by_name: string;
+  changed_on_delta_humanized?: string;
+  changed_on_utc?: string;
+  changed_by: string;
+  reportViewer_title: string;
+  slice_name?: string;
+  id: number;
+  published: boolean;
+  url: string;
+  thumbnail_url: string;
+  owners: Owner[];
+  loading?: boolean;
+}
+
 export type SavedQueryObject = {
   id: number;
   changed_on: string;

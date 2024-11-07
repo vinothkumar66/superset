@@ -31,7 +31,7 @@ REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
 # for docker 
 SQLALCHEMY_DATABASE_URI = 'sqlite:////app/superset_home/superset.db'
 # for local setup
-# SQLALCHEMY_DATABASE_URI = 'sqlite:////home/supra/superset/superset_home/superset.db'
+# SQLALCHEMY_DATABASE_URI = 'sqlite:////home/vinothkumar/project/superset/superset_home/superset.db'
 
 
 # SQLALCHEMY_DATABASE_URI = 'sqlite:///superset_home/superset.db'
@@ -89,10 +89,8 @@ FEATURE_FLAGS = {
     # "THUMBNAILS": True
 }
 
-
 REDIS_HOST = "localhost"
 REDIS_PORT = "6379"
-
 
 class CeleryConfig:
     broker_url = f"redis://{REDIS_HOST}:{REDIS_PORT}/0"
