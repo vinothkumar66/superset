@@ -580,7 +580,7 @@ const favoriteApis = {
 };
 
 export function useFavoriteStatus(
-  type: 'chart' | 'dashboard' | 'tag',
+  type: 'chart' | 'dashboard' | 'tag' | 'reportViewer',
   ids: Array<string | number>,
   handleErrorMsg: (message: string) => void,
 ) {

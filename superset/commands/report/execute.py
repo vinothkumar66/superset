@@ -21,7 +21,7 @@ from typing import Any, Optional, Union
 from uuid import UUID
 
 import os ,sys
-from superset_config import PDF_PATH
+# from superset_config import PDF_PATH
 from datetime import datetime as dtt
 
 import pandas as pd
@@ -93,6 +93,7 @@ formatted_string = formatDTimenow()
 year, month, day, hour, minute, second = map(int, formatted_string.split(','))
 dt = datetime(year, month, day, hour, minute, second) 
 print(dt,"**************************dt*********************************") 
+
 class BaseReportState:
     current_states: list[ReportState] = []
     initial: bool = False
@@ -276,7 +277,7 @@ class BaseReportState:
         """
         papersizes = self._report_schedule.paper_size
         print(papersizes,"********************papersizes****************************************")
-
+       
         screenshots = self._get_screenshots()
         # print(paper_size,"****paper_size _get_pdf********************")
         # papersizes = self._get_papersizes(paper_size)
@@ -415,10 +416,23 @@ class BaseReportState:
         ):
             if self._report_schedule.report_format == ReportDataFormat.PNG:
                 screenshot_data = self._get_screenshots()
+
+                new_folder = os.path.join('/app', 'reportsfolder')
+                if not os.path.exists(new_folder):
+                    os.mkdir(new_folder)
+                    print('----------done------------')
+                date_folder=os.path.join(new_folder, f'{dtt.now().day}_{dtt.now().month}_{dtt.now().year}')
+                if not os.path.exists(date_folder):
+                    os.mkdir(date_folder)
+                    print('----------done------------')
+                png_file_path=os.path.join(date_folder,f'{dtt.now().hour}_{dtt.now().minute}_{dtt.now().second}.png')
+                with open(png_file_path, 'wb') as png_file:
+                    png_file.write(screenshot_data)
                 if not screenshot_data:
                     error_text = "Unexpected missing screenshot"
             elif self._report_schedule.report_format == ReportDataFormat.PDF:
                 pdf_data = self._get_pdf()
+                # csv_data_report = self._get_csv_data()
 #-----------------------------------------------------------------------------------------------------------------
                 # exe_dir = os.path.dirname(sys.executable)
                 # print('file--------------------------------------',pdf_data)
@@ -426,11 +440,17 @@ class BaseReportState:
                 if not os.path.exists(new_folder):
                     os.mkdir(new_folder)
                     print('----------done------------')
-                pdf_file_path=os.path.join(new_folder,f'{dtt.now().minute}_{dtt.now().second}.pdf')
+                date_folder=os.path.join(new_folder, f'{dtt.now().day}_{dtt.now().month}_{dtt.now().year}')
+                if not os.path.exists(date_folder):
+                    os.mkdir(date_folder)
+                    print('----------done------------')
+                pdf_file_path=os.path.join(date_folder,f'{dtt.now().hour}_{dtt.now().minute}_{dtt.now().second}.pdf')
+                csv_file_path=os.path.join(date_folder,f'{dtt.now().hour}_{dtt.now().minute}_{dtt.now().second}.csv')
                 with open(pdf_file_path, 'wb') as pdf_file:
                     pdf_file.write(pdf_data)
-
-                print('path-----------:',new_folder)
+                # with open(csv_file_path, 'wb') as csv_file:
+                #     csv_file.write(csv_data_report)
+                # print('path-----------:',new_folder)
 #-----------------------------------------------------------------------------------------------------------------
                 if not pdf_data:
                     error_text = "Unexpected missing pdf"
