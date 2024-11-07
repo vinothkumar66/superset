@@ -31,6 +31,7 @@ export enum FeatureFlag {
   ConfirmDashboardDiff = 'CONFIRM_DASHBOARD_DIFF',
   /** @deprecated */
   DashboardCrossFilters = 'DASHBOARD_CROSS_FILTERS',
+  ReportViewerCrossFilters = 'REPORTVIEWER_CROSS_FILTERS',
   DashboardVirtualization = 'DASHBOARD_VIRTUALIZATION',
   DashboardRbac = 'DASHBOARD_RBAC',
   DatapanelClosedByDefault = 'DATAPANEL_CLOSED_BY_DEFAULT',

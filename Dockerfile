@@ -66,7 +66,8 @@ RUN apt-get update -y && \
     pkg-config \
     libmariadb-dev \ 
     sqlite3 \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    pip install fastapi uvicorn
 
 # Set environment variables for Superset
 ENV CHROME_BIN=/opt/google/chrome/google-chrome \
@@ -79,9 +80,13 @@ WORKDIR /app
 COPY superset_config.py /app/superset_config.py
 COPY setup_superset.sh /app/setup_superset.sh
 COPY requirements /app/requirements
+COPY API_NEW.py /app/API_NEW.py
+COPY aapp.sh /app/aapp.sh
+# COPY superset_home /app/superset_home
 
 # Ensure the setup script has execution permissions
-RUN chmod +x /app/setup_superset.sh
+RUN chmod +x  /app/setup_superset.sh
+RUN chmod +x /app/aapp.sh
 
 # Create and activate a virtual environment
 RUN python3 -m venv /app/venv
@@ -94,9 +99,12 @@ RUN . /app/venv/bin/activate && \
 # Switch back to the default Superset user
 USER superset
 
+CMD ["/app/aapp.sh"]
+
 # Entry point to setup Superset
 ENTRYPOINT ["/app/setup_superset.sh"]
 
 # Expose the port for Superset
 EXPOSE 8088
+EXPOSE 7000
 

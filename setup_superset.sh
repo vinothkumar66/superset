@@ -24,8 +24,6 @@ flask fab create-admin \
 # Start the web server
 gunicorn -w 2 -k gevent --timeout 120 -b 0.0.0.0:8088 "superset.app:create_app()"
 
-
-
 # #!/bin/bash
 # export SUPERSET_CONFIG_PATH=$(pwd)/superset_config.py
 # # export SUPERSET_CONFIG_PATH=/app/superset_config.py
