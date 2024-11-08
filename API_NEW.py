@@ -17,13 +17,13 @@ class PDFPath(BaseModel):
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://192.168.29.144:9000"], 
+    allow_origins=["http://localhost:8088"], 
     allow_credentials=True,
     allow_methods=["*"], 
     allow_headers=["*"], 
 )
 
-directory_path = '/home/vinothkumar/project/superset/report_output'
+directory_path = '/home/supra/superset/report_output'
 print(directory_path)
 def list_directories(path):
     directories = []
@@ -76,5 +76,5 @@ async def show_pdf(pdf_path: PDFPath):
     return FileResponse(pdf_path.path, media_type="application/pdf")
 
 
-# if __name__ == "__main__":
-#     uvicorn.run("API_NEW:app", host="127.0.0.1", port=7000, reload=True)
+if __name__ == "__main__":
+    uvicorn.run("API_NEW:app", host="127.0.0.1", port=7000)
