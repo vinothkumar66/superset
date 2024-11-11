@@ -78,4 +78,3 @@ export default function transformProps(chartProps: ChartProps) {
     showLabels,
   };
 }
-

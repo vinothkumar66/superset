@@ -99,7 +99,7 @@
 
 //   // For control input types, see: superset-frontend/src/explore/components/controls/index.js
 //   controlPanelSections: [
-    
+
 //     {
 //       label: t('Query'),
 //       expanded: true,
@@ -192,7 +192,6 @@
 
 // export default config;
 
-
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -262,7 +261,9 @@ const config: ControlPanelConfig = {
             config: {
               ...sharedControls.metrics,
               label: t('Metric (Y-axis)'),
-              description: t('Choose the numeric column to display as the Y-axis value (e.g., total bill amount)'),
+              description: t(
+                'Choose the numeric column to display as the Y-axis value (e.g., total bill amount)',
+              ),
               validators: [validateNonEmpty],
             },
           },
@@ -337,8 +338,6 @@ const config: ControlPanelConfig = {
             },
           },
         ],
-  
-    
       ],
     },
   ],

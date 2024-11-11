@@ -685,8 +685,8 @@ export const DeckGLContainer = memo(
       const createGifMarker = (url: string, coordinates: [number, number]) => {
         const el = document.createElement('div');
         el.style.backgroundImage = `url(${url})`;
-        el.style.width = '50px';
-        el.style.height = '50px';
+        el.style.width = '30px';
+        el.style.height = '30px';
         el.style.backgroundSize = 'contain';
 
         new mapboxgl.Marker(el).setLngLat(coordinates).addTo(map);

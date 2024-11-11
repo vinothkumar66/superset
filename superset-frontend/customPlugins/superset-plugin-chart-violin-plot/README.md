@@ -18,6 +18,7 @@ npm run dev
 ```
 
 To add the package to Superset, go to the `superset-frontend` subdirectory in your Superset source folder (assuming both the `superset-plugin-chart-violin-plot` plugin and `superset` repos are in the same root directory) and run
+
 ```
 npm i -S ../../superset-plugin-chart-violin-plot
 ```
@@ -54,6 +55,7 @@ import { SupersetPluginChartViolinPlot } from 'superset-plugin-chart-violin-plot
 ```
 
 to import the plugin and later add the following to the array that's passed to the `plugins` property:
+
 ```js
 new SupersetPluginChartViolinPlot().configure({ key: 'superset-plugin-chart-violin-plot' }),
 ```

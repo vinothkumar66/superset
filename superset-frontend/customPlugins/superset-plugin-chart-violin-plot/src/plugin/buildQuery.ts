@@ -34,11 +34,20 @@ import { buildQueryContext, QueryFormData } from '@superset-ui/core';
  */
 export default function buildQuery(formData: QueryFormData) {
   const { x_axis_column, y_axis_column, metrics } = formData;
-  console.log('FormData:', formData, 'X Axis:', x_axis_column, 'Y Axis:', y_axis_column, 'Metrics:', metrics);
+  console.log(
+    'FormData:',
+    formData,
+    'X Axis:',
+    x_axis_column,
+    'Y Axis:',
+    y_axis_column,
+    'Metrics:',
+    metrics,
+  );
   return buildQueryContext(formData, baseQueryObject => [
     {
       ...baseQueryObject,
-      columns: [x_axis_column,y_axis_column],
+      columns: [x_axis_column, y_axis_column],
       metrics: [],
       post_processing: [],
     },

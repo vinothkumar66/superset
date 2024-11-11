@@ -273,12 +273,14 @@ const config: ControlPanelConfig = {
             config: {
               ...sharedControls.color_scheme,
               label: t('Color Scheme'),
-              description: t('Select the color scheme for the candlestick chart'),
+              description: t(
+                'Select the color scheme for the candlestick chart',
+              ),
               renderTrigger: true,
             },
           },
         ],
-   
+
         [
           {
             name: 'candlestick_width',

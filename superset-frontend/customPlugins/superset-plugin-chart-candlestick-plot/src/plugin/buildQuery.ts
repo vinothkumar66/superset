@@ -33,12 +33,14 @@ import { buildQueryContext, QueryFormData } from '@superset-ui/core';
  * if a viz needs multiple different result sets.
  */
 export default function buildQuery(formData: QueryFormData) {
-  const { high_metric,low_metric,open_metric,close_metric } = formData;
+  const { high_metric, low_metric, open_metric, close_metric } = formData;
   return buildQueryContext(formData, baseQueryObject => [
     {
       ...baseQueryObject,
-      columns: [high_metric,low_metric,open_metric,close_metric ],
-      groupby: [high_metric,low_metric,open_metric,close_metric].filter(Boolean),
+      columns: [high_metric, low_metric, open_metric, close_metric],
+      groupby: [high_metric, low_metric, open_metric, close_metric].filter(
+        Boolean,
+      ),
       metrics: [],
       post_processing: [],
       is_timeseries: true,

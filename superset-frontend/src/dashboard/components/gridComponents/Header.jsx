@@ -129,6 +129,7 @@ class Header extends PureComponent {
       'background',
     );
     this.handleChangeText = this.handleUpdateMeta.bind(this, 'text');
+    this.handleLogoChange = this.handleLogoChange.bind(this); // Bind new method
   }
 
   handleChangeFocus(nextFocus) {
@@ -154,9 +155,18 @@ class Header extends PureComponent {
     const { deleteComponent, id, parentId } = this.props;
     deleteComponent(id, parentId);
   }
-
+  handleLogoChange(event) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.setState({ logoUrl: e.target.result });
+      };
+      reader.readAsDataURL(file);
+    }
+  }
   render() {
-    const { isFocused } = this.state;
+    const { isFocused, logoUrl } = this.state;
 
     const {
       dashboardId,

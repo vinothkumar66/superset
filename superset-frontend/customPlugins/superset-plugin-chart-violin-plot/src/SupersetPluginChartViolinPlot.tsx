@@ -88,11 +88,13 @@
 //   );
 // }
 
-
 import React from 'react';
 import Plot from 'react-plotly.js';
 import { styled } from '@superset-ui/core';
-import { SupersetPluginChartViolinPlotProps, SupersetPluginChartViolinPlotStylesProps } from './types';
+import {
+  SupersetPluginChartViolinPlotProps,
+  SupersetPluginChartViolinPlotStylesProps,
+} from './types';
 import { ViolinData, Layout } from 'plotly.js'; // Import ViolinData type from Plotly
 
 const Styles = styled.div<SupersetPluginChartViolinPlotStylesProps>`
@@ -104,25 +106,48 @@ const Styles = styled.div<SupersetPluginChartViolinPlotStylesProps>`
   h3 {
     margin-top: 0;
     margin-bottom: ${({ theme }) => theme.gridUnit * 3}px;
-    font-size: ${({ theme, headerFontSize }) => theme.typography.sizes[headerFontSize]}px;
-    font-weight: ${({ theme, boldText }) => theme.typography.weights[boldText ? 'bold' : 'normal']};
+    font-size: ${({ theme, headerFontSize }) =>
+      theme.typography.sizes[headerFontSize]}px;
+    font-weight: ${({ theme, boldText }) =>
+      theme.typography.weights[boldText ? 'bold' : 'normal']};
   }
 `;
 
-export default function SupersetPluginChartViolinPlot(props: SupersetPluginChartViolinPlotProps) {
-  const { data, height, width, headerText, boldText, headerFontSize,  xAxisColumn, yAxisColumn,violinColor,showMean,showBox } = props;
-  console.log(data, xAxisColumn, yAxisColumn,violinColor,showMean,"x_axis_column, y_axis_column,data from violin plot");
+export default function SupersetPluginChartViolinPlot(
+  props: SupersetPluginChartViolinPlotProps,
+) {
+  const {
+    data,
+    height,
+    width,
+    headerText,
+    boldText,
+    headerFontSize,
+    xAxisColumn,
+    yAxisColumn,
+    violinColor,
+    showMean,
+    showBox,
+  } = props;
+  console.log(
+    data,
+    xAxisColumn,
+    yAxisColumn,
+    violinColor,
+    showMean,
+    'x_axis_column, y_axis_column,data from violin plot',
+  );
 
   // Dynamically extract x and y data based on the column names passed in x_axis_column and y_axis_column
   const xData = data.map((d: any) => d[xAxisColumn]); // Use dynamic x-axis column
   const yData = data.map((d: any) => d[yAxisColumn]); // Use dynamic y-axis column
-console.log(xData,"xData",yData,"ydata")
+  console.log(xData, 'xData', yData, 'ydata');
   // Define the trace for the violin plot using ViolinData type
   const trace: Partial<ViolinData> = {
     type: 'violin',
-    x: xData,  // Dynamic x-axis data
-    y: yData,  // Dynamic y-axis data
-    points: 'all',  // Display all points
+    x: xData, // Dynamic x-axis data
+    y: yData, // Dynamic y-axis data
+    points: 'all', // Display all points
     box: { visible: showBox },
     meanline: { visible: showMean },
     line: { color: violinColor },
@@ -134,12 +159,21 @@ console.log(xData,"xData",yData,"ydata")
     width: width,
     height: height,
     yaxis: { zeroline: false },
-    xaxis: { title: xAxisColumn },  // Dynamic x-axis title based on selected column
+    xaxis: { title: xAxisColumn }, // Dynamic x-axis title based on selected column
   };
 
   return (
-    <Styles boldText={boldText} headerFontSize={headerFontSize} height={height} width={width}>
-      <Plot data={[trace]} layout={layout} style={{ width: '100%', height: '100%' }} />
+    <Styles
+      boldText={boldText}
+      headerFontSize={headerFontSize}
+      height={height}
+      width={width}
+    >
+      <Plot
+        data={[trace]}
+        layout={layout}
+        style={{ width: '100%', height: '100%' }}
+      />
     </Styles>
   );
 }

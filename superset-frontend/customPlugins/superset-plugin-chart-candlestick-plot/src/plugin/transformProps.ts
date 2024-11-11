@@ -18,7 +18,9 @@
  */
 import { ChartProps, TimeseriesDataRecord } from '@superset-ui/core';
 import { SupersetPluginChartCandlestickPlotProps } from '../types';
-export default function transformProps(chartProps: ChartProps):SupersetPluginChartCandlestickPlotProps {
+export default function transformProps(
+  chartProps: ChartProps,
+): SupersetPluginChartCandlestickPlotProps {
   /**
    * This function is called after a successful response has been
    * received from the chart data endpoint, and is used to transform
@@ -50,7 +52,7 @@ export default function transformProps(chartProps: ChartProps):SupersetPluginCha
    */
   const { width, height, queriesData } = chartProps;
 
-  const data = queriesData[0].data ;
+  const data = queriesData[0].data;
 
   return {
     width,
@@ -62,8 +64,8 @@ export default function transformProps(chartProps: ChartProps):SupersetPluginCha
     //   // eslint-disable-next-line no-underscore-dangle
     //   __timestamp: new Date(item.__timestamp as number),
     // })),
-     // Mapping data for candlestick plot with OHLC values
- data,
+    // Mapping data for candlestick plot with OHLC values
+    data,
     // and now your control data, manipulated as needed, and passed through as props!
   };
 }

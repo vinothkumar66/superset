@@ -430,7 +430,6 @@ const isNeedsSSHPrivateKey = (payload: any) =>
   Array.isArray(payload._schema) &&
   !!payload._schema?.find(
     (e: string) => e === 'Must provide a private key for the ssh tunnel',
-    
   );
 
 export /* eslint-disable no-underscore-dangle */

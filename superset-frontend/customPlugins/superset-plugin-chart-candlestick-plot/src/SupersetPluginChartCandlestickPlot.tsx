@@ -93,7 +93,6 @@
 //   );
 // }
 
-
 import React, { createRef, useEffect } from 'react';
 import * as echarts from 'echarts';
 import { styled } from '@superset-ui/core';
@@ -120,43 +119,38 @@ export default function SupersetPluginChartCandlestickPlot(
   useEffect(() => {
     console.log('Data:', data);
 
-    if(!chartRef.current) return;
- 
-      // Initialize ECharts instance
-      const chartInstance = echarts.init(chartRef.current);
-  
-      // Format data for ECharts candlestick series
-      const candlestickData = Array.isArray(data) ? data.map(item => [
-        item.open,
-        item.close,
-        item.low,
-        item.high,
-    ]) : [];
+    if (!chartRef.current) return;
+
+    // Initialize ECharts instance
+    const chartInstance = echarts.init(chartRef.current);
+
+    // Format data for ECharts candlestick series
+    const candlestickData = Array.isArray(data)
+      ? data.map(item => [item.open, item.close, item.low, item.high])
+      : [];
     const dates = data.map(item => {
       const date = new Date(item.__timestamp);
-    
+
       const year = date.getUTCFullYear();
       const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Months are zero-based
       const day = String(date.getUTCDate()).padStart(2, '0');
       const hours = String(date.getUTCHours()).padStart(2, '0');
       const minutes = String(date.getUTCMinutes()).padStart(2, '0');
       const seconds = String(date.getUTCSeconds()).padStart(2, '0');
-    
+
       return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     });
-    
-    
-  
-      // ECharts configuration
-      const options = {
-        title: {
-          left: 'center',
-        },
-        tooltip: {
-          trigger: 'axis',
-          formatter: (params: [any]) => {
-            const [data] = params;
-            return `
+
+    // ECharts configuration
+    const options = {
+      title: {
+        left: 'center',
+      },
+      tooltip: {
+        trigger: 'axis',
+        formatter: (params: [any]) => {
+          const [data] = params;
+          return `
               <div>
                 <strong>Date: ${data.name}</strong><br />
                 Open: ${data.value[1]}<br />
@@ -165,77 +159,70 @@ export default function SupersetPluginChartCandlestickPlot(
                 Close: ${data.value[2]}
               </div>
             `;
+        },
+      },
+      // legend: {
+      //   data: dates, // Define the name for the candlestick series
+      //   top: '10%',            // Positioning options: top, bottom, left, right
+      //   align: 'auto',         // Aligns legend automatically
+      //   textStyle: {
+      //     color: '#000',       // Legend text color
+      //   },
+      // },
+      xAxis: {
+        type: 'category',
+        data: dates,
+        boundaryGap: true,
+        axisLabel: {
+          show: true,
+          interval: 0, // Show every label without skipping
+          // rotate: 45, // Rotate labels if they overlap
+        },
+        axisTick: {
+          alignWithLabel: true,
+        },
+      },
+      yAxis: {
+        scale: true,
+      },
+      series: [
+        {
+          name: 'Candlestick',
+          type: 'candlestick',
+          data: candlestickData,
+          itemStyle: {
+            color: '#00da3c', // color for rising candlestick
+            color0: '#ec0000', // color for falling candlestick
           },
         },
-        // legend: {
-        //   data: dates, // Define the name for the candlestick series
-        //   top: '10%',            // Positioning options: top, bottom, left, right
-        //   align: 'auto',         // Aligns legend automatically
-        //   textStyle: {
-        //     color: '#000',       // Legend text color
-        //   },
-        // },
-        xAxis: {
-          type: 'category',
-          data: dates,
-          boundaryGap: true,
-          axisLabel: {
-            show: true,
-            interval: 0, // Show every label without skipping
-            // rotate: 45, // Rotate labels if they overlap
-            
-          },
-          axisTick: {
-            alignWithLabel: true,
-          },
-        },
-        yAxis: {
-          scale: true,
-        },
-        series: [
-          { 
-            name: 'Candlestick', 
-            type: 'candlestick',
-            data: candlestickData,
-            itemStyle: {
-              color: '#00da3c', // color for rising candlestick
-              color0: '#ec0000', // color for falling candlestick
-            },
-          },
-        ],
-          // series:dates.map(date => ({
-  //   name: date, // Each date will have its own legend item
-  //   type: 'candlestick',
-  //   data: data.filter(item => new Date(item.__timestamp).toLocaleDateString() === date).map(item => [
-  //     item.open,
-  //     item.close,
-  //     item.low,
-  //     item.high,
-  //   ]),
-  //   itemStyle: {
-  //     color: '#00da3c', // color for rising candlestick
-  //     color0: '#ec0000', // color for falling candlestick
-  //   },
-  // })),
-      };
+      ],
+      // series:dates.map(date => ({
+      //   name: date, // Each date will have its own legend item
+      //   type: 'candlestick',
+      //   data: data.filter(item => new Date(item.__timestamp).toLocaleDateString() === date).map(item => [
+      //     item.open,
+      //     item.close,
+      //     item.low,
+      //     item.high,
+      //   ]),
+      //   itemStyle: {
+      //     color: '#00da3c', // color for rising candlestick
+      //     color0: '#ec0000', // color for falling candlestick
+      //   },
+      // })),
+    };
 
+    // Render chart with options
+    chartInstance.setOption(options);
 
-      // Render chart with options
-      chartInstance.setOption(options);
-  
-      // Cleanup on component unmount
-      return () => {
-        chartInstance.dispose(); // Dispose of the chart instance to free up resources
-      };
-    
+    // Cleanup on component unmount
+    return () => {
+      chartInstance.dispose(); // Dispose of the chart instance to free up resources
+    };
   }, [data]);
-  
 
   return (
-    <Styles
-      height={height}
-      width={width}
-    >
+    <Styles height={height} width={width}>
       <div ref={chartRef} style={{ height: height - 40, width: '100%' }} />
     </Styles>
   );
