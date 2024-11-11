@@ -43,8 +43,10 @@
     "lib": "lib",
     "test": "test"
   },
+
   "dependencies": {
-    "echarts": "^5.5.1",
-    "echarts-gl": "^2.0.9"
-  }
+  "echarts": "5.4.1",
+  "echarts-gl": "2.0.9"
+}
+
 }
