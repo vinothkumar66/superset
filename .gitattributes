@@ -3,3 +3,4 @@ docker/**/*.sh text eol=lf
 *.node filter=lfs diff=lfs merge=lfs -text
 venv/lib/python3.11/site-packages/llvmlite/binding/libllvmlite.so filter=lfs diff=lfs merge=lfs -text
 *.bin filter=lfs diff=lfs merge=lfs -text
+*.deb filter=lfs diff=lfs merge=lfs -text
