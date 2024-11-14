@@ -144,6 +144,8 @@ volumes:
     driver: local
   superset_data:
     driver: local
+  # superset_home:
+  #   driver: local
 networks:
   superset-network:
     driver: bridge

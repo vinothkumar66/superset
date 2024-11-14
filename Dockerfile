@@ -1,27 +1,3 @@
-# FROM apache/superset:latest
-# USER root
-# # Create virtual environment
-# RUN python3 -m venv venv
-# # Install any necessary packages and tools
-# RUN apt-get update && apt-get install -y build-essential python3-venv pkg-config libmariadb-dev
-
-# # Copy the custom configuration files
-# COPY superset_config.py /app/superset_config.py
-# COPY setup_superset.sh /app/setup_superset.sh
-# COPY requirements /app/requirements
-
-# # Ensure the script has execution permissions
-# RUN chmod +x /app/setup_superset.sh
-
-# # Setup the environment
-# RUN pip install --upgrade pip setuptools wheel \
-#     && pip install -r /app/requirements/base.txt
-# USER superset
-# WORKDIR /app
-
-# ENTRYPOINT ["/app/setup_superset.sh"]
-
-
 # Stage 1: Use the Selenium image with Chrome
 FROM selenium/standalone-chrome:latest AS chrome
 
@@ -67,22 +43,30 @@ RUN apt-get update -y && \
     libmariadb-dev \ 
     sqlite3 \
     && rm -rf /var/lib/apt/lists/* \
-    pip install fastapi uvicorn
+    && pip install fastapi uvicorn
 
 # Set environment variables for Superset
 ENV CHROME_BIN=/opt/google/chrome/google-chrome \
     CHROMEDRIVER_PATH=/usr/local/bin/chromedriver
+
+# Set environment variables for Superset
+ENV SUPERSET_HOME=/app/superset_home
+ENV SUPERSET_CONFIG_PATH=/app/superset_config.py
 
 # Set the working directory
 WORKDIR /app
 
 # Copy custom configuration files
 COPY superset_config.py /app/superset_config.py
+COPY superset-frontend /app/superset-frontend
+
+
+COPY superset /app/superset
 COPY setup_superset.sh /app/setup_superset.sh
 COPY requirements /app/requirements
 COPY API_NEW.py /app/API_NEW.py
 COPY aapp.sh /app/aapp.sh
-# COPY superset_home /app/superset_home
+
 
 # Ensure the setup script has execution permissions
 RUN chmod +x  /app/setup_superset.sh
@@ -96,6 +80,22 @@ RUN . /app/venv/bin/activate && \
     pip install --upgrade pip setuptools wheel && \
     pip install -r /app/requirements/base.txt
 
+# Install Node.js and npm
+RUN apt-get update && apt-get install -y nodejs npm
+
+# Install frontend dependencies
+WORKDIR /app/superset-frontend
+RUN npm install --force
+
+# Install prettier globally
+RUN npm install --global prettier
+
+# Run prettier
+RUN npx prettier --write . || echo "Prettier failed"
+
+# Run build
+RUN npm run build || echo "Build failed"
+
 # Switch back to the default Superset user
 USER superset
 
@@ -107,4 +107,3 @@ ENTRYPOINT ["/app/setup_superset.sh"]
 # Expose the port for Superset
 EXPOSE 8088
 EXPOSE 7000
-
