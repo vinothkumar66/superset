@@ -1,4 +1,5 @@
 #!/bin/bash
+service postgresql start
 set -e
 
 export SUPERSET_CONFIG_PATH=/app/superset_config.py
@@ -9,6 +10,7 @@ superset db upgrade
 
 # Create default roles and permissions
 superset init
+redis-server &
 # Start the Celery worker and beat
 celery -A superset.tasks.celery_app worker --loglevel=info &
 celery -A superset.tasks.celery_app beat --loglevel=info &
@@ -23,6 +25,7 @@ flask fab create-admin \
 
 # Start the web server
 gunicorn -w 2 -k gevent --timeout 120 -b 0.0.0.0:8088 "superset.app:create_app()"
+cd /app/superset-frontend && npm run dev
 
 # #!/bin/bash
 # export SUPERSET_CONFIG_PATH=$(pwd)/superset_config.py

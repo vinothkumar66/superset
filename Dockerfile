@@ -42,6 +42,10 @@ RUN apt-get update -y && \
     pkg-config \
     libmariadb-dev \ 
     sqlite3 \
+    nodejs \
+    npm \
+    redis-server \
+    postgresql \
     && rm -rf /var/lib/apt/lists/* \
     && pip install fastapi uvicorn
 
@@ -49,17 +53,13 @@ RUN apt-get update -y && \
 ENV CHROME_BIN=/opt/google/chrome/google-chrome \
     CHROMEDRIVER_PATH=/usr/local/bin/chromedriver
 
-# Set environment variables for Superset
-ENV SUPERSET_HOME=/app/superset_home
-ENV SUPERSET_CONFIG_PATH=/app/superset_config.py
-
 # Set the working directory
 WORKDIR /app
 
 # Copy custom configuration files
 COPY superset_config.py /app/superset_config.py
 COPY superset-frontend /app/superset-frontend
-
+COPY superset_home /app/superset_home
 
 COPY superset /app/superset
 COPY setup_superset.sh /app/setup_superset.sh
@@ -80,8 +80,8 @@ RUN . /app/venv/bin/activate && \
     pip install --upgrade pip setuptools wheel && \
     pip install -r /app/requirements/base.txt
 
-# Install Node.js and npm
-RUN apt-get update && apt-get install -y nodejs npm
+# # Install Node.js and npm
+# RUN apt-get update && apt-get install -y nodejs npm
 
 # Install frontend dependencies
 WORKDIR /app/superset-frontend
@@ -96,6 +96,7 @@ RUN npx prettier --write . || echo "Prettier failed"
 # Run build
 RUN npm run build || echo "Build failed"
 
+
 # Switch back to the default Superset user
 USER superset
 
@@ -105,5 +106,5 @@ CMD ["/app/aapp.sh"]
 ENTRYPOINT ["/app/setup_superset.sh"]
 
 # Expose the port for Superset
-EXPOSE 8088
+EXPOSE 8088 5432 6379
 EXPOSE 7000
