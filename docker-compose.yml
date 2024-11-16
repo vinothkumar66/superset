@@ -8,10 +8,9 @@ x-superset-volumes: &superset-volumes
   - ./docker:/app/docker
   - ./superset:/app/superset
   - ./superset-frontend:/app/superset-frontend
-  # - ./superset_home:/app/superset_home
-  - superset_data:/app/superset_home
+  - ./superset_home:/app/superset_home
+  # - superset_data:/app/superset_home
   - ./tests:/app/tests
-  - ./report_output:/app/reportsfolder
 
 x-common-build: &common-build
   context: .
@@ -23,20 +22,11 @@ services:
     container_name: superset_cache
     restart: unless-stopped
     ports:
-      - "6379:6379"
+      - "127.0.0.1:6379:6379"
     volumes:
       - redis:/data
     networks:
       - superset-network
-
-  # fastapi:
-  #   build:
-  #     context: .
-  #   command: ["app/aapp.sh"]
-  #   networks:
-  #     - superset-network
-  #   depends_on:
-  #     - redis
 
   postgres:
     image: postgres:13
@@ -63,9 +53,8 @@ services:
       - ./superset:/app/superset
       - ./superset-frontend:/app/superset-frontend
       - ./docker:/app/docker
-      - superset_data:/app/superset_home
-      # - ./superset_home:/app/superset_home
-    
+      # - superset_data:/app/superset_home
+      - ./superset_home:/app/superset_home
     environment:
       SUPERSET_ENV: production
       SUPERSET_CONFIG_PATH: /app/superset_config.py
@@ -73,7 +62,7 @@ services:
       # SQLALCHEMY_DATABASE_URI: postgresql+psycopg2://sama:sama123!@#@192.168.29.111:5432/SupraDataset
       CELERY_BROKER_URL: redis://redis:6379/0
       CELERY_RESULT_BACKEND: redis://redis:6379/0
-     
+      REDIS_HOST: redis
     depends_on:
       - postgres
       - redis
@@ -141,13 +130,12 @@ volumes:
   db_home:
     driver: local
   redis:
-    driver: local
-  superset_data:
-    driver: local
-  # superset_home:
+    driver: bridge
+  # superset_data:
   #   driver: local
+  superset_home:
+    driver: local
 networks:
   superset-network:
     driver: bridge
-
 

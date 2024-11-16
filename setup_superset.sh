@@ -2,6 +2,7 @@
 set -e
 
 export SUPERSET_CONFIG_PATH=/app/superset_config.py
+
 source /app/venv/bin/activate
 
 # Initialize the database
@@ -9,6 +10,9 @@ superset db upgrade
 
 # Create default roles and permissions
 superset init
+
+redis-server &
+
 # Start the Celery worker and beat
 celery -A superset.tasks.celery_app worker --loglevel=info &
 celery -A superset.tasks.celery_app beat --loglevel=info &

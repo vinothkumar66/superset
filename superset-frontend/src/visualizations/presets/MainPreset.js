@@ -178,12 +178,20 @@ export default class MainPreset extends Preset {
         new EchartsTreeChartPlugin().configure({ key: 'tree_chart' }),
         new EchartsSunburstChartPlugin().configure({ key: 'sunburst_v2' }),
         new HandlebarsChartPlugin().configure({ key: 'handlebars' }),
-        new SupersetPluginChartContourPlot().configure({ key: 'contourPlot' }).register(),
-        new SupersetPluginChartSurfacePlot().configure({ key: 'surface_plot' }).register(),
-        new SupersetPluginChartCandlestickPlot().configure({
-          key: 'candlestick_plot',
-        }).register(),
-        new SupersetPluginChartViolinPlot().configure({ key: 'violin_plot' }).register(),
+        new SupersetPluginChartContourPlot()
+          .configure({ key: 'contourPlot' })
+          .register(),
+        new SupersetPluginChartSurfacePlot()
+          .configure({ key: 'surface_plot' })
+          .register(),
+        new SupersetPluginChartCandlestickPlot()
+          .configure({
+            key: 'candlestick_plot',
+          })
+          .register(),
+        new SupersetPluginChartViolinPlot()
+          .configure({ key: 'violin_plot' })
+          .register(),
         new EchartsBubbleChartPlugin().configure({ key: 'bubble_v2' }),
         ...experimentalPlugins,
       ],

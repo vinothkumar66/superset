@@ -159,7 +159,7 @@ class Header extends PureComponent {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = e => {
         this.setState({ logoUrl: e.target.result });
       };
       reader.readAsDataURL(file);
